@@ -74,3 +74,27 @@ class ParallelModifier(Modifier):
                 c.append(Or(Not(variables[step][pair[0].name]),Not(variables[step][pair[1].name])))
 
         return c
+
+class RelaxedModifier(Modifier):
+    """
+    Relaxed modifier, contains method to implement relaxed parallel execution semantics.
+    """
+
+    def do_encode(self, variables, mutexes, bound):
+        """!
+        Encodes parallel relaxed execution semantics (i.e., multiple, mutex, actions per step).
+
+        @param  variables: Z3 variables.
+        @param mutexes: relaxed action mutexes.
+        @param bound: planning horizon.
+
+        @return c: constraints enforcing relaxed parallel execution
+        """
+        c = []
+
+        #TODO change this from the simple parallel encoding
+        for step in range(bound):
+            for pair in mutexes:
+                c.append(Or(Not(variables[step][pair[0].name]),Not(variables[step][pair[1].name])))
+
+        return c

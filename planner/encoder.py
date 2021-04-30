@@ -48,8 +48,10 @@ class Encoder():
 
         if self.modifier.__class__.__name__ == "LinearModifier":
             self.mutexes = self._computeSerialMutexes()
-        else:
+        elif self.modifier.__class__.__name__ == "ParallelModifier":
             self.mutexes = self._computeParallelMutexes()
+        else:
+            self.mutexes = self._computeRelaxedMutexes()
 
     def _ground(self):
         """
@@ -194,6 +196,17 @@ class Encoder():
 
         return mutexes
 
+    def _computeRelaxedMutexes(self):
+        """!
+        Computes mutually exclusive actions, 
+        which in the relaxed szenario are currently none.
+
+        @return mutex: an empty list
+        """
+        # Stores mutexes
+        mutexes = []
+
+        return mutexes
 
     def createVariables(self):
         """!
