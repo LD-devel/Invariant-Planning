@@ -107,7 +107,7 @@ def main(BASE_DIR):
                 utils.printSMTFormula(formula,task.task_name)
             else:
                 s = search.SearchSMT(e,ub)
-                plan = s.do_linear_search()
+                plan = s.do_relaxed_search()
 
         else:
             print('No execution semantics specified, choose between linear or parallel.')

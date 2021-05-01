@@ -82,6 +82,93 @@ class SearchSMT(Search):
 
         return self.solution
 
+    def do_relaxed_search(self):
+        """
+        Linear, invariant guided search scheme.
+        """
+
+        # Defines initial horizon for ramp-up search
+
+        self.horizon = 1
+
+        print('Start linear, invariant guided search.')
+
+        # Build formula until a plan is found or upper bound is reached
+
+        while not self.found and self.horizon < self.ub:
+            # Create SMT solver instance
+            self.solver = Solver()
+
+            # Build planning subformulas
+            formula =  self.encoder.encode(self.horizon)
+            #print('The formula:')
+            #print(formula)
+
+            # Assert subformulas in solver
+            for k,v in formula.items():
+                self.solver.add(v)
+
+            # Check for satisfiability
+            res = self.solver.check()
+
+            #TODO this does nothing so far
+            while res == sat and not self.found:
+                #check sequentialziability
+                seq , invariants = self.check_sequentializability()
+                if(seq):
+                    self.found = True
+                    #possibly the plan hast to be extraced here
+                else:
+                    #make some refinement and add constraint
+                    pass
+                res = self.solver.check()
+                
+            if not self.found:
+                # Increment horizon until we find a solution
+                self.horizon = self.horizon + 1
+
+        # Extract plan from model
+        model = self.solver.model()
+        self.solution = plan.Plan(model, self.encoder)
+
+        return self.solution
+
+    def check_sequentializability(self):
+        seq = True
+        invariants = []
+
+        # Extract parallel plan steps from the model
+        actionsPerStep = []
+        statevarsPerStep = []
+
+        model = self.solver.model()
+        for step in range(self.encoder.horizon):
+            actionsPerStep.append([])
+            statevarsPerStep.append([])
+            for action in self.encoder.actions:
+                if is_true(model[self.encoder.action_variables[step][action.name]]):
+                    actionsPerStep[step].append(action.name)
+
+            for key, var in self.encoder.boolean_variables[step].iteritems():
+                var_val = model[self.encoder.boolean_variables[step][key]]
+                statevarsPerStep[step].append((var, var_val))
+
+            for key, var in self.encoder.numeric_variables[step].iteritems():
+                var_val = model[self.encoder.numeric_variables[step][key]]
+                statevarsPerStep[step].append((var, var_val))
+
+        print('Actions:')
+        print(actionsPerStep)
+        print('States:')
+        print(statevarsPerStep)
+
+        for i in range(self.encoder.horizon):
+            # Generate forumla eepressing sequentializability
+            # For each step
+            pass
+
+        return (seq, invariants)
+
 
 class SearchOMT(Search):
     """

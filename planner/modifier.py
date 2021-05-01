@@ -92,9 +92,9 @@ class RelaxedModifier(Modifier):
         """
         c = []
 
-        #TODO change this from the simple parallel encoding
-        for step in range(bound):
+        #TODO change this
+        '''for step in range(bound):
             for pair in mutexes:
-                c.append(Or(Not(variables[step][pair[0].name]),Not(variables[step][pair[1].name])))
+                c.append(Or(Not(variables[step][pair[0].name]),Not(variables[step][pair[1].name])))'''
 
         return c

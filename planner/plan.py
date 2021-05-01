@@ -99,11 +99,8 @@ class Plan():
             # Call VAL
 
             try:
-                print(val)
-                print(domain)
-                print(problem)
-                print(temp.name)
                 output = subprocess.check_output([val, domain, problem, temp.name])
+                print('validate.exe output:' + str(output))
 
             except subprocess.CalledProcessError as e:
 
