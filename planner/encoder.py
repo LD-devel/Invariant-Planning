@@ -19,6 +19,7 @@ from z3 import *
 from collections import defaultdict
 import translate.pddl as pddl
 import utils
+from copy import deepcopy
 from translate import instantiate
 from translate import numeric_axiom_rules
 import numpy as np
@@ -622,6 +623,47 @@ class EncoderSMT(Encoder):
         # Encode execution semantics (lin/par)
 
         formula['sem'] = self.encodeExecutionSemantics()
+
+        return formula
+
+    def encode_concrete_seq_prefix(self, init_vars, goal_vars):
+
+        temp = []
+        # Encode initial state axioms Custom
+        # Encode goal state axioms Custom
+        # Add both to temp
+
+        return temp
+
+    def encode_general_seq(self, actions):
+
+        # Create a deep copy of self
+        # This should save some computation
+        # as the 'context' of the problem can largely be reused
+        seq_encoder = deepcopy(self)
+
+        # Alter horizon to number of actions
+        # Change the set of actions to the subset
+        seq_encoder.horizon = len(actions)
+        seq_encoder.actions = actions
+        seq_encoder.modifier.__class__.__name__ = "LinearModifier"
+        #TODO propably only relevant in OMT setting:
+        seq_encoder.mutexes = seq_encoder._computeSerialMutexes()
+
+        # Create variables
+        seq_encoder.createVariables()
+
+        # Start encoding formula
+        formula = defaultdict(list)
+
+        # Encode universal axioms
+        formula['actions'] = seq_encoder.encodeActions()
+
+        # Encode explanatory frame axioms
+        formula['frame'] = seq_encoder.encodeFrame()
+
+        # Encode linear execution semantics
+        formula['sem'] = seq_encoder.encodeExecutionSemantics()
 
         return formula
 

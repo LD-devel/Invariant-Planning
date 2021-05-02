@@ -101,8 +101,10 @@ class SearchSMT(Search):
 
             # Build planning subformulas
             formula =  self.encoder.encode(self.horizon)
-            #print('The formula:')
-            #print(formula)
+
+            if self.horizon == 2:
+                print('TASK ENCODING at horizon: ' + str(self.horizon))
+                print(formula)
 
             # Assert subformulas in solver
             for k,v in formula.items():
@@ -142,30 +144,38 @@ class SearchSMT(Search):
         statevarsPerStep = []
 
         model = self.solver.model()
+        
         for step in range(self.encoder.horizon):
             actionsPerStep.append([])
-            statevarsPerStep.append([])
+
             for action in self.encoder.actions:
                 if is_true(model[self.encoder.action_variables[step][action.name]]):
-                    actionsPerStep[step].append(action.name)
+                    actionsPerStep[step].append(action)
+
+        for step in range(self.encoder.horizon+1):
+            statevarsPerStep.append([])
 
             for key, var in self.encoder.boolean_variables[step].iteritems():
                 var_val = model[self.encoder.boolean_variables[step][key]]
-                statevarsPerStep[step].append((var, var_val))
+                statevarsPerStep[step].append((key, var_val))
 
             for key, var in self.encoder.numeric_variables[step].iteritems():
                 var_val = model[self.encoder.numeric_variables[step][key]]
-                statevarsPerStep[step].append((var, var_val))
+                statevarsPerStep[step].append((key, var_val))
 
-        print('Actions:')
-        print(actionsPerStep)
         print('States:')
         print(statevarsPerStep)
 
-        for i in range(self.encoder.horizon):
-            # Generate forumla eepressing sequentializability
+        for step in range(self.encoder.horizon):
+            # Generate forumla expressing sequentializability
             # For each step
-            pass
+            general_seq_forumla = self.encoder.encode_general_seq(
+                actionsPerStep[step])
+            
+            print(general_seq_forumla)
+
+            concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix( 
+                statevarsPerStep[step], statevarsPerStep[step+1])
 
         return (seq, invariants)
 
