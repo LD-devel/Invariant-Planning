@@ -71,6 +71,7 @@ class SearchSMT(Search):
             res = self.solver.check()
 
             if res == sat:
+                print(self.horizon)
                 self.found = True
             else:
                 # Increment horizon until we find a solution
@@ -91,7 +92,7 @@ class SearchSMT(Search):
 
         self.horizon = 1
 
-        print('Start linear, invariant guided search.')
+        print('Start invariant guided search.')
 
         # Build formula until a plan is found or upper bound is reached
 
@@ -100,9 +101,9 @@ class SearchSMT(Search):
             self.solver = Solver()
 
             # Build planning subformulas
-            formula =  self.encoder.encode(self.horizon)
+            formula = self.encoder.encode(self.horizon)
 
-            if self.horizon == 2:
+            if False and self.horizon == 2:
                 print('TASK ENCODING at horizon: ' + str(self.horizon))
                 print(formula)
 
@@ -116,14 +117,25 @@ class SearchSMT(Search):
             #TODO this does nothing so far
             while res == sat and not self.found:
                 #check sequentialziability
-                seq , invariants = self.check_sequentializability()
+                seq , invariant = self.check_sequentializability()
                 if(seq):
+                    print('Plan fully sequentializable')
                     self.found = True
-                    #possibly the plan hast to be extraced here
+                    #TODO possibly the plan hast to be extraced here
                 else:
-                    #make some refinement and add constraint
-                    pass
-                res = self.solver.check()
+                    # Add constraint for future horizons
+                    self.encoder.mutexes.append(invariant)
+                    # Encode invariant
+                    encoded_invars = self.encoder.modifier.do_encode(
+                        self.encoder.action_variables,
+                        self.encoder.boolean_variables,
+                        self.encoder.numeric_variables,
+                        [invariant], self.encoder.horizon)
+                    # self.solver.add the encoded invariant
+                    for v in encoded_invars:
+                        self.solver.add(v)
+                    # set encoder.mutexes += invariants
+                    res = self.solver.check()
                 
             if not self.found:
                 # Increment horizon until we find a solution
@@ -136,12 +148,11 @@ class SearchSMT(Search):
         return self.solution
 
     def check_sequentializability(self):
-        seq = True
-        invariants = []
 
         # Extract parallel plan steps from the model
         actionsPerStep = []
-        statevarsPerStep = []
+        booleanVarsPerStep = []
+        numVarsPerStep = []
 
         model = self.solver.model()
         
@@ -153,31 +164,59 @@ class SearchSMT(Search):
                     actionsPerStep[step].append(action)
 
         for step in range(self.encoder.horizon+1):
-            statevarsPerStep.append([])
+            booleanVarsPerStep.append([])
+            numVarsPerStep.append([])
 
             for key, var in self.encoder.boolean_variables[step].iteritems():
                 var_val = model[self.encoder.boolean_variables[step][key]]
-                statevarsPerStep[step].append((key, var_val))
+                booleanVarsPerStep[step].append((key, var_val))
 
             for key, var in self.encoder.numeric_variables[step].iteritems():
                 var_val = model[self.encoder.numeric_variables[step][key]]
-                statevarsPerStep[step].append((key, var_val))
-
-        print('States:')
-        print(statevarsPerStep)
+                numVarsPerStep[step].append((key, var_val))
 
         for step in range(self.encoder.horizon):
             # Generate forumla expressing sequentializability
-            # For each step
-            general_seq_forumla = self.encoder.encode_general_seq(
+            # for each step
+            seq_encoder, general_seq_forumla = self.encoder.encode_general_seq(
                 actionsPerStep[step])
             
-            print(general_seq_forumla)
+            local_solver = Solver()
 
-            concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix( 
-                statevarsPerStep[step], statevarsPerStep[step+1])
+            for k,v in general_seq_forumla.items():
+                local_solver.add(v)
 
-        return (seq, invariants)
+            # Check for satisfiability
+            res = local_solver.check()
+            print('step:' + str(step) +' is gen. '+ str(res))
+            if not (res == sat):
+                # The set of actions can not be seq. in any state
+                print('in general not seq -returning')
+                return (False, {'actions': actionsPerStep[step]})
+            
+            #print(general_seq_forumla)
+
+            concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix(
+                seq_encoder, 
+                booleanVarsPerStep[step], booleanVarsPerStep[step+1],
+                numVarsPerStep[step], numVarsPerStep[step+1])
+
+            #print(concrete_seq_prefix)
+            
+            for k,v in concrete_seq_prefix.items():
+                local_solver.add(v)
+
+            # Check for satisfiability
+            res = local_solver.check()
+            print('concrete solve: ' + str(res))
+            if not (res == sat):
+                return (False, {'actions': actionsPerStep[step],
+                'b_vars_0': booleanVarsPerStep[step], 
+                'b_vars_1': booleanVarsPerStep[step+1],
+                'n_vars_0': numVarsPerStep[step], 
+                'n_vars_1': numVarsPerStep[step+1]})
+
+        return (True, None)
 
 
 class SearchOMT(Search):

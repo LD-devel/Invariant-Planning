@@ -24,6 +24,7 @@ from translate import instantiate
 from translate import numeric_axiom_rules
 import numpy as np
 import loopformula
+from planner import modifier
 
 
 
@@ -563,7 +564,10 @@ class Encoder():
 
         @return axioms that specify execution semantics.
         """
-
+        if self.modifier.__class__.__name__ == "RelaxedModifier":
+            return self.modifier.do_encode(self.action_variables,
+                self.boolean_variables, self.numeric_variables,
+                self.mutexes, self.horizon)
         try:
             return self.modifier.do_encode(self.action_variables, self.horizon)
         except:
@@ -626,14 +630,39 @@ class EncoderSMT(Encoder):
 
         return formula
 
-    def encode_concrete_seq_prefix(self, init_vars, goal_vars):
+    def encode_concrete_seq_prefix(self, seq_encoder, init_bool_vars, 
+        goal_bool_vars, init_num_vars, goal_num_vars):
 
-        temp = []
-        # Encode initial state axioms Custom
-        # Encode goal state axioms Custom
-        # Add both to temp
+        formula = defaultdict(list)
+        # Encode initial state axioms
+        initial = []
 
-        return temp
+        for var_name, val in init_num_vars:
+            initial.append(seq_encoder.numeric_variables[0][var_name] == val)
+
+        for var_name, val in init_bool_vars:
+            if is_true(val):
+                initial.append(seq_encoder.boolean_variables[0][var_name])
+            else:
+                initial.append(Not(seq_encoder.boolean_variables[0][var_name]))
+
+        # Encode goal state axioms
+        goal = []
+
+        for var_name, val in goal_num_vars:
+            goal.append(seq_encoder.numeric_variables[seq_encoder.horizon][var_name] == val)
+
+        for var_name, val in goal_bool_vars:
+            if is_true(val):
+                goal.append(seq_encoder.boolean_variables[seq_encoder.horizon][var_name])
+            else:
+                goal.append(Not(seq_encoder.boolean_variables[seq_encoder.horizon][var_name]))
+       
+        # Add both to formula
+        formula['initial'] = initial
+        formula['goal'] = goal
+
+        return formula
 
     def encode_general_seq(self, actions):
 
@@ -646,7 +675,7 @@ class EncoderSMT(Encoder):
         # Change the set of actions to the subset
         seq_encoder.horizon = len(actions)
         seq_encoder.actions = actions
-        seq_encoder.modifier.__class__.__name__ = "LinearModifier"
+        seq_encoder.modifier = modifier.LinearModifier()
         #TODO propably only relevant in OMT setting:
         seq_encoder.mutexes = seq_encoder._computeSerialMutexes()
 
@@ -665,7 +694,7 @@ class EncoderSMT(Encoder):
         # Encode linear execution semantics
         formula['sem'] = seq_encoder.encodeExecutionSemantics()
 
-        return formula
+        return seq_encoder, formula
 
 
 
