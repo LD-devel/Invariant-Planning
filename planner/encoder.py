@@ -637,9 +637,11 @@ class EncoderSMT(Encoder):
         # Encode initial state axioms
         initial = []
 
+        # Encode values of numerical variables
         for var_name, val in init_num_vars:
             initial.append(seq_encoder.numeric_variables[0][var_name] == val)
 
+        # Encode values of propositional variables
         for var_name, val in init_bool_vars:
             if is_true(val):
                 initial.append(seq_encoder.boolean_variables[0][var_name])
@@ -649,9 +651,11 @@ class EncoderSMT(Encoder):
         # Encode goal state axioms
         goal = []
 
+        # Encode values of numerical variables
         for var_name, val in goal_num_vars:
             goal.append(seq_encoder.numeric_variables[seq_encoder.horizon][var_name] == val)
 
+        # Encode values of propositional variables
         for var_name, val in goal_bool_vars:
             if is_true(val):
                 goal.append(seq_encoder.boolean_variables[seq_encoder.horizon][var_name])

@@ -89,9 +89,10 @@ class SearchSMT(Search):
         """
 
         # Defines initial horizon for ramp-up search
-
         self.horizon = 1
 
+        # Create empty plan, to be amended during seq.-tests
+        self.plan = {}
         print('Start invariant guided search.')
 
         # Build formula until a plan is found or upper bound is reached
@@ -141,11 +142,14 @@ class SearchSMT(Search):
                 # Increment horizon until we find a solution
                 self.horizon = self.horizon + 1
 
-        # Extract plan from model
-        model = self.solver.model()
-        self.solution = plan.Plan(model, self.encoder)
+        if self.found:
+            # Create plan object from found plan
+            self.solution = plan.Plan(None, None, None, self.plan)
 
-        return self.solution
+            return self.solution
+        else:
+            print('No plan found within upper bound.')
+            sys.exit()
 
     def check_sequentializability(self):
 
@@ -193,15 +197,11 @@ class SearchSMT(Search):
                 # The set of actions can not be seq. in any state
                 print('in general not seq -returning')
                 return (False, {'actions': actionsPerStep[step]})
-            
-            #print(general_seq_forumla)
 
             concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix(
                 seq_encoder, 
                 booleanVarsPerStep[step], booleanVarsPerStep[step+1],
                 numVarsPerStep[step], numVarsPerStep[step+1])
-
-            #print(concrete_seq_prefix)
             
             for k,v in concrete_seq_prefix.items():
                 local_solver.add(v)
@@ -209,12 +209,24 @@ class SearchSMT(Search):
             # Check for satisfiability
             res = local_solver.check()
             print('concrete solve: ' + str(res))
+
+            # If unsat, return the involved actions and values of variables
+            # for subsequent invariant generation.
             if not (res == sat):
                 return (False, {'actions': actionsPerStep[step],
                 'b_vars_0': booleanVarsPerStep[step], 
                 'b_vars_1': booleanVarsPerStep[step+1],
                 'n_vars_0': numVarsPerStep[step], 
                 'n_vars_1': numVarsPerStep[step+1]})
+            else:
+                # If sat, the model has to be extracted here to extract a plan
+                index = len(self.plan)
+                model = local_solver.model()
+                for step in range(seq_encoder.horizon):
+                    for action in seq_encoder.actions:
+                        if is_true(model[seq_encoder.action_variables[step][action.name]]):
+                            self.plan[index] = action.name
+                            index = index +1
 
         return (True, None)
 

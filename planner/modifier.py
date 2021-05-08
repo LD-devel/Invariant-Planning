@@ -79,15 +79,14 @@ class RelaxedModifier(Modifier):
     """
     Relaxed modifier, contains method to implement relaxed parallel execution semantics.
     """
-    #TODO add learned invariants here
     # To be used initially at each new horizon
     # and for refinement during sequentialziability check
     def do_encode(self, a_vars, b_vars, n_vars, mutexes, bound):
         """!
-        Encodes parallel relaxed execution semantics (i.e., multiple, mutex, actions per step).
+        Encodes learned invariants for each step.
 
         @param a_vars, b_vars, n_vars,: Z3 variables.
-        @param mutexes: relaxed action mutexes.
+        @param mutexes: invariants.
         @param bound: planning horizon.
 
         @return c: constraints enforcing relaxed parallel execution
