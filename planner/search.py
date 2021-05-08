@@ -21,6 +21,7 @@ from planner import encoder
 import utils
 import numpy as np
 
+COMMENTARY = 1
 
 class Search():
     """
@@ -147,7 +148,9 @@ class SearchSMT(Search):
         if self.found:
             # Create plan object from found plan
             self.solution = plan.Plan(None, None, None, self.plan)
-
+            if(COMMENTARY):
+                print("Learned invariants:")
+                print(self.encoder.mutexes)
             return self.solution
         else:
             print('No plan found within upper bound.')
