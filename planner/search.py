@@ -124,6 +124,8 @@ class SearchSMT(Search):
                     self.found = True
                     #TODO possibly the plan hast to be extraced here
                 else:
+                    # Discard the generated plan
+                    self.plan = {}
                     # Add constraint for future horizons
                     self.encoder.mutexes.append(invariant)
                     # Encode invariant
