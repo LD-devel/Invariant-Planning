@@ -95,7 +95,7 @@ class Plan():
         print(plan_to_str)
         # Create a file that contains plan to be
         # fed to VAL
-        dirname = 'NewPlan'
+        dirname = 'output'
         if not os.path.exists(dirname):
             os.mkdir(dirname)
 
@@ -108,11 +108,9 @@ class Plan():
 
             try:
                 output = subprocess.check_output([val, domain, problem, temp.name])
-                print('The -plan- file is stored at: ' + str(temp.name)) 
-                print('validate.exe output:' + str(output))
+                print('The -plan- file is stored at: ' + str(temp.name))
 
             except subprocess.CalledProcessError as e:
-
                 print('Unknown error, exiting now...')
                 sys.exit()
 

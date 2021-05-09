@@ -42,7 +42,7 @@ class SearchSMT(Search):
     Search class for SMT-based encodings.
     """
 
-    def do_linear_search(self):
+    def do_linear_search(self, analysis = False):
         """
         Linear search scheme for SMT encodings with unit action costs.
 
@@ -78,13 +78,22 @@ class SearchSMT(Search):
                 # Increment horizon until we find a solution
                 self.horizon = self.horizon + 1
 
+        # Return useful metrics for testsuit
+        if(analysis):
+            if(self.found):
+                # Extract plan from model
+                model = self.solver.model()
+                self.solution = plan.Plan(model, self.encoder)
+
+            return (self.found, self.horizon, self.solution)
+
         # Extract plan from model
         model = self.solver.model()
         self.solution = plan.Plan(model, self.encoder)
-
+        
         return self.solution
 
-    def do_relaxed_search(self):
+    def do_relaxed_search(self, analysis = False):
         """
         Linear, invariant guided search scheme.
         """
@@ -144,13 +153,19 @@ class SearchSMT(Search):
             if not self.found:
                 # Increment horizon until we find a solution
                 self.horizon = self.horizon + 1
+        
+        # Return useful metrics for testsuit
+        if(analysis):
+            if(self.found):
+                # Extract plan from model
+                model = self.solver.model()
+                self.solution = plan.Plan(model, self.encoder)
+
+            return (self.found, self.horizon, self.solution)
 
         if self.found:
             # Create plan object from found plan
             self.solution = plan.Plan(None, None, None, self.plan)
-            if(COMMENTARY):
-                print("Learned invariants:")
-                print(self.encoder.mutexes)
             return self.solution
         else:
             print('No plan found within upper bound.')
@@ -196,12 +211,11 @@ class SearchSMT(Search):
                 local_solver.add(v)
 
             # Check for satisfiability
-            res = local_solver.check()
-            print('step:' + str(step) +' is gen. '+ str(res))
+            '''res = local_solver.check()
             if not (res == sat):
                 # The set of actions can not be seq. in any state
                 print('in general not seq -returning')
-                return (False, {'actions': actionsPerStep[step]})
+                return (False, {'actions': actionsPerStep[step]})'''
 
             concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix(
                 seq_encoder, 
@@ -213,16 +227,11 @@ class SearchSMT(Search):
 
             # Check for satisfiability
             res = local_solver.check()
-            print('concrete solve: ' + str(res))
 
             # If unsat, return the involved actions and values of variables
             # for subsequent invariant generation.
             if not (res == sat):
-                return (False, {'actions': actionsPerStep[step],
-                'b_vars_0': booleanVarsPerStep[step], 
-                'b_vars_1': booleanVarsPerStep[step+1],
-                'n_vars_0': numVarsPerStep[step], 
-                'n_vars_1': numVarsPerStep[step+1]})
+                return (False, {'actions': actionsPerStep[step]})
             else:
                 # If sat, the model has to be extracted here to extract a plan
                 index = len(self.plan)
