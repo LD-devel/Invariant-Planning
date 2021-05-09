@@ -170,7 +170,7 @@ def main(BASE_DIR):
     # Uses VAL, see https://github.com/KCL-Planning/VAL
 
     val = BASE_DIR+val_path
-    print(val)
+
     if not args.translate:
 
         try:
