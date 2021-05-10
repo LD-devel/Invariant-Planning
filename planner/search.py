@@ -21,6 +21,7 @@ from planner import encoder
 import utils
 import numpy as np
 
+COMMENTARY = 1
 
 class Search():
     """
@@ -41,7 +42,7 @@ class SearchSMT(Search):
     Search class for SMT-based encodings.
     """
 
-    def do_linear_search(self):
+    def do_linear_search(self, analysis = False):
         """
         Linear search scheme for SMT encodings with unit action costs.
 
@@ -71,16 +72,177 @@ class SearchSMT(Search):
             res = self.solver.check()
 
             if res == sat:
+                print(self.horizon)
                 self.found = True
             else:
                 # Increment horizon until we find a solution
                 self.horizon = self.horizon + 1
 
+        # Return useful metrics for testsuit
+        if(analysis):
+            if(self.found):
+                # Extract plan from model
+                model = self.solver.model()
+                self.solution = plan.Plan(model, self.encoder)
+
+            return (self.found, self.horizon, self.solution)
+
         # Extract plan from model
         model = self.solver.model()
         self.solution = plan.Plan(model, self.encoder)
-
+        
         return self.solution
+
+    def do_relaxed_search(self, analysis = False):
+        """
+        Linear, invariant guided search scheme.
+        """
+
+        # Defines initial horizon for ramp-up search
+        self.horizon = 1
+
+        # Create empty plan, to be amended during seq.-tests
+        self.plan = {}
+        print('Start invariant guided search.')
+
+        # Build formula until a plan is found or upper bound is reached
+
+        while not self.found and self.horizon < self.ub:
+            # Create SMT solver instance
+            self.solver = Solver()
+
+            # Build planning subformulas
+            formula = self.encoder.encode(self.horizon)
+
+            if False and self.horizon == 2:
+                print('TASK ENCODING at horizon: ' + str(self.horizon))
+                print(formula)
+
+            # Assert subformulas in solver
+            for k,v in formula.items():
+                self.solver.add(v)
+
+            # Check for satisfiability
+            res = self.solver.check()
+
+            #TODO this does nothing so far
+            while res == sat and not self.found:
+                #check sequentialziability
+                seq , invariant = self.check_sequentializability()
+                if(seq):
+                    print('Plan fully sequentializable')
+                    self.found = True
+                    #TODO possibly the plan hast to be extraced here
+                else:
+                    # Discard the generated plan
+                    self.plan = {}
+                    # Add constraint for future horizons
+                    self.encoder.mutexes.append(invariant)
+                    # Encode invariant
+                    encoded_invars = self.encoder.modifier.do_encode(
+                        self.encoder.action_variables,
+                        self.encoder.boolean_variables,
+                        self.encoder.numeric_variables,
+                        [invariant], self.encoder.horizon)
+                    # self.solver.add the encoded invariant
+                    for v in encoded_invars:
+                        self.solver.add(v)
+                    # set encoder.mutexes += invariants
+                    res = self.solver.check()
+                
+            if not self.found:
+                # Increment horizon until we find a solution
+                self.horizon = self.horizon + 1
+        
+        # Return useful metrics for testsuit
+        if(analysis):
+            if(self.found):
+                # Extract plan from model
+                model = self.solver.model()
+                self.solution = plan.Plan(model, self.encoder)
+
+            return (self.found, self.horizon, self.solution)
+
+        if self.found:
+            # Create plan object from found plan
+            self.solution = plan.Plan(None, None, None, self.plan)
+            return self.solution
+        else:
+            print('No plan found within upper bound.')
+            sys.exit()
+
+    def check_sequentializability(self):
+
+        # Extract parallel plan steps from the model
+        actionsPerStep = []
+        booleanVarsPerStep = []
+        numVarsPerStep = []
+
+        model = self.solver.model()
+        
+        for step in range(self.encoder.horizon):
+            actionsPerStep.append([])
+
+            for action in self.encoder.actions:
+                if is_true(model[self.encoder.action_variables[step][action.name]]):
+                    actionsPerStep[step].append(action)
+
+        for step in range(self.encoder.horizon+1):
+            booleanVarsPerStep.append([])
+            numVarsPerStep.append([])
+
+            for key, var in self.encoder.boolean_variables[step].iteritems():
+                var_val = model[self.encoder.boolean_variables[step][key]]
+                booleanVarsPerStep[step].append((key, var_val))
+
+            for key, var in self.encoder.numeric_variables[step].iteritems():
+                var_val = model[self.encoder.numeric_variables[step][key]]
+                numVarsPerStep[step].append((key, var_val))
+
+        for step in range(self.encoder.horizon):
+            # Generate forumla expressing sequentializability
+            # for each step
+            seq_encoder, general_seq_forumla = self.encoder.encode_general_seq(
+                actionsPerStep[step])
+            
+            local_solver = Solver()
+
+            for k,v in general_seq_forumla.items():
+                local_solver.add(v)
+
+            # Check for satisfiability
+            '''res = local_solver.check()
+            if not (res == sat):
+                # The set of actions can not be seq. in any state
+                print('in general not seq -returning')
+                return (False, {'actions': actionsPerStep[step]})'''
+
+            concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix(
+                seq_encoder, 
+                booleanVarsPerStep[step], booleanVarsPerStep[step+1],
+                numVarsPerStep[step], numVarsPerStep[step+1])
+            
+            for k,v in concrete_seq_prefix.items():
+                local_solver.add(v)
+
+            # Check for satisfiability
+            res = local_solver.check()
+
+            # If unsat, return the involved actions and values of variables
+            # for subsequent invariant generation.
+            if not (res == sat):
+                return (False, {'actions': actionsPerStep[step]})
+            else:
+                # If sat, the model has to be extracted here to extract a plan
+                index = len(self.plan)
+                model = local_solver.model()
+                for step in range(seq_encoder.horizon):
+                    for action in seq_encoder.actions:
+                        if is_true(model[seq_encoder.action_variables[step][action.name]]):
+                            self.plan[index] = action.name
+                            index = index +1
+
+        return (True, None)
 
 
 class SearchOMT(Search):

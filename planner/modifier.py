@@ -74,3 +74,50 @@ class ParallelModifier(Modifier):
                 c.append(Or(Not(variables[step][pair[0].name]),Not(variables[step][pair[1].name])))
 
         return c
+
+class RelaxedModifier(Modifier):
+    """
+    Relaxed modifier, contains method to implement relaxed parallel execution semantics.
+    """
+    # To be used initially at each new horizon
+    # and for refinement during sequentialziability check
+    def do_encode(self, a_vars, b_vars, n_vars, mutexes, bound):
+        """!
+        Encodes learned invariants for each step.
+
+        @param a_vars, b_vars, n_vars,: Z3 variables.
+        @param mutexes: invariants.
+        @param bound: planning horizon.
+
+        @return c: constraints enforcing relaxed parallel execution
+        """
+        c = []
+
+        # Encode each invariant
+        for invar in mutexes:
+            for step in range(bound):
+                lits = []
+                if (invar.has_key('actions')):
+                    for a in invar['actions']:
+                        lits.append(Not(a_vars[step][a.name]))
+                if (invar.has_key('b_vars_0')):
+                    for b, val in invar['b_vars_0']:
+                        if is_true(val):
+                            lits.append(Not(b_vars[step][b]))
+                        else:
+                            lits.append(b_vars[step][b])
+                if (invar.has_key('b_vars_1')):
+                    for b, val in invar['b_vars_1']:
+                        if is_true(val):
+                            lits.append(Not(b_vars[step+1][b]))
+                        else:
+                            lits.append(b_vars[step+1][b])
+                if (invar.has_key('n_vars_0')):
+                    for n, val in invar['n_vars_0']:
+                        lits.append(Not(n_vars[step][n] == val))
+                if (invar.has_key('n_vars_1')):
+                    for n, val in invar['n_vars_1']:
+                        lits.append(Not(n_vars[step+1][n] == val))
+                c.append(Or(lits))
+
+        return c

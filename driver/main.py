@@ -93,6 +93,22 @@ def main(BASE_DIR):
                 s = search.SearchSMT(e,ub)
                 plan = s.do_linear_search()
 
+        elif args.relaxed:
+            print('Startet relaxed satisficing planning')
+
+            e = encoder.EncoderSMT(task, modifier.RelaxedModifier())
+
+            # Build SMT-LIB encoding and dump (no solving)
+            if args.translate:
+                print('Warning: this encoding does not encode a sufficient condition.')
+                formula = e.encode(args.translate)
+
+                # Print SMT planning formula (relaxed parallel) to file
+                utils.printSMTFormula(formula,task.task_name)
+            else:
+                s = search.SearchSMT(e,ub)
+                plan = s.do_relaxed_search()
+
         else:
             print('No execution semantics specified, choose between linear or parallel.')
             print('Exiting now...')
@@ -133,6 +149,10 @@ def main(BASE_DIR):
                 s = search.SearchOMT(e,ub)
                 plan = s.do_search()
 
+        elif args.relaxed:
+            print('Relaxed planning is only available in the satisficing setting.')
+            print('Exiting now...')
+            sys.exit()
 
         else:
             print('No execution semantics specified, choose between linear or parallel.')

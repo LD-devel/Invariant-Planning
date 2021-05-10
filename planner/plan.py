@@ -27,8 +27,12 @@ class Plan():
     Defines methods to extract, validate and print plans.
     """
 
-    def __init__(self,model, encoder, objective=None):
-        self.plan = self._extractPlan(model, encoder)
+    def __init__(self,model, encoder, objective=None, plan = None):
+        if plan is None:
+            self.plan = self._extractPlan(model, encoder)
+        else:
+            # In case the plan was already extracted druing search
+            self.plan = plan 
         self.cost = self._extractCost(objective)
 
     def _extractPlan(self, model, encoder):
@@ -88,10 +92,14 @@ class Plan():
 
         # Create string containing plan
         plan_to_str = '\n'.join('{}: {}'.format(key, val) for key, val in self.plan.items())
-
-        # Create temporary file that contains plan to be
+        print(plan_to_str)
+        # Create a file that contains plan to be
         # fed to VAL
-        with NamedTemporaryFile(mode='w+') as temp:
+        dirname = 'output'
+        if not os.path.exists(dirname):
+            os.mkdir(dirname)
+
+        with open(dirname + '/plan', mode='w+') as temp:
 
             temp.write(plan_to_str)
             temp.seek(0)
@@ -99,14 +107,10 @@ class Plan():
             # Call VAL
 
             try:
-                print(val)
-                print(domain)
-                print(problem)
-                print(temp.name)
                 output = subprocess.check_output([val, domain, problem, temp.name])
+                print('The -plan- file is stored at: ' + str(temp.name))
 
             except subprocess.CalledProcessError as e:
-
                 print('Unknown error, exiting now...')
                 sys.exit()
 

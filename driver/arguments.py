@@ -56,6 +56,9 @@ def parse_args():
 
     parser.add_argument('-parallel', action='store_true', help='Builds a parallel encoding.')
 
+    parser.add_argument('-relaxed', action='store_true', 
+                help='Builds a relaxed parallel encoding and iteratively adds invariants in the search process.')
+
     parser.add_argument('-translate', type=int, help='Builds planning formula without solving. ')
 
     parser.add_argument('-pprint', action='store_true', help='Prints the plan to file (when one can be found).')
