@@ -159,7 +159,7 @@ class SearchSMT(Search):
             if(self.found):
                 # Extract plan from model
                 model = self.solver.model()
-                self.solution = plan.Plan(model, self.encoder)
+                self.solution = plan.Plan(None, None, None, self.plan)
 
             return (self.found, self.horizon, self.solution)
 
