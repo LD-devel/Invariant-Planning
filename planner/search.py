@@ -20,6 +20,7 @@ from planner import plan
 from planner import encoder
 import utils
 import numpy as np
+import time
 
 COMMENTARY = 1
 
@@ -98,6 +99,10 @@ class SearchSMT(Search):
         Linear, invariant guided search scheme.
         """
 
+        # Time log for analysis
+        last_time = time.time()
+        time_log = []
+
         # Defines initial horizon for ramp-up search
         self.horizon = 1
 
@@ -111,12 +116,15 @@ class SearchSMT(Search):
             # Create SMT solver instance
             self.solver = Solver()
 
+            # Analysis
+            last_time = time.time()
+
             # Build planning subformulas
             formula = self.encoder.encode(self.horizon)
 
-            if False and self.horizon == 2:
-                print('TASK ENCODING at horizon: ' + str(self.horizon))
-                print(formula)
+            # Analysis
+            time_log.append(('Initial formula encoding at horizon: '+ str(self.horizon),time.time()-last_time))
+            last_time = time.time()
 
             # Assert subformulas in solver
             for k,v in formula.items():
@@ -125,10 +133,18 @@ class SearchSMT(Search):
             # Check for satisfiability
             res = self.solver.check()
 
-            #TODO this does nothing so far
+            # Analysis
+            time_log.append(('Inital Sat-check at horizon: '+ str(self.horizon),time.time()-last_time))
+            last_time = time.time()
+
             while res == sat and not self.found:
                 #check sequentialziability
                 seq , invariant = self.check_sequentializability()
+
+                # Analysis
+                time_log.append(('Seq-check '+ str(self.horizon),time.time()-last_time))
+                last_time = time.time()
+
                 if(seq):
                     print('Plan fully sequentializable')
                     self.found = True
@@ -144,11 +160,20 @@ class SearchSMT(Search):
                         self.encoder.boolean_variables,
                         self.encoder.numeric_variables,
                         [invariant], self.encoder.horizon)
+                    
+                    # Analysis
+                    time_log.append(('Invariant-encoding',time.time()-last_time))
+                    last_time = time.time()
+
                     # self.solver.add the encoded invariant
                     for v in encoded_invars:
                         self.solver.add(v)
                     # set encoder.mutexes += invariants
                     res = self.solver.check()
+
+                    # Analysis
+                    time_log.append(('Refined sat-check',time.time()-last_time))
+                    last_time = time.time()
                 
             if not self.found:
                 # Increment horizon until we find a solution
@@ -161,7 +186,7 @@ class SearchSMT(Search):
                 model = self.solver.model()
                 self.solution = plan.Plan(None, None, None, self.plan)
 
-            return (self.found, self.horizon, self.solution)
+            return (self.found, self.horizon, self.solution, time_log)
 
         if self.found:
             # Create plan object from found plan

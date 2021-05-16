@@ -21,9 +21,9 @@ def main():
     # Sets of problem domains and instances:
 
     problems1 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
-     r'pddl_examples\linear\zeno-travel-linear\instances',5),
+     r'pddl_examples\linear\zeno-travel-linear\instances',7),
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
-     r'pddl_examples\linear\farmland_ln\instances',0),
+     r'pddl_examples\linear\farmland_ln\instances',0), # Problem in domain definition. 
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
      r'pddl_examples\linear\fo_counters\instances',10),
      ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
@@ -31,7 +31,7 @@ def main():
      ('fo_counters_rnd', r'pddl_examples\linear\fo_counters_rnd\domain.pddl',
      r'pddl_examples\linear\fo_counters_rnd\instances',10),
      ('sailing_ln', r'pddl_examples\linear\sailing_ln\domain.pddl',
-     r'pddl_examples\linear\sailing_ln\instances',0),
+     r'pddl_examples\linear\sailing_ln\instances',0), # Problem in domain definition. 
      ('tpp', r'pddl_examples\linear\tpp\domain.pddl',
      r'pddl_examples\linear\tpp\instances',3),
      ('depots_numeric', r'pddl_examples\simple\depots_numeric\domain.pddl',
@@ -44,13 +44,15 @@ def main():
     problems2 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
      r'pddl_examples\linear\zeno-travel-linear\instances',0),
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
-     r'pddl_examples\linear\farmland_ln\instances',1),
+     r'pddl_examples\linear\farmland_ln\instances',0),
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
-     r'pddl_examples\linear\fo_counters\instances',0),
+     r'pddl_examples\linear\fo_counters\instances',2),
      ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
      r'pddl_examples\linear\fo_counters_inv\instances',0),
      ('fo_counters_rnd', r'pddl_examples\linear\fo_counters_rnd\domain.pddl',
      r'pddl_examples\linear\fo_counters_rnd\instances',0),
+     ('sailing_ln', r'pddl_examples\linear\sailing_ln\domain.pddl',
+     r'pddl_examples\linear\sailing_ln\instances',0),
      ('tpp', r'pddl_examples\linear\tpp\domain.pddl',
      r'pddl_examples\linear\tpp\instances',0),
      ('depots_numeric', r'pddl_examples\simple\depots_numeric\domain.pddl',
@@ -58,9 +60,7 @@ def main():
      ('gardening', r'pddl_examples\simple\gardening\domain.pddl',
      r'pddl_examples\simple\gardening\instances',0),
      ('rover-numeric', r'pddl_examples\simple\rover-numeric\domain.pddl',
-     r'pddl_examples\simple\rover-numeric\instances',0),
-     ('sailing_ln', r'pddl_examples\linear\sailing_ln\domain.pddl',
-     r'pddl_examples\linear\sailing_ln\instances',0)]
+     r'pddl_examples\simple\rover-numeric\instances',0)]
 
     # Specify which to test:
     problems = problems2
@@ -114,12 +114,14 @@ def main():
                     # Perform the search.
                     e = encoder.EncoderSMT(task, modifier.RelaxedModifier())
                     s = search.SearchSMT(e,ub)
-                    found, horizon, solution = s.do_relaxed_search(True)
+                    found, horizon, solution, time_log = s.do_relaxed_search(True)
 
                     # Log the behaviour of the search.
                     log_metadata = {'mode':'relaxed', 'domain':domain_name, 'instance':filename, 'found':found,
                         'horizon':horizon, 'time': (time.time()-start_time)}
                     myReport.create_log(solution, domain_path, instance_path, log_metadata)
+
+                    myReport.time_logs[str(domain_name)+ '_' + str(filename) + '_timelog'] = time_log
                 except:
                     myReport.fail_log('relaxed', domain_name, filename)
     
@@ -129,6 +131,7 @@ class Report():
 
     def __init__(self):
         self.logs = {}
+        self.time_logs = {}
 
     def create_log(self, solution, domain_path, instance_path, log_metadata):
         val = BASE_DIR + val_path
@@ -159,7 +162,7 @@ class Report():
         # Validate
         try:
             if solution.validate(val, domain_path, instance_path):
-                print('Valid plan found! in time: ' + str(time))
+                print('Valid plan found! in time: ' + str(log_metadata['time']))
                 self.logs[domain][instance][mode]['valid'] = True
             else:
                 print('Plan not valid.' + str(domain) + ' , ' + str(instance))
@@ -173,7 +176,7 @@ class Report():
         print(self.logs)
 
         # Here the files will be stored.
-        folder = r'output/analysis_' + str(time.time())
+        folder = os.path.join(BASE_DIR, r'test-suit/output/analysis_' + str(time.time()))
         try:
             os.makedirs(folder)
         except FileExistsError:
@@ -229,6 +232,26 @@ class Report():
             
             axes[0,0].legend()
             plt.savefig(os.path.join(folder, str(domain)+'.png'))
+
+        for instance, timelog in self.time_logs.iteritems():
+            width = 0.35
+            _, ax = plt.subplots()
+
+            first = True
+            bottom = 0
+            for label, t in timelog:
+                if not first:
+                    ax.bar('_', t, width, label=label)
+                else :
+                    ax.bar('_', t, width, bottom=bottom, label=label)
+                bottom += t
+
+            ax.set_ylabel('time in s')
+            ax.set_title(instance)
+            ax.legend()
+            plt.xlim([0, 1])
+            plt.savefig(os.path.join(folder, str(instance)+'.png'))
+
 
 if __name__ == '__main__':
     main()
