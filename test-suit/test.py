@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import matplotlib.pyplot as plt
+from PIL import Image, ImageFont, ImageDraw, ImageEnhance
 from natsort import natsorted
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..'))
@@ -31,22 +32,22 @@ def main():
      ('fo_counters_rnd', r'pddl_examples\linear\fo_counters_rnd\domain.pddl',
      r'pddl_examples\linear\fo_counters_rnd\instances',10),
      ('sailing_ln', r'pddl_examples\linear\sailing_ln\domain.pddl',
-     r'pddl_examples\linear\sailing_ln\instances',0), # Problem in domain definition. 
+     r'pddl_examples\linear\sailing_ln\instances',0), # Does not seem to be solvable in reasonable time at horizon 24
      ('tpp', r'pddl_examples\linear\tpp\domain.pddl',
      r'pddl_examples\linear\tpp\instances',3),
      ('depots_numeric', r'pddl_examples\simple\depots_numeric\domain.pddl',
      r'pddl_examples\simple\depots_numeric\instances',2),
      ('gardening', r'pddl_examples\simple\gardening\domain.pddl',
-     r'pddl_examples\simple\gardening\instances',0),
+     r'pddl_examples\simple\gardening\instances',3),
      ('rover-numeric', r'pddl_examples\simple\rover-numeric\domain.pddl',
      r'pddl_examples\simple\rover-numeric\instances',4)]
 
     problems2 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
-     r'pddl_examples\linear\zeno-travel-linear\instances',0),
+     r'pddl_examples\linear\zeno-travel-linear\instances',3),
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0),
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
-     r'pddl_examples\linear\fo_counters\instances',2),
+     r'pddl_examples\linear\fo_counters\instances',3),
      ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
      r'pddl_examples\linear\fo_counters_inv\instances',0),
      ('fo_counters_rnd', r'pddl_examples\linear\fo_counters_rnd\domain.pddl',
@@ -99,9 +100,9 @@ def main():
                     s = search.SearchSMT(e,ub)
 
                     # Log the behaviour of the search.
-                    found, horizon, solution = s.do_linear_search(True)
+                    found, horizon, solution, time_log = s.do_linear_search(True)
                     log_metadata = {'mode':'parallel', 'domain':domain_name, 'instance':filename, 'found':found,
-                        'horizon':horizon, 'time': (time.time()-start_time)}
+                        'horizon':horizon, 'time': (time.time()-start_time), 'time_log':time_log}
                     myReport.create_log(solution, domain_path, instance_path, log_metadata)
                 except:
                     myReport.fail_log('parallel' , domain_name, filename)
@@ -118,12 +119,28 @@ def main():
 
                     # Log the behaviour of the search.
                     log_metadata = {'mode':'relaxed', 'domain':domain_name, 'instance':filename, 'found':found,
-                        'horizon':horizon, 'time': (time.time()-start_time)}
+                        'horizon':horizon, 'time': (time.time()-start_time), 'time_log': time_log}
                     myReport.create_log(solution, domain_path, instance_path, log_metadata)
 
-                    myReport.time_logs[str(domain_name)+ '_' + str(filename) + '_timelog'] = time_log
                 except:
                     myReport.fail_log('relaxed', domain_name, filename)
+
+                # Test relaxed search version 2
+                try:
+                    start_time = time.time()
+
+                    # Perform the search.
+                    e = encoder.EncoderSMT(task, modifier.RelaxedModifier(), version=2)
+                    s = search.SearchSMT(e,ub)
+                    found, horizon, solution, time_log = s.do_relaxed_search(True)
+
+                    # Log the behaviour of the search.
+                    log_metadata = {'mode':'relaxed v2', 'domain':domain_name, 'instance':filename, 'found':found,
+                        'horizon':horizon, 'time': (time.time()-start_time), 'time_log': time_log}
+                    myReport.create_log(solution, domain_path, instance_path, log_metadata)
+
+                except:
+                    myReport.fail_log('relaxed v2', domain_name, filename)
     
     myReport.export()
 
@@ -169,6 +186,14 @@ class Report():
         except:
             print('Exception during plan valitation.' + str(domain) + ' , ' + str(instance))
 
+        # Create entry for time_log
+        # Format: {domain_instance: { mode: time_log}}}
+
+        key = str(domain) + '_' + str(instance)
+        if not self.time_logs.has_key(key):
+            self.time_logs[key] = {}
+        self.time_logs[key][mode] = log_metadata['time_log']
+
     def fail_log(self, mode, domain_name, filename):
         print('***************** Fail during search: ' + mode + domain_name + filename)
 
@@ -212,9 +237,11 @@ class Report():
                     # Color of a bar remains black, if the mode is unknown or no valid plan was found.
                     color = 'black'
                     if data['found'] and data['valid'] and mode == 'parallel':
-                        color = 'b'
+                        color = '#99ffcc'
                     elif data['found'] and data['valid'] and mode == 'relaxed':
-                        color = 'g'
+                        color = '#99ff66'
+                    elif data['found'] and data['valid'] and mode == 'relaxed v2':
+                        color = '#ffcc99'                        
 
                     # Bar showing the time needed.
                     if countr_instance == 0:
@@ -233,25 +260,52 @@ class Report():
             axes[0,0].legend()
             plt.savefig(os.path.join(folder, str(domain)+'.png'))
 
-        for instance, timelog in self.time_logs.iteritems():
-            width = 0.35
-            _, ax = plt.subplots()
+        for domain_instance, modes in self.time_logs.iteritems():
 
-            first = True
-            bottom = 0
-            for label, t in timelog:
-                if not first:
-                    ax.bar('_', t, width, label=label)
-                else :
-                    ax.bar('_', t, width, bottom=bottom, label=label)
-                bottom += t
+            # Calculate height and scale.
+            min_height = 400
+            image_height = 0
+            scale = 1
+            # This fails if the time log only consists of intervalls of duration 0!
+            for mode, time_log in modes.iteritems():
+                mode_height = 0
+                for _, t in time_log:
+                    mode_height += t
+                image_height = max(image_height, mode_height)
+            if image_height < min_height:
+                scale = min_height / image_height
 
-            ax.set_ylabel('time in s')
-            ax.set_title(instance)
-            ax.legend()
-            plt.xlim([0, 1])
-            plt.savefig(os.path.join(folder, str(instance)+'.png'))
+            bar_width = 15
+            bar_offset_x = 25
+            mode_width = 200
+            text_threshold = 5
+
+            image = Image.new('RGBA', (mode_width*len(modes),int(image_height*scale)+10), 'white')
+            draw = ImageDraw.Draw(image)
+
+            for mode, time_log in modes.iteritems():
+                y = 0
+                for _, t in time_log:
+                    point1 = (bar_offset_x,y)
+                    point2 = (bar_offset_x+bar_width,y+int(t*scale))
+                    draw.rectangle((point1,point2),outline='red', fill='#e6e6e6')
+                    y += int(t*scale)
+                y = 0
+                for label, t in time_log:
+                    if (t*scale) > text_threshold:
+                        draw.line(((bar_offset_x+bar_width,y),(bar_offset_x+bar_width+10,y)),fill='black')
+                        point1 = (bar_offset_x+bar_width+2,y)
+                        draw.multiline_text(point1,label, fill='black', font=ImageFont.truetype("arial"))
+                    y += int(t*scale)
+                
+                point1 = (bar_offset_x,y)
+                draw.multiline_text(point1,mode, fill='black', font=ImageFont.truetype("arial"))
+                
+                bar_offset_x += mode_width
+
+            image.save(os.path.join(folder, str(domain_instance)+'.png'),'png')
 
 
 if __name__ == '__main__':
+
     main()

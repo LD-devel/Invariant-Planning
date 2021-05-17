@@ -50,6 +50,10 @@ class SearchSMT(Search):
         Optimal plan is obtained by simple ramp-up strategy
         """
 
+        # Time log for analysis
+        self.last_time = time.time()
+        self.time_log = []
+
         # Defines initial horizon for ramp-up SMT search
 
         self.horizon = 1
@@ -65,12 +69,20 @@ class SearchSMT(Search):
             # Build planning subformulas
             formula =  self.encoder.encode(self.horizon)
 
+            # Analysis
+            self.time_log.append(('Formula encoding at horizon: '+ str(self.horizon),time.time()-self.last_time))
+            self.last_time = time.time()
+
             # Assert subformulas in solver
             for k,v in formula.items():
                 self.solver.add(v)
 
             # Check for satisfiability
             res = self.solver.check()
+
+            # Analysis
+            self.time_log.append(('Sat-check at horizon: '+ str(self.horizon),time.time()-self.last_time))
+            self.last_time = time.time()
 
             if res == sat:
                 print(self.horizon)
@@ -86,7 +98,7 @@ class SearchSMT(Search):
                 model = self.solver.model()
                 self.solution = plan.Plan(model, self.encoder)
 
-            return (self.found, self.horizon, self.solution)
+            return (self.found, self.horizon, self.solution, self.time_log)
 
         # Extract plan from model
         model = self.solver.model()
@@ -96,12 +108,12 @@ class SearchSMT(Search):
 
     def do_relaxed_search(self, analysis = False):
         """
-        Linear, invariant guided search scheme.
+        Invariant guided search scheme.
         """
 
         # Time log for analysis
-        last_time = time.time()
-        time_log = []
+        self.last_time = time.time()
+        self.time_log = []
 
         # Defines initial horizon for ramp-up search
         self.horizon = 1
@@ -117,14 +129,14 @@ class SearchSMT(Search):
             self.solver = Solver()
 
             # Analysis
-            last_time = time.time()
+            self.last_time = time.time()
 
             # Build planning subformulas
             formula = self.encoder.encode(self.horizon)
 
             # Analysis
-            time_log.append(('Initial formula encoding at horizon: '+ str(self.horizon),time.time()-last_time))
-            last_time = time.time()
+            self.time_log.append(('Initial formula encoding at horizon: '+ str(self.horizon),time.time()-self.last_time))
+            self.last_time = time.time()
 
             # Assert subformulas in solver
             for k,v in formula.items():
@@ -134,16 +146,12 @@ class SearchSMT(Search):
             res = self.solver.check()
 
             # Analysis
-            time_log.append(('Inital Sat-check at horizon: '+ str(self.horizon),time.time()-last_time))
-            last_time = time.time()
+            self.time_log.append(('Inital Sat-check at horizon: '+ str(self.horizon),time.time()-self.last_time))
+            self.last_time = time.time()
 
             while res == sat and not self.found:
                 #check sequentialziability
                 seq , invariant = self.check_sequentializability()
-
-                # Analysis
-                time_log.append(('Seq-check '+ str(self.horizon),time.time()-last_time))
-                last_time = time.time()
 
                 if(seq):
                     print('Plan fully sequentializable')
@@ -162,8 +170,8 @@ class SearchSMT(Search):
                         [invariant], self.encoder.horizon)
                     
                     # Analysis
-                    time_log.append(('Invariant-encoding',time.time()-last_time))
-                    last_time = time.time()
+                    self.time_log.append(('Invariant-encoding',time.time()-self.last_time))
+                    self.last_time = time.time()
 
                     # self.solver.add the encoded invariant
                     for v in encoded_invars:
@@ -172,8 +180,8 @@ class SearchSMT(Search):
                     res = self.solver.check()
 
                     # Analysis
-                    time_log.append(('Refined sat-check',time.time()-last_time))
-                    last_time = time.time()
+                    self.time_log.append(('Refined sat-check',time.time()-self.last_time))
+                    self.last_time = time.time()
                 
             if not self.found:
                 # Increment horizon until we find a solution
@@ -186,7 +194,7 @@ class SearchSMT(Search):
                 model = self.solver.model()
                 self.solution = plan.Plan(None, None, None, self.plan)
 
-            return (self.found, self.horizon, self.solution, time_log)
+            return (self.found, self.horizon, self.solution, self.time_log)
 
         if self.found:
             # Create plan object from found plan
@@ -224,6 +232,10 @@ class SearchSMT(Search):
                 var_val = model[self.encoder.numeric_variables[step][key]]
                 numVarsPerStep[step].append((key, var_val))
 
+        # Analysis
+        self.time_log.append(('Extract model at horizon '+ str(self.horizon),time.time()-self.last_time))
+        self.last_time = time.time()
+
         for step in range(self.encoder.horizon):
             # Generate forumla expressing sequentializability
             # for each step
@@ -235,23 +247,24 @@ class SearchSMT(Search):
             for k,v in general_seq_forumla.items():
                 local_solver.add(v)
 
-            # Check for satisfiability
-            '''res = local_solver.check()
-            if not (res == sat):
-                # The set of actions can not be seq. in any state
-                print('in general not seq -returning')
-                return (False, {'actions': actionsPerStep[step]})'''
-
             concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix(
                 seq_encoder, 
                 booleanVarsPerStep[step], booleanVarsPerStep[step+1],
                 numVarsPerStep[step], numVarsPerStep[step+1])
             
+            # Analysis
+            self.time_log.append(('Encode seq of one step '+ str(step),time.time()-self.last_time))
+            self.last_time = time.time()
+
             for k,v in concrete_seq_prefix.items():
                 local_solver.add(v)
 
             # Check for satisfiability
             res = local_solver.check()
+
+            # Analysis
+            self.time_log.append(('Check sat of seq-formula '+ str(step),time.time()-self.last_time))
+            self.last_time = time.time()
 
             # If unsat, return the involved actions and values of variables
             # for subsequent invariant generation.
