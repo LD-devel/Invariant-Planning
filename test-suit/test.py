@@ -43,11 +43,11 @@ def main():
      r'pddl_examples\simple\rover-numeric\instances',4)]
 
     problems2 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
-     r'pddl_examples\linear\zeno-travel-linear\instances',3),
+     r'pddl_examples\linear\zeno-travel-linear\instances',0),
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0),
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
-     r'pddl_examples\linear\fo_counters\instances',3),
+     r'pddl_examples\linear\fo_counters\instances',10),
      ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
      r'pddl_examples\linear\fo_counters_inv\instances',0),
      ('fo_counters_rnd', r'pddl_examples\linear\fo_counters_rnd\domain.pddl',
@@ -64,7 +64,7 @@ def main():
      r'pddl_examples\simple\rover-numeric\instances',0)]
 
     # Specify which to test:
-    problems = problems2
+    problems = problems1
 
     # Create report
     myReport = Report()
@@ -126,7 +126,7 @@ def main():
                     myReport.fail_log('relaxed', domain_name, filename)
 
                 # Test relaxed search version 2
-                try:
+                '''try:
                     start_time = time.time()
 
                     # Perform the search.
@@ -140,7 +140,7 @@ def main():
                     myReport.create_log(solution, domain_path, instance_path, log_metadata)
 
                 except:
-                    myReport.fail_log('relaxed v2', domain_name, filename)
+                    myReport.fail_log('relaxed v2', domain_name, filename)'''
     
     myReport.export()
 
