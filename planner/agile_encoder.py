@@ -39,12 +39,12 @@ class AgileEncoder():
         else:
             self.mutexes = self._computeRelaxedMutexes()
         
-        #Initialize variable dicts
+        # Initialize variable dicts
         self.boolean_variables = defaultdict(dict)
         self.numeric_variables = defaultdict(dict)
         self.action_variables = defaultdict(dict)
 
-        #Initialize sequentializability-ecoder depending on version
+        # Initialize sequentializability-ecoder depending on version
         self.version = version
         if version == 2 :
             self.seq_encoder = deepcopy(self)
@@ -317,7 +317,7 @@ class AgileEncoder():
         return initial
 
 
-    def encodeGoalState(self):
+    def encodeGoalState(self,goal_step):
         """!
         Encodes formula defining goal state
 
@@ -398,9 +398,6 @@ class AgileEncoder():
                     raise Exception('Numeric goal condition not recognized')
             return numeric_subgoal
 
-        # Determine in which step the goal condition has to hold.
-        goal_step = len(self.boolean_variables) -1
-
         # Build goal formulas
         propositional_subgoal = _encodePropositionalGoals()
         numeric_subgoal = _encodeNumericGoals()
@@ -409,31 +406,39 @@ class AgileEncoder():
         return goal
 
 
-    def encodeActions(self):
+    def encodeActions(self, first_step, last_step):
         """!
         Encodes universal axioms: each action variable implies its preconditions and effects.
 
-        @return actions: z3 formulas encoding actions.
+        @param first_step: Encodes actions from step no. first_step.
+        @param last_step: Encodes actions til step no. last_step.
+        @return actions: dict z3 formulas encoding actions.
 
         """
 
-        actions = []
+        # Initiialize dict for action encoding
+        # Format = {action: {step: []}
+        action_encodings = {}
+        steps_todo = [first_step+i for i in range(last_step-first_step)]
 
-        for step in range(self.horizon):
-            for action in self.actions:
+        for action in self.actions:
+            action_encodings[action]:{}
+
+            for step in range(steps_todo):
+                action_encodings[action][step] = []
 
                 # Encode preconditions
                 for pre in action.condition:
                     if utils.isBoolFluent(pre):
                         var_name = utils.varNameFromBFluent(pre)
                         if pre.negated:
-                            actions.append(Implies(self.action_variables[step][action.name],Not(self.boolean_variables[step][var_name])))
+                            action_encodings[action][step].append(Implies(self.action_variables[step][action.name],Not(self.boolean_variables[step][var_name])))
                         else:
-                            actions.append(Implies(self.action_variables[step][action.name],self.boolean_variables[step][var_name]))
+                            action_encodings[action][step].append(Implies(self.action_variables[step][action.name],self.boolean_variables[step][var_name]))
 
                     elif isinstance(pre, pddl.conditions.FunctionComparison):
                         expr = utils.inorderTraversalFC(self,pre,self.numeric_variables[step])
-                        actions.append(Implies(self.action_variables[step][action.name],expr))
+                        action_encodings[action][step].append(Implies(self.action_variables[step][action.name],expr))
 
                     else:
                         raise Exception('Precondition \'{}\' of type \'{}\' not supported'.format(pre,type(pre)))
@@ -442,7 +447,7 @@ class AgileEncoder():
                 for add in action.add_effects:
                     # Check if effect is conditional
                     if len(add[0]) == 0:
-                        actions.append(Implies(self.action_variables[step][action.name],self.boolean_variables[step+1][utils.varNameFromBFluent(add[1])]))
+                        action_encodings[action][step].append(Implies(self.action_variables[step][action.name],self.boolean_variables[step+1][utils.varNameFromBFluent(add[1])]))
                     else:
                         raise Exception(' Action {} contains add effect not supported'.format(action.name))
 
@@ -451,7 +456,7 @@ class AgileEncoder():
                 for de in action.del_effects:
                     # Check if effect is conditional
                     if len(de[0]) == 0:
-                        actions.append(Implies(self.action_variables[step][action.name],Not(self.boolean_variables[step+1][utils.varNameFromBFluent(de[1])])))
+                        action_encodings[action][step].append(Implies(self.action_variables[step][action.name],Not(self.boolean_variables[step+1][utils.varNameFromBFluent(de[1])])))
                     else:
                         raise Exception(' Action {} contains del effect not supported'.format(action.name))
 
@@ -489,15 +494,15 @@ class AgileEncoder():
 
 
                             if ne.symbol == '=':
-                                actions.append(Implies(self.action_variables[step][action.name], next_step_variable == expr))
+                                action_encodings[action][step].append(Implies(self.action_variables[step][action.name], next_step_variable == expr))
                             elif ne.symbol == '+':
-                                actions.append(Implies(self.action_variables[step][action.name], next_step_variable == this_step_variable + expr))
+                                action_encodings[action][step].append(Implies(self.action_variables[step][action.name], next_step_variable == this_step_variable + expr))
                             elif ne.symbol == '-':
-                                actions.append(Implies(self.action_variables[step][action.name], next_step_variable == this_step_variable - expr))
+                                action_encodings[action][step].append(Implies(self.action_variables[step][action.name], next_step_variable == this_step_variable - expr))
                             elif ne.symbol == '*':
-                                actions.append(Implies(self.action_variables[step][action.name], next_step_variable == this_step_variable * expr))
+                                action_encodings[action][step].append(Implies(self.action_variables[step][action.name], next_step_variable == this_step_variable * expr))
                             elif ne.symbol == '/':
-                                actions.append(Implies(self.action_variables[step][action.name], next_step_variable == this_step_variable / expr))
+                                action_encodings[action][step].append(Implies(self.action_variables[step][action.name], next_step_variable == this_step_variable / expr))
                             else:
                                 raise Exception('Operator not recognized')
                         else:
@@ -506,9 +511,9 @@ class AgileEncoder():
                     else:
                         raise Exception('Numeric conditional effects not supported yet')
 
-        return actions
+        return action_encodings
 
-    def encodeFrame(self):
+    def encodeFrame(self, first_step, last_step):
         """!
         Encode explanatory frame axioms: a predicate retains its value unless
         it is modified by the effects of an action.
@@ -516,7 +521,10 @@ class AgileEncoder():
         @return frame: list of frame axioms
         """
 
-        frame = []
+        # Steps to encode:
+        steps_todo = [first_step+i for i in range(last_step-first_step)]
+        # Format: {step: []}
+        frame = {}
 
         # Create new object and use it as
         # inadmissible value to check if
@@ -525,6 +533,8 @@ class AgileEncoder():
         sentinel = object()
 
         for step in range(self.horizon):
+            frame[step] = []
+
             # Encode frame axioms for boolean fluents
             for fluent in self.boolean_fluents:
                 var_name = utils.varNameFromBFluent(fluent)
@@ -545,8 +555,8 @@ class AgileEncoder():
                         if fluent in del_eff:
                             action_del.append(self.action_variables[step][action.name])
 
-                    frame.append(Implies(And(Not(fluent_pre),fluent_post),Or(action_add)))
-                    frame.append(Implies(And(fluent_pre,Not(fluent_post)),Or(action_del)))
+                    frame[step].append(Implies(And(Not(fluent_pre),fluent_post),Or(action_add)))
+                    frame[step].append(Implies(And(fluent_pre,Not(fluent_post)),Or(action_del)))
 
             # Encode frame axioms for numeric fluents
             for fluent in self.numeric_fluents:
@@ -564,25 +574,28 @@ class AgileEncoder():
                     #TODO
                     # Can we write frame axioms for num effects in a more
                     # efficient way?
-                    frame.append(Or(fluent_post == fluent_pre, Or(action_num)))
+                    frame[step].append(Or(fluent_post == fluent_pre, Or(action_num)))
 
         return frame
 
 
-    def encodeExecutionSemantics(self):
+    def encodeExecutionSemantics(self, first_step, last_step):
         """!
         Encodes execution semantics as specified by modifier class.
 
         @return axioms that specify execution semantics.
         """
+        # List of steps
+        steps = [first_step+i in range(last_step-first_step)]
+
         if self.modifier.__class__.__name__ == "RelaxedModifier":
             return self.modifier.do_encode(self.action_variables,
                 self.boolean_variables, self.numeric_variables,
-                self.mutexes, self.horizon)
+                self.mutexes, steps)
         try:
-            return self.modifier.do_encode(self.action_variables, self.horizon)
+            return self.modifier.do_encode(self.action_variables, steps)
         except:
-            return self.modifier.do_encode(self.action_variables, self.mutexes, self.horizon)
+            return self.modifier.do_encode(self.action_variables, self.mutexes, steps)
 
 
 
