@@ -367,8 +367,6 @@ class AgileEncoder():
             return propositional_subgoal
 
 
-
-
         def _encodeNumericGoals():
             """
             Encodes numeric subgoals.
@@ -422,9 +420,9 @@ class AgileEncoder():
         steps_todo = [first_step+i for i in range(last_step-first_step)]
 
         for action in self.actions:
-            action_encodings[action]:{}
+            action_encodings[action]={}
 
-            for step in range(steps_todo):
+            for step in steps_todo:
                 action_encodings[action][step] = []
 
                 # Encode preconditions
@@ -532,7 +530,7 @@ class AgileEncoder():
 
         sentinel = object()
 
-        for step in range(self.horizon):
+        for step in steps_todo:
             frame[step] = []
 
             # Encode frame axioms for boolean fluents
@@ -586,21 +584,21 @@ class AgileEncoder():
         @return axioms that specify execution semantics.
         """
         # List of steps
-        steps = [first_step+i in range(last_step-first_step)]
+        steps = [first_step+i for i in range(last_step-first_step)]
 
         if self.modifier.__class__.__name__ == "RelaxedModifier":
-            return self.modifier.do_encode(self.action_variables,
+            return self.modifier.do_encode_stepwise(self.action_variables,
                 self.boolean_variables, self.numeric_variables,
                 self.mutexes, steps)
         try:
-            return self.modifier.do_encode(self.action_variables, steps)
+            return self.modifier.do_encode_stepwise(self.action_variables, steps)
         except:
-            return self.modifier.do_encode(self.action_variables, self.mutexes, steps)
+            return self.modifier.do_encode_stepwise(self.action_variables, self.mutexes, steps)
 
 
 
 
-    def encode(self,horizon):
+    def encode_step(self,step):
         """
         Basic method to build bounded encoding.
 
@@ -608,48 +606,48 @@ class AgileEncoder():
 
         raise NotImplementedError
 
-class AgileEncoderSMT(Encoder):
+class AgileEncoderSMT(AgileEncoder):
     """
     Class that defines method to build SMT encoding.
     """
 
-    def encode(self,horizon):
+    def encode_step(self,step):
         """!
         Builds SMT encoding.
 
-        @param horizon: horizon for bounded planning formula.
+        @param step: step that will be encoded.
         @return formula: dictionary containing subformulas.
         """
 
-        # initialize horizon
-        self.horizon = horizon
+        # initialize horizon for backwardscompabtility with plan.py
+        self.horizon = step+1
 
         # Create variables
-        self.createVariables()
+
+        self.createVariables(step+1)
 
         # Start encoding formula
 
-        formula = defaultdict(list)
-
-        # Encode initial state axioms
-
-        formula['initial'] = self.encodeInitialState()
-
-        # Encode goal state axioms
-
-        formula['goal'] = self.encodeGoalState()
+        formula = []
 
         # Encode universal axioms
 
-        formula['actions'] = self.encodeActions()
-
+        actions = self.encodeActions(step, step+1)
+        for _,action_steps in actions.items():
+            for _,encoding in action_steps.items():
+                formula.append(encoding)
+ 
         # Encode explanatory frame axioms
+               
+        frame = self.encodeFrame(step, step+1)
+        for _,encoding in frame.items():
+            formula.append(encoding)
 
-        formula['frame'] = self.encodeFrame()
+        # Encode execution semantics (lin/par/rel)
 
-        # Encode execution semantics (lin/par)
-
-        formula['sem'] = self.encodeExecutionSemantics()
+        execution = self.encodeExecutionSemantics(step, step+1)
+        for _,encoding in execution.items():
+            formula.append(encoding)
 
         return formula
 

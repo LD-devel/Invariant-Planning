@@ -13,7 +13,7 @@ sys.path.insert(0, BASE_DIR)
 import translate
 import subprocess
 import utils
-from planner import encoder
+from planner import encoder, agile_encoder
 from planner import modifier
 from planner import search
 
@@ -64,7 +64,7 @@ def main():
      r'pddl_examples\simple\rover-numeric\instances',0)]
 
     # Specify which to test:
-    problems = problems1
+    problems = problems2
 
     # Create report
     myReport = Report()
@@ -106,6 +106,24 @@ def main():
                     myReport.create_log(solution, domain_path, instance_path, log_metadata)
                 except:
                     myReport.fail_log('parallel' , domain_name, filename)
+
+                # Test parralel incremental search for comparison
+                try:
+                    start_time = time.time()
+
+                    # Perform the search.
+                    print('encoding task....')
+                    e = agile_encoder.AgileEncoderSMT(task, modifier.ParallelModifier())
+                    print('.... task encoded!')
+                    s = search.SearchSMT(e,ub)
+
+                    # Log the behaviour of the search.
+                    found, horizon, solution, time_log = s.do_linear_incremental_search(True)
+                    log_metadata = {'mode':'parallel incremental', 'domain':domain_name, 'instance':filename, 'found':found,
+                        'horizon':horizon, 'time': (time.time()-start_time), 'time_log':time_log}
+                    myReport.create_log(solution, domain_path, instance_path, log_metadata)
+                except:
+                    myReport.fail_log('parallel incremental' , domain_name, filename)
 
 
                 # Test relaxed search

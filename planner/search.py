@@ -17,7 +17,7 @@
 
 from z3 import *
 from planner import plan
-from planner import encoder
+from planner import encoder, agile_encoder
 import utils
 import numpy as np
 import time
@@ -42,11 +42,14 @@ class SearchSMT(Search):
     """
     Search class for SMT-based encodings.
     """
+class SearchSMT(Search):
+    """
+    Search class for SMT-based encodings.
+    """
 
     def do_linear_search(self, analysis = False):
         """
         Linear search scheme for SMT encodings with unit action costs.
-
         Optimal plan is obtained by simple ramp-up strategy
         """
 
@@ -90,6 +93,78 @@ class SearchSMT(Search):
             else:
                 # Increment horizon until we find a solution
                 self.horizon = self.horizon + 1
+
+        # Return useful metrics for testsuit
+        if(analysis):
+            if(self.found):
+                # Extract plan from model
+                model = self.solver.model()
+                self.solution = plan.Plan(model, self.encoder)
+
+            return (self.found, self.horizon, self.solution, self.time_log)
+
+        # Extract plan from model
+        model = self.solver.model()
+        self.solution = plan.Plan(model, self.encoder)
+        
+        return self.solution
+
+    def do_linear_incremental_search(self, analysis = False):
+        """
+        Linear search scheme for SMT encodings with unit action costs.
+
+        Optimal plan is obtained by simple ramp-up strategy
+        """
+
+        # Time log for analysis
+        self.last_time = time.time()
+        self.time_log = []
+
+        # Defines initial horizon for ramp-up SMT search
+        self.horizon = 1
+        
+        # Create SMT solver instance
+        self.solver = Solver()
+
+        # Encode Initial state
+        self.encoder.createVariables(0)
+        self.solver.add(self.encoder.encodeInitialState())
+        self.solver.push()
+
+        print('Start linear search SMT')
+
+        # Build formula until a plan is found or upper bound is reached
+
+        while not self.found and self.horizon < self.ub:
+
+            # Encode next step
+            for enc in self.encoder.encode_step(self.horizon-1):
+                self.solver.add(enc)
+            self.solver.push()
+
+            # Encode goal step
+            self.solver.add(self.encoder.encodeGoalState(self.horizon))
+
+            # Analysis
+            self.time_log.append(('Formula encoding at horizon: '+ str(self.horizon),time.time()-self.last_time))
+            self.last_time = time.time()
+
+            # Check for satisfiability
+            res = self.solver.check()
+
+            # Analysis
+            self.time_log.append(('Sat-check at horizon: '+ str(self.horizon),time.time()-self.last_time))
+            self.last_time = time.time()
+
+            if res == sat:
+                print(self.horizon)
+                self.found = True
+            else:
+                # Increment horizon until we find a solution
+                self.horizon = self.horizon + 1
+
+                # Remove the goal encoding from the solver
+                self.solver.pop()
 
         # Return useful metrics for testsuit
         if(analysis):
