@@ -47,7 +47,7 @@ def main():
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0),
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
-     r'pddl_examples\linear\fo_counters\instances',10),
+     r'pddl_examples\linear\fo_counters\instances',5),
      ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
      r'pddl_examples\linear\fo_counters_inv\instances',0),
      ('fo_counters_rnd', r'pddl_examples\linear\fo_counters_rnd\domain.pddl',
@@ -131,7 +131,7 @@ def main():
                     start_time = time.time()
 
                     # Perform the search.
-                    e = encoder.EncoderSMT(task, modifier.RelaxedModifier())
+                    e = agile_encoder.AgileEncoderSMT(task, modifier.RelaxedModifier())
                     s = search.SearchSMT(e,ub)
                     found, horizon, solution, time_log = s.do_relaxed_search(True)
 

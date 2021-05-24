@@ -193,6 +193,14 @@ class SearchSMT(Search):
         # Defines initial horizon for ramp-up search
         self.horizon = 1
 
+        # Create SMT solver instance
+        self.solver = Solver()
+
+        # Encode Initial state
+        self.encoder.createVariables(0)
+        self.solver.add(self.encoder.encodeInitialState())
+        self.solver.push()
+
         # Create empty plan, to be amended during seq.-tests
         self.plan = {}
         print('Start invariant guided search.')
@@ -200,22 +208,19 @@ class SearchSMT(Search):
         # Build formula until a plan is found or upper bound is reached
 
         while not self.found and self.horizon < self.ub:
-            # Create SMT solver instance
-            self.solver = Solver()
 
-            # Analysis
-            self.last_time = time.time()
+            # Encode next step
+            for enc in self.encoder.encode_step(self.horizon-1):
+                self.solver.add(enc)
+            self.solver.push()
 
-            # Build planning subformulas
-            formula = self.encoder.encode(self.horizon)
+            # Encode goal step
+            goal = self.encoder.encodeGoalState(self.horizon)
+            self.solver.add(goal)
 
             # Analysis
             self.time_log.append(('Initial formula encoding at horizon: '+ str(self.horizon),time.time()-self.last_time))
             self.last_time = time.time()
-
-            # Assert subformulas in solver
-            for k,v in formula.items():
-                self.solver.add(v)
 
             # Check for satisfiability
             res = self.solver.check()
@@ -231,12 +236,14 @@ class SearchSMT(Search):
                 if(seq):
                     print('Plan fully sequentializable')
                     self.found = True
-                    #TODO possibly the plan hast to be extraced here
+                    
                 else:
                     # Discard the generated plan
                     self.plan = {}
+
                     # Add constraint for future horizons
                     self.encoder.mutexes.append(invariant)
+
                     # Encode invariant
                     encoded_invars = self.encoder.modifier.do_encode(
                         self.encoder.action_variables,
@@ -248,17 +255,29 @@ class SearchSMT(Search):
                     self.time_log.append(('Invariant-encoding',time.time()-self.last_time))
                     self.last_time = time.time()
 
+                    # Remove the goal encoding
+                    self.solver.pop()
+
                     # self.solver.add the encoded invariant
                     for v in encoded_invars:
                         self.solver.add(v)
-                    # set encoder.mutexes += invariants
+                    self.solver.push()
+
+                    # Add the goal befor sat-check and remove it afterwards
+                    print(self.solver.assertions())
+                    self.solver.add(goal)
                     res = self.solver.check()
+                    print(self.solver.assertions())
 
                     # Analysis
                     self.time_log.append(('Refined sat-check',time.time()-self.last_time))
                     self.last_time = time.time()
                 
             if not self.found:
+                
+                # Remove the goal encoding
+                self.solver.pop()
+
                 # Increment horizon until we find a solution
                 self.horizon = self.horizon + 1
         
@@ -319,7 +338,7 @@ class SearchSMT(Search):
             
             local_solver = Solver()
 
-            for k,v in general_seq_forumla.items():
+            for v in general_seq_forumla:
                 local_solver.add(v)
 
             concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix(

@@ -317,7 +317,7 @@ class AgileEncoder():
         return initial
 
 
-    def encodeGoalState(self,goal_step):
+    def encodeGoalState(self, goal_state_n):
         """!
         Encodes formula defining goal state
 
@@ -348,18 +348,18 @@ class AgileEncoder():
                     if goal in self.boolean_fluents:
                         var_name = utils.varNameFromBFluent(goal)
                         if  goal.negated:
-                            propositional_subgoal.append(Not(self.boolean_variables[goal_step][var_name]))
+                            propositional_subgoal.append(Not(self.boolean_variables[goal_state_n][var_name]))
                         else:
-                            propositional_subgoal.append(self.boolean_variables[goal_step][var_name])
+                            propositional_subgoal.append(self.boolean_variables[goal_state_n][var_name])
 
             # Check if goal is a conjunction
             elif isinstance(goal,pddl.conditions.Conjunction):
                 for fact in goal.parts:
                     var_name = utils.varNameFromBFluent(fact)
                     if  fact.negated:
-                        propositional_subgoal.append(Not(self.boolean_variables[goal_step][var_name]))
+                        propositional_subgoal.append(Not(self.boolean_variables[goal_state_n][var_name]))
                     else:
-                        propositional_subgoal.append(self.boolean_variables[goal_step][var_name])
+                        propositional_subgoal.append(self.boolean_variables[goal_state_n][var_name])
 
             else:
                 raise Exception('Propositional goal condition \'{}\': type \'{}\' not recognized'.format(goal, type(goal)))
@@ -378,7 +378,7 @@ class AgileEncoder():
                 # Check if it's an atomic expression condition
                 condition = axiom.condition
                 if isinstance(condition, pddl.conditions.FunctionComparison):
-                    expression = utils.inorderTraversalFC(self, condition, self.numeric_variables[goal_step])
+                    expression = utils.inorderTraversalFC(self, condition, self.numeric_variables[goal_state_n])
                     numeric_subgoal.append(expression)
                 elif isinstance(condition, pddl.conditions.Conjunction):
                     # if instead we have a conjunction
@@ -390,7 +390,7 @@ class AgileEncoder():
                             for sg in propositional_subgoal:
                                 numeric_subgoal.append(sg)
                         if isinstance(part,pddl.conditions.FunctionComparison):
-                            expression = utils.inorderTraversalFC(self, part, self.numeric_variables[goal_step])
+                            expression = utils.inorderTraversalFC(self, part, self.numeric_variables[goal_state_n])
                             numeric_subgoal.append(expression)
                 else:
                     raise Exception('Numeric goal condition not recognized')
@@ -706,25 +706,33 @@ class AgileEncoderSMT(AgileEncoder):
             # Alter horizon to number of actions
             # Change the set of actions to the subset
             seq_encoder.horizon = len(actions)
+            last_step = len(actions)
             seq_encoder.actions = actions
             seq_encoder.modifier = modifier.LinearModifier()
             #TODO propably only relevant in OMT setting:
             seq_encoder.mutexes = seq_encoder._computeSerialMutexes()
 
             # Create variables
-            seq_encoder.createVariables()
+            seq_encoder.createVariables(last_step)
 
             # Start encoding formula
-            formula = defaultdict(list)
+            formula = []
 
             # Encode universal axioms
-            formula['actions'] = seq_encoder.encodeActions()
+            actions = seq_encoder.encodeActions(0, last_step)
+            for _,action_steps in actions.items():
+                for _,encoding in action_steps.items():
+                    formula.append(encoding)
 
             # Encode explanatory frame axioms
-            formula['frame'] = seq_encoder.encodeFrame()
+            frame = seq_encoder.encodeFrame(0, last_step)
+            for _,encoding in frame.items():
+                formula.append(encoding)
 
             # Encode linear execution semantics
-            formula['sem'] = seq_encoder.encodeExecutionSemantics()
+            execution = seq_encoder.encodeExecutionSemantics(0, last_step)
+            for _,encoding in execution.items():
+                formula.append(encoding)
 
             return seq_encoder, formula
         

@@ -23,7 +23,7 @@ from . import arguments
 import translate
 import subprocess
 import utils
-from planner import encoder
+from planner import encoder, agile_encoder
 from planner import modifier
 from planner import search
 
@@ -96,7 +96,7 @@ def main(BASE_DIR):
         elif args.relaxed:
             print('Startet relaxed satisficing planning')
 
-            e = encoder.EncoderSMT(task, modifier.RelaxedModifier())
+            e = encoder.AgileEncoderSMT(task, modifier.RelaxedModifier())
 
             # Build SMT-LIB encoding and dump (no solving)
             if args.translate:
