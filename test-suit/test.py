@@ -47,7 +47,7 @@ def main():
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0),
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
-     r'pddl_examples\linear\fo_counters\instances',5),
+     r'pddl_examples\linear\fo_counters\instances',10),
      ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
      r'pddl_examples\linear\fo_counters_inv\instances',0),
      ('fo_counters_rnd', r'pddl_examples\linear\fo_counters_rnd\domain.pddl',
@@ -90,7 +90,7 @@ def main():
                 print('Now solving: ' + str(domain_name) + ' ' + str(filename))
 
                 # Test parralel search for comparison
-                try:
+                '''try:
                     start_time = time.time()
 
                     # Perform the search.
@@ -123,7 +123,7 @@ def main():
                         'horizon':horizon, 'time': (time.time()-start_time), 'time_log':time_log}
                     myReport.create_log(solution, domain_path, instance_path, log_metadata)
                 except:
-                    myReport.fail_log('parallel incremental' , domain_name, filename)
+                    myReport.fail_log('parallel incremental' , domain_name, filename)'''
 
 
                 # Test relaxed search
@@ -144,11 +144,11 @@ def main():
                     myReport.fail_log('relaxed', domain_name, filename)
 
                 # Test relaxed search version 2
-                '''try:
+                try:
                     start_time = time.time()
 
                     # Perform the search.
-                    e = encoder.EncoderSMT(task, modifier.RelaxedModifier(), version=2)
+                    e = agile_encoder.AgileEncoderSMT(task, modifier.RelaxedModifier(), version=2)
                     s = search.SearchSMT(e,ub)
                     found, horizon, solution, time_log = s.do_relaxed_search(True)
 
@@ -158,7 +158,7 @@ def main():
                     myReport.create_log(solution, domain_path, instance_path, log_metadata)
 
                 except:
-                    myReport.fail_log('relaxed v2', domain_name, filename)'''
+                    myReport.fail_log('relaxed v2', domain_name, filename)
     
     myReport.export()
 
@@ -259,7 +259,9 @@ class Report():
                     elif data['found'] and data['valid'] and mode == 'relaxed':
                         color = '#99ff66'
                     elif data['found'] and data['valid'] and mode == 'relaxed v2':
-                        color = '#ffcc99'                        
+                        color = '#ffcc99'
+                    elif data['found'] and data['valid'] and mode == 'parallel incremental':
+                        color = '#ff95d5'                        
 
                     # Bar showing the time needed.
                     if countr_instance == 0:

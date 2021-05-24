@@ -213,7 +213,23 @@ class AgileEncoder():
         Initializing seq_encoder in version_2.
         """
 
-    #TODO implement.
+        # At most each action appears once per parallel step
+        last_step = len(self.actions)
+
+        # Define execution semantics
+        self.modifier = modifier.LinearModifier()
+
+        # Create all possibly necessary variables
+        self.createVariables(last_step)
+        
+        # Create all possibly necessary action encodings
+        self.action_encodings = self.encodeActions(0, last_step)
+
+        # Create all possibly necessary frame-axiom encodings
+        #self.frame_encodings = self.encodeFrame(0, last_step)
+
+        # Create all possibly necessary execution-semantic encodings
+        #self.execution_encodings = self.encodeExecutionSemantics(0, last_step)
 
 
     def createVariables(self,last_step):
@@ -511,13 +527,17 @@ class AgileEncoder():
 
         return action_encodings
 
-    def encodeFrame(self, first_step, last_step):
+
+    def encodeFrame(self, first_step, last_step, actions=None):
         """!
         Encode explanatory frame axioms: a predicate retains its value unless
         it is modified by the effects of an action.
 
         @return frame: list of frame axioms
         """
+
+        if actions is None:
+            actions = self.actions
 
         # Steps to encode:
         steps_todo = [first_step+i for i in range(last_step-first_step)]
@@ -544,7 +564,7 @@ class AgileEncoder():
                     action_add = []
                     action_del = []
 
-                    for action in self.actions:
+                    for action in actions:
                         add_eff = [add[1] for add in action.add_effects]
                         if fluent in add_eff:
                             action_add.append(self.action_variables[step][action.name])
@@ -564,7 +584,7 @@ class AgileEncoder():
                 if fluent_pre is not sentinel and fluent_post is not sentinel:
                     action_num = []
 
-                    for action in self.actions:
+                    for action in actions:
                         num_eff = [ne[1].fluent for ne in action.assign_effects]
                         if fluent in num_eff:
                             action_num.append(self.action_variables[step][action.name])
@@ -577,25 +597,27 @@ class AgileEncoder():
         return frame
 
 
-    def encodeExecutionSemantics(self, first_step, last_step):
+    def encodeExecutionSemantics(self, first_step, last_step, action_variables = None):
         """!
         Encodes execution semantics as specified by modifier class.
 
         @return axioms that specify execution semantics.
         """
+
+        if action_variables is None:
+            action_variables = self.action_variables
+        
         # List of steps
         steps = [first_step+i for i in range(last_step-first_step)]
 
         if self.modifier.__class__.__name__ == "RelaxedModifier":
-            return self.modifier.do_encode_stepwise(self.action_variables,
+            return self.modifier.do_encode_stepwise(action_variables,
                 self.boolean_variables, self.numeric_variables,
                 self.mutexes, steps)
         try:
-            return self.modifier.do_encode_stepwise(self.action_variables, steps)
+            return self.modifier.do_encode_stepwise(action_variables, steps)
         except:
-            return self.modifier.do_encode_stepwise(self.action_variables, self.mutexes, steps)
-
-
+            return self.modifier.do_encode_stepwise(action_variables, self.mutexes, steps)
 
 
     def encode_step(self,step):
@@ -697,6 +719,10 @@ class AgileEncoderSMT(AgileEncoder):
         Encoding sequentializability of a set of actions, 
         without specifying any state.
         """
+
+        # Start encoding formula
+        formula = []
+
         if self.version == 1:
             # Create a deep copy of self
             # This should save some computation
@@ -707,16 +733,14 @@ class AgileEncoderSMT(AgileEncoder):
             # Change the set of actions to the subset
             seq_encoder.horizon = len(actions)
             last_step = len(actions)
+
             seq_encoder.actions = actions
             seq_encoder.modifier = modifier.LinearModifier()
-            #TODO propably only relevant in OMT setting:
-            seq_encoder.mutexes = seq_encoder._computeSerialMutexes()
+            #TODO check whether this does something relevant
+            seq_encoder.mutexes = []
 
             # Create variables
             seq_encoder.createVariables(last_step)
-
-            # Start encoding formula
-            formula = []
 
             # Encode universal axioms
             actions = seq_encoder.encodeActions(0, last_step)
@@ -737,17 +761,32 @@ class AgileEncoderSMT(AgileEncoder):
             return seq_encoder, formula
         
         elif self.version == 2:
-            formula = self.seq_encoder.formula
 
-            # Constraint to restrict the set of actions
-            c = []
-            for step in range(len(actions)):
-                c.append(Or([self.seq_encoder.action_variables[step][action.name] for action in actions]))
+            last_step = len(actions)
 
-            for action in self.seq_encoder.actions:
-                for i in range(len(self.seq_encoder.actions)-len(actions)):
-                    step = i + len(actions)
-                    c.append(Not (self.seq_encoder.action_variables[step][action.name]))
+            # Needed for concrete-sequential. prefix
+            self.seq_encoder.horizon = len(actions)
 
-            formula['action subset'] = c
+            # Append execution semantics formula
+            for action in actions:
+                for step in range(last_step):
+                    formula.append(self.seq_encoder.action_encodings[action][step])
+            
+            # Create new frame-axtiom encodings
+            frame = self.seq_encoder.encodeFrame(0, last_step, actions=actions)
+            for _,enc in frame.items():
+                formula.append(enc)
+            
+            #TODO improve this
+            # Extract only necessary action variables
+            action_variables = defaultdict(dict)
+            for step in range(last_step):
+                for action in actions:
+                    action_variables[step][action.name] = self.seq_encoder.action_variables[step][action.name]
+
+            # Encode execution semantic
+            execution = self.seq_encoder.encodeExecutionSemantics(0, last_step, action_variables=action_variables)
+            for _,encoding in execution.items():
+                formula.append(encoding)
+
             return self.seq_encoder, formula

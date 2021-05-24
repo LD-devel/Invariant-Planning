@@ -368,14 +368,15 @@ class SearchSMT(Search):
                 # If sat, the model has to be extracted here to extract a plan
                 index = len(self.plan)
                 model = local_solver.model()
-                for step in range(len(actionsPerStep[step])):
-                    for action in seq_encoder.actions:
-                        if is_true(model[seq_encoder.action_variables[step][action.name]]):
+                for seq_step in range(len(actionsPerStep[step])):
+                    for action in actionsPerStep[step]:
+                        if is_true(model[seq_encoder.action_variables[seq_step][action.name]]):
                             self.plan[index] = action.name
                             index = index +1
                 # Analysis
                 self.time_log.append(('Plan extraction '+ str(step),time.time()-self.last_time))
                 self.last_time = time.time()
+
         return (True, None)
 
 
