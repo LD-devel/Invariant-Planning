@@ -17,9 +17,10 @@
 
 from z3 import *
 from planner import plan
-from planner import encoder
+from planner import encoder, agile_encoder
 import utils
 import numpy as np
+import time
 
 COMMENTARY = 1
 
@@ -41,13 +42,20 @@ class SearchSMT(Search):
     """
     Search class for SMT-based encodings.
     """
+class SearchSMT(Search):
+    """
+    Search class for SMT-based encodings.
+    """
 
     def do_linear_search(self, analysis = False):
         """
         Linear search scheme for SMT encodings with unit action costs.
-
         Optimal plan is obtained by simple ramp-up strategy
         """
+
+        # Time log for analysis
+        self.last_time = time.time()
+        self.time_log = []
 
         # Defines initial horizon for ramp-up SMT search
 
@@ -64,12 +72,20 @@ class SearchSMT(Search):
             # Build planning subformulas
             formula =  self.encoder.encode(self.horizon)
 
+            # Analysis
+            self.time_log.append(('Formula encoding at horizon: '+ str(self.horizon),time.time()-self.last_time))
+            self.last_time = time.time()
+
             # Assert subformulas in solver
             for k,v in formula.items():
                 self.solver.add(v)
 
             # Check for satisfiability
             res = self.solver.check()
+
+            # Analysis
+            self.time_log.append(('Sat-check at horizon: '+ str(self.horizon),time.time()-self.last_time))
+            self.last_time = time.time()
 
             if res == sat:
                 print(self.horizon)
@@ -85,7 +101,79 @@ class SearchSMT(Search):
                 model = self.solver.model()
                 self.solution = plan.Plan(model, self.encoder)
 
-            return (self.found, self.horizon, self.solution)
+            return (self.found, self.horizon, self.solution, self.time_log)
+
+        # Extract plan from model
+        model = self.solver.model()
+        self.solution = plan.Plan(model, self.encoder)
+        
+        return self.solution
+
+    def do_linear_incremental_search(self, analysis = False):
+        """
+        Linear search scheme for SMT encodings with unit action costs.
+
+        Optimal plan is obtained by simple ramp-up strategy
+        """
+
+        # Time log for analysis
+        self.last_time = time.time()
+        self.time_log = []
+
+        # Defines initial horizon for ramp-up SMT search
+        self.horizon = 1
+        
+        # Create SMT solver instance
+        self.solver = Solver()
+
+        # Encode Initial state
+        self.encoder.createVariables(0)
+        self.solver.add(self.encoder.encodeInitialState())
+        self.solver.push()
+
+        print('Start linear search SMT')
+
+        # Build formula until a plan is found or upper bound is reached
+
+        while not self.found and self.horizon < self.ub:
+
+            # Encode next step
+            for enc in self.encoder.encode_step(self.horizon-1):
+                self.solver.add(enc)
+            self.solver.push()
+
+            # Encode goal step
+            self.solver.add(self.encoder.encodeGoalState(self.horizon))
+
+            # Analysis
+            self.time_log.append(('Formula encoding at horizon: '+ str(self.horizon),time.time()-self.last_time))
+            self.last_time = time.time()
+
+            # Check for satisfiability
+            res = self.solver.check()
+
+            # Analysis
+            self.time_log.append(('Sat-check at horizon: '+ str(self.horizon),time.time()-self.last_time))
+            self.last_time = time.time()
+
+            if res == sat:
+                print(self.horizon)
+                self.found = True
+            else:
+                # Increment horizon until we find a solution
+                self.horizon = self.horizon + 1
+
+                # Remove the goal encoding from the solver
+                self.solver.pop()
+
+        # Return useful metrics for testsuit
+        if(analysis):
+            if(self.found):
+                # Extract plan from model
+                model = self.solver.model()
+                self.solution = plan.Plan(model, self.encoder)
+
+            return (self.found, self.horizon, self.solution, self.time_log)
 
         # Extract plan from model
         model = self.solver.model()
@@ -95,11 +183,23 @@ class SearchSMT(Search):
 
     def do_relaxed_search(self, analysis = False):
         """
-        Linear, invariant guided search scheme.
+        Invariant guided search scheme.
         """
+
+        # Time log for analysis
+        self.last_time = time.time()
+        self.time_log = []
 
         # Defines initial horizon for ramp-up search
         self.horizon = 1
+
+        # Create SMT solver instance
+        self.solver = Solver()
+
+        # Encode Initial state
+        self.encoder.createVariables(0)
+        self.solver.add(self.encoder.encodeInitialState())
+        self.solver.push()
 
         # Create empty plan, to be amended during seq.-tests
         self.plan = {}
@@ -108,49 +208,74 @@ class SearchSMT(Search):
         # Build formula until a plan is found or upper bound is reached
 
         while not self.found and self.horizon < self.ub:
-            # Create SMT solver instance
-            self.solver = Solver()
 
-            # Build planning subformulas
-            formula = self.encoder.encode(self.horizon)
+            # Encode next step
+            for enc in self.encoder.encode_step(self.horizon-1):
+                self.solver.add(enc)
+            self.solver.push()
 
-            if False and self.horizon == 2:
-                print('TASK ENCODING at horizon: ' + str(self.horizon))
-                print(formula)
+            # Encode goal step
+            goal = self.encoder.encodeGoalState(self.horizon)
+            self.solver.add(goal)
 
-            # Assert subformulas in solver
-            for k,v in formula.items():
-                self.solver.add(v)
+            # Analysis
+            self.time_log.append(('Initial formula encoding at horizon: '+ str(self.horizon),time.time()-self.last_time))
+            self.last_time = time.time()
 
             # Check for satisfiability
             res = self.solver.check()
 
-            #TODO this does nothing so far
+            # Analysis
+            self.time_log.append(('Inital Sat-check at horizon: '+ str(self.horizon),time.time()-self.last_time))
+            self.last_time = time.time()
+
             while res == sat and not self.found:
                 #check sequentialziability
                 seq , invariant = self.check_sequentializability()
+
                 if(seq):
                     print('Plan fully sequentializable')
                     self.found = True
-                    #TODO possibly the plan hast to be extraced here
+                    
                 else:
                     # Discard the generated plan
                     self.plan = {}
+
                     # Add constraint for future horizons
                     self.encoder.mutexes.append(invariant)
+
                     # Encode invariant
                     encoded_invars = self.encoder.modifier.do_encode(
                         self.encoder.action_variables,
                         self.encoder.boolean_variables,
                         self.encoder.numeric_variables,
                         [invariant], self.encoder.horizon)
+                    
+                    # Analysis
+                    self.time_log.append(('Invariant-encoding',time.time()-self.last_time))
+                    self.last_time = time.time()
+
+                    # Remove the goal encoding
+                    self.solver.pop()
+
                     # self.solver.add the encoded invariant
                     for v in encoded_invars:
                         self.solver.add(v)
-                    # set encoder.mutexes += invariants
+                    self.solver.push()
+
+                    # Add the goal befor sat-check and remove it afterwards
+                    self.solver.add(goal)
                     res = self.solver.check()
+
+                    # Analysis
+                    self.time_log.append(('Refined sat-check',time.time()-self.last_time))
+                    self.last_time = time.time()
                 
             if not self.found:
+                
+                # Remove the goal encoding
+                self.solver.pop()
+
                 # Increment horizon until we find a solution
                 self.horizon = self.horizon + 1
         
@@ -159,9 +284,9 @@ class SearchSMT(Search):
             if(self.found):
                 # Extract plan from model
                 model = self.solver.model()
-                self.solution = plan.Plan(model, self.encoder)
+                self.solution = plan.Plan(None, None, None, self.plan)
 
-            return (self.found, self.horizon, self.solution)
+            return (self.found, self.horizon, self.solution, self.time_log)
 
         if self.found:
             # Create plan object from found plan
@@ -199,6 +324,10 @@ class SearchSMT(Search):
                 var_val = model[self.encoder.numeric_variables[step][key]]
                 numVarsPerStep[step].append((key, var_val))
 
+        # Analysis
+        self.time_log.append(('Extract model at horizon '+ str(self.horizon),time.time()-self.last_time))
+        self.last_time = time.time()
+
         for step in range(self.encoder.horizon):
             # Generate forumla expressing sequentializability
             # for each step
@@ -207,26 +336,27 @@ class SearchSMT(Search):
             
             local_solver = Solver()
 
-            for k,v in general_seq_forumla.items():
+            for v in general_seq_forumla:
                 local_solver.add(v)
-
-            # Check for satisfiability
-            '''res = local_solver.check()
-            if not (res == sat):
-                # The set of actions can not be seq. in any state
-                print('in general not seq -returning')
-                return (False, {'actions': actionsPerStep[step]})'''
 
             concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix(
                 seq_encoder, 
                 booleanVarsPerStep[step], booleanVarsPerStep[step+1],
                 numVarsPerStep[step], numVarsPerStep[step+1])
             
+            # Analysis
+            self.time_log.append(('Encode seq of one step '+ str(step),time.time()-self.last_time))
+            self.last_time = time.time()
+
             for k,v in concrete_seq_prefix.items():
                 local_solver.add(v)
 
             # Check for satisfiability
             res = local_solver.check()
+
+            # Analysis
+            self.time_log.append(('Check sat of seq-formula '+ str(step),time.time()-self.last_time))
+            self.last_time = time.time()
 
             # If unsat, return the involved actions and values of variables
             # for subsequent invariant generation.
@@ -236,11 +366,14 @@ class SearchSMT(Search):
                 # If sat, the model has to be extracted here to extract a plan
                 index = len(self.plan)
                 model = local_solver.model()
-                for step in range(seq_encoder.horizon):
-                    for action in seq_encoder.actions:
-                        if is_true(model[seq_encoder.action_variables[step][action.name]]):
+                for seq_step in range(len(actionsPerStep[step])):
+                    for action in actionsPerStep[step]:
+                        if is_true(model[seq_encoder.action_variables[seq_step][action.name]]):
                             self.plan[index] = action.name
                             index = index +1
+                # Analysis
+                self.time_log.append(('Plan extraction '+ str(step),time.time()-self.last_time))
+                self.last_time = time.time()
 
         return (True, None)
 

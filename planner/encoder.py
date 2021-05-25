@@ -15,6 +15,7 @@
 ##    along with OMTPlan.  If not, see <https://www.gnu.org/licenses/>.
 ############################################################################
 
+from os import name
 from z3 import *
 from collections import defaultdict
 import translate.pddl as pddl
@@ -34,7 +35,7 @@ class Encoder():
     state-based encodings -- i.e., Rintanen 09
     """
 
-    def __init__(self, task, modifier):
+    def __init__(self, task, modifier, version=1):
         self.task = task
         self.modifier = modifier
 
@@ -54,6 +55,14 @@ class Encoder():
             self.mutexes = self._computeParallelMutexes()
         else:
             self.mutexes = self._computeRelaxedMutexes()
+        
+        #Initialize sequentializability-ecoder depending on version
+        self.version = version
+        if version == 2 :
+            self.seq_encoder = deepcopy(self)
+            # Actions should not be copied. This allows for set operations.
+            self.seq_encoder.actions = self.actions
+            self.seq_encoder._init_seq_encoder()
 
     def _ground(self):
         """
@@ -209,6 +218,36 @@ class Encoder():
         mutexes = []
 
         return mutexes
+
+
+    def _init_seq_encoder(self):
+        """
+        Initializing seq_encoder in version_2.
+        """
+
+        # Horizon should be the maximum number of actions, which 
+        # can be executed in one step.
+        # TODO create some approach to lower this number.
+        self.horizon = len(self.actions)
+        self.modifier = modifier.LinearModifier()
+        #TODO propably only relevant in OMT setting:
+        self.mutexes = self._computeSerialMutexes()
+
+        # Create variables
+        self.createVariables()
+
+        # Start encoding formula
+        self.formula = defaultdict(list)
+
+        # Encode universal axioms
+        self.formula['actions'] = self.encodeActions()
+
+        # Encode explanatory frame axioms
+        self.formula['frame'] = self.encodeFrame()
+
+        # Encode linear execution semantics
+        self.formula['sem'] = self.encodeExecutionSemantics()
+
 
     def createVariables(self):
         """!
@@ -632,6 +671,9 @@ class EncoderSMT(Encoder):
 
     def encode_concrete_seq_prefix(self, seq_encoder, init_bool_vars, 
         goal_bool_vars, init_num_vars, goal_num_vars):
+        """
+        Method for encoding a formula representing the "concrete" sequentializability.
+        """
 
         formula = defaultdict(list)
         # Encode initial state axioms
@@ -669,36 +711,56 @@ class EncoderSMT(Encoder):
         return formula
 
     def encode_general_seq(self, actions):
+        """
+        Encoding sequentializability of a set of actions, 
+        without specifying any state.
+        """
+        if self.version == 1:
+            # Create a deep copy of self
+            # This should save some computation
+            # as the 'context' of the problem can largely be reused
+            seq_encoder = deepcopy(self)
 
-        # Create a deep copy of self
-        # This should save some computation
-        # as the 'context' of the problem can largely be reused
-        seq_encoder = deepcopy(self)
+            # Alter horizon to number of actions
+            # Change the set of actions to the subset
+            seq_encoder.horizon = len(actions)
+            seq_encoder.actions = actions
+            seq_encoder.modifier = modifier.LinearModifier()
+            #TODO propably only relevant in OMT setting:
+            seq_encoder.mutexes = seq_encoder._computeSerialMutexes()
 
-        # Alter horizon to number of actions
-        # Change the set of actions to the subset
-        seq_encoder.horizon = len(actions)
-        seq_encoder.actions = actions
-        seq_encoder.modifier = modifier.LinearModifier()
-        #TODO propably only relevant in OMT setting:
-        seq_encoder.mutexes = seq_encoder._computeSerialMutexes()
+            # Create variables
+            seq_encoder.createVariables()
 
-        # Create variables
-        seq_encoder.createVariables()
+            # Start encoding formula
+            formula = defaultdict(list)
 
-        # Start encoding formula
-        formula = defaultdict(list)
+            # Encode universal axioms
+            formula['actions'] = seq_encoder.encodeActions()
 
-        # Encode universal axioms
-        formula['actions'] = seq_encoder.encodeActions()
+            # Encode explanatory frame axioms
+            formula['frame'] = seq_encoder.encodeFrame()
 
-        # Encode explanatory frame axioms
-        formula['frame'] = seq_encoder.encodeFrame()
+            # Encode linear execution semantics
+            formula['sem'] = seq_encoder.encodeExecutionSemantics()
 
-        # Encode linear execution semantics
-        formula['sem'] = seq_encoder.encodeExecutionSemantics()
+            return seq_encoder, formula
+        
+        elif self.version == 2:
+            formula = self.seq_encoder.formula
 
-        return seq_encoder, formula
+            # Constraint to restrict the set of actions
+            c = []
+            for step in range(len(actions)):
+                c.append(Or([self.seq_encoder.action_variables[step][action.name] for action in actions]))
+
+            for action in self.seq_encoder.actions:
+                for i in range(len(self.seq_encoder.actions)-len(actions)):
+                    step = i + len(actions)
+                    c.append(Not (self.seq_encoder.action_variables[step][action.name]))
+
+            formula['action subset'] = c
+            return self.seq_encoder, formula
 
 
 
