@@ -264,10 +264,8 @@ class SearchSMT(Search):
                     self.solver.push()
 
                     # Add the goal befor sat-check and remove it afterwards
-                    print(self.solver.assertions())
                     self.solver.add(goal)
                     res = self.solver.check()
-                    print(self.solver.assertions())
 
                     # Analysis
                     self.time_log.append(('Refined sat-check',time.time()-self.last_time))
