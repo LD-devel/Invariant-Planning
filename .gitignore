@@ -106,3 +106,6 @@ venv.bak/
 # Analysis output
 output/
 test-suit/output/
+
+# VSCode
+.vscode
