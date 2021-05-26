@@ -13,9 +13,7 @@ sys.path.insert(0, BASE_DIR)
 import translate
 import subprocess
 import utils
-from planner import encoder, agile_encoder
-from planner import modifier
-from planner import search
+from planner import encoder, agile_encoder, modifier, search
 
 def main():
 
@@ -47,7 +45,7 @@ def main():
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0),
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
-     r'pddl_examples\linear\fo_counters\instances',10),
+     r'pddl_examples\linear\fo_counters\instances',1),
      ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
      r'pddl_examples\linear\fo_counters_inv\instances',0),
      ('fo_counters_rnd', r'pddl_examples\linear\fo_counters_rnd\domain.pddl',
@@ -64,7 +62,7 @@ def main():
      r'pddl_examples\simple\rover-numeric\instances',0)]
 
     # Specify which to test:
-    problems = problems1
+    problems = problems2
 
     # Create report
     myReport = Report()
@@ -128,16 +126,20 @@ def main():
 
                 # Test relaxed search
                 try:
+                    # Log time consuption of subroutines
                     start_time = time.time()
+                    log = Log()
 
                     # Perform the search.
                     e = agile_encoder.AgileEncoderSMT(task, modifier.RelaxedModifier())
                     s = search.SearchSMT(e,ub)
-                    found, horizon, solution, time_log = s.do_relaxed_search(True)
+                    log.register('Initializing encoder.')
+
+                    found, horizon, solution = s.do_relaxed_search(True,log=log)
 
                     # Log the behaviour of the search.
                     log_metadata = {'mode':'relaxed', 'domain':domain_name, 'instance':filename, 'found':found,
-                        'horizon':horizon, 'time': (time.time()-start_time), 'time_log': time_log}
+                        'horizon':horizon, 'time': (time.time()-start_time), 'time_log': log.export()}
                     myReport.create_log(solution, domain_path, instance_path, log_metadata)
 
                 except:
@@ -145,16 +147,20 @@ def main():
 
                 # Test relaxed search version 2
                 try:
+                    # Log time consuption of subroutines
                     start_time = time.time()
+                    log = Log()
 
                     # Perform the search.
                     e = agile_encoder.AgileEncoderSMT(task, modifier.RelaxedModifier(), version=2)
                     s = search.SearchSMT(e,ub)
-                    found, horizon, solution, time_log = s.do_relaxed_search(True)
+                    log.register('Initializing encoder.')
+
+                    found, horizon, solution = s.do_relaxed_search(True, log=log)
 
                     # Log the behaviour of the search.
                     log_metadata = {'mode':'relaxed v2', 'domain':domain_name, 'instance':filename, 'found':found,
-                        'horizon':horizon, 'time': (time.time()-start_time), 'time_log': time_log}
+                        'horizon':horizon, 'time': (time.time()-start_time), 'time_log': log.export()}
                     myReport.create_log(solution, domain_path, instance_path, log_metadata)
 
                 except:
@@ -219,7 +225,7 @@ class Report():
         print(self.logs)
 
         # Here the files will be stored.
-        folder = os.path.join(BASE_DIR, r'test-suit/output/analysis_' + str(time.time()))
+        folder = os.path.join(BASE_DIR, r'testsuit/output/analysis_' + str(time.time()))
         try:
             os.makedirs(folder)
         except FileExistsError:
@@ -325,6 +331,18 @@ class Report():
 
             image.save(os.path.join(folder, str(domain_instance)+'.png'),'png')
 
+class Log():
+
+    def __init__(self):
+        self.last_time = time.time()
+        self.time_log = []
+
+    def register(self,note):
+        self.time_log.append((note,time.time()-self.last_time))
+        self.last_time = time.time()
+
+    def export(self):
+        return self.time_log
 
 if __name__ == '__main__':
 
