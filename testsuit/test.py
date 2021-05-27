@@ -62,7 +62,7 @@ def main():
      r'pddl_examples\simple\rover-numeric\instances',0)]
 
     # Specify which to test:
-    problems = problems2
+    problems = problems1
 
     # Create report
     myReport = Report()
@@ -88,7 +88,7 @@ def main():
                 print('Now solving: ' + str(domain_name) + ' ' + str(filename))
 
                 # Test parralel search for comparison
-                try:
+                '''try:
                     start_time = time.time()
 
                     # Perform the search.
@@ -103,7 +103,7 @@ def main():
                         'horizon':horizon, 'time': (time.time()-start_time), 'time_log':time_log}
                     myReport.create_log(solution, domain_path, instance_path, log_metadata)
                 except:
-                    myReport.fail_log('parallel' , domain_name, filename)
+                    myReport.fail_log('parallel' , domain_name, filename)'''
 
                 # Test parralel incremental search for comparison
                 try:

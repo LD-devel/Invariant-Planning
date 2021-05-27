@@ -269,8 +269,6 @@ class AgileEncoder():
                     self.numeric_variables[step][var_name] = Real('{}_{}'.format(var_name,step))
 
 
-
-
         # Create propositional variables for actions
         for step in steps_todo:
             for a in self.actions:
