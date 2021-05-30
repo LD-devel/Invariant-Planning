@@ -47,10 +47,12 @@ class AgileEncoder():
         # Initialize sequentializability-ecoder depending on version
         self.version = version
         if version == 2 :
-            self.seq_encoder = deepcopy(self)
-            # Actions should not be copied. This allows for set operations.
-            self.seq_encoder.actions = self.actions
-            self.seq_encoder._init_seq_encoder()
+            # Bookkeeping over variable instances 
+            # and action encodings.
+            # Initialize step counter for each action and all variables.
+            self.horizon_log = {}
+            for action in self.actions:
+                self.horizon_log[action] = -1
 
     def _ground(self):
         """
@@ -206,45 +208,21 @@ class AgileEncoder():
         mutexes = []
 
         return mutexes
+       
 
-
-    def _init_seq_encoder(self):
-        """
-        Initializing seq_encoder in version_2.
-        """
-
-        # At most each action appears once per parallel step
-        last_step = len(self.actions)
-
-        # Define execution semantics
-        self.modifier = modifier.LinearModifier()
-
-        # Create all possibly necessary variables
-        self.createVariables(last_step)
-        
-        # Create all possibly necessary action encodings
-        self.action_encodings = self.encodeActions(0, last_step)
-
-        # Create all possibly necessary frame-axiom encodings
-        #self.frame_encodings = self.encodeFrame(0, last_step)
-
-        # Create all possibly necessary execution-semantic encodings
-        #self.execution_encodings = self.encodeExecutionSemantics(0, last_step)
-
-
-    def createVariables(self,last_step):
+    def createVariables(self,last_state):
         """!
         Creates state and action variables needed in the encoding.
         Variables are stored in dictionaries as follows:
 
         dict[step][variable_name] = Z3 variable instance
 
-        @param last_step Variables from step 0 until last_step are created.
+        @param last_state Variables from step 0 until last_state are created.
         """
 
         # Determine current number of steps and list of steps to be encoded
         next_step = len(self.boolean_variables)
-        steps_todo = [i+next_step for i in range(last_step-next_step+1)]
+        steps_todo = [i+next_step for i in range(last_state-next_step+1)]
 
         # Create boolean variables for boolean fluents
         for step in steps_todo:
@@ -431,7 +409,7 @@ class AgileEncoder():
         # Initiialize dict for action encoding
         # Format = {action: {step: []}
         action_encodings = {}
-        steps_todo = [first_step+i for i in range(last_step-first_step)]
+        steps_todo = [first_step+i for i in range(last_step-first_step+1)]
 
         for action in self.actions:
             action_encodings[action]={}
@@ -538,7 +516,7 @@ class AgileEncoder():
             actions = self.actions
 
         # Steps to encode:
-        steps_todo = [first_step+i for i in range(last_step-first_step)]
+        steps_todo = [first_step+i for i in range(last_step-first_step+1)]
         # Format: {step: []}
         frame = {}
 
@@ -606,7 +584,7 @@ class AgileEncoder():
             action_variables = self.action_variables
         
         # List of steps
-        steps = [first_step+i for i in range(last_step-first_step)]
+        steps = [first_step+i for i in range(last_step-first_step+1)]
 
         if self.modifier.__class__.__name__ == "RelaxedModifier":
             return self.modifier.do_encode_stepwise(action_variables,
@@ -625,6 +603,7 @@ class AgileEncoder():
         """
 
         raise NotImplementedError
+
 
 class AgileEncoderSMT(AgileEncoder):
     """
@@ -652,32 +631,32 @@ class AgileEncoderSMT(AgileEncoder):
 
         # Encode universal axioms
 
-        actions = self.encodeActions(step, step+1)
+        actions = self.encodeActions(step, step)
         for _,action_steps in actions.items():
             for _,encoding in action_steps.items():
                 formula.append(encoding)
  
         # Encode explanatory frame axioms
                
-        frame = self.encodeFrame(step, step+1)
+        frame = self.encodeFrame(step, step)
         for _,encoding in frame.items():
             formula.append(encoding)
 
         # Encode execution semantics (lin/par/rel)
 
-        execution = self.encodeExecutionSemantics(step, step+1)
+        execution = self.encodeExecutionSemantics(step, step)
         for _,encoding in execution.items():
             formula.append(encoding)
 
         return formula
 
-    def encode_concrete_seq_prefix(self, seq_encoder, init_bool_vars, 
+    def encode_concrete_seq_prefix_v1(self, seq_encoder, init_bool_vars, 
         goal_bool_vars, init_num_vars, goal_num_vars):
         """
         Method for encoding a formula representing the "concrete" sequentializability.
+        Only to be used if the encoder is initialized with version = 1.
         """
 
-        formula = defaultdict(list)
         # Encode initial state axioms
         initial = []
 
@@ -705,12 +684,45 @@ class AgileEncoderSMT(AgileEncoder):
                 goal.append(seq_encoder.boolean_variables[seq_encoder.horizon][var_name])
             else:
                 goal.append(Not(seq_encoder.boolean_variables[seq_encoder.horizon][var_name]))
-       
-        # Add both to formula
-        formula['initial'] = initial
-        formula['goal'] = goal
 
-        return formula
+        return initial + goal
+
+    def encode_concrete_seq_prefix(self, init_bool_vars, 
+        goal_bool_vars, init_num_vars, goal_num_vars):
+        """
+        Method for encoding a formula representing the "concrete" sequentializability.
+        Only to be used if the encoder is initialized with version = 2.
+        """
+
+        # Encode initial state axioms
+        initial = []
+
+        # Encode values of numerical variables
+        for var_name, val in init_num_vars:
+            initial.append(self.numeric_variables[0][var_name] == val)
+
+        # Encode values of propositional variables
+        for var_name, val in init_bool_vars:
+            if is_true(val):
+                initial.append(self.boolean_variables[0][var_name])
+            else:
+                initial.append(Not(self.boolean_variables[0][var_name]))
+
+        # Encode goal state axioms
+        goal = []
+
+        # Encode values of numerical variables
+        for var_name, val in goal_num_vars:
+            goal.append(self.numeric_variables[self.horizon][var_name] == val)
+
+        # Encode values of propositional variables
+        for var_name, val in goal_bool_vars:
+            if is_true(val):
+                goal.append(self.boolean_variables[self.horizon][var_name])
+            else:
+                goal.append(Not(self.boolean_variables[self.horizon][var_name]))
+
+        return initial + goal
 
     def encode_general_seq(self, actions):
         """
@@ -730,7 +742,7 @@ class AgileEncoderSMT(AgileEncoder):
             # Alter horizon to number of actions
             # Change the set of actions to the subset
             seq_encoder.horizon = len(actions)
-            last_step = len(actions)
+            last_step = len(actions)-1
 
             seq_encoder.actions = actions
             seq_encoder.modifier = modifier.LinearModifier()
@@ -738,7 +750,7 @@ class AgileEncoderSMT(AgileEncoder):
             seq_encoder.mutexes = []
 
             # Create variables
-            seq_encoder.createVariables(last_step)
+            seq_encoder.createVariables(last_step+1)
 
             # Encode universal axioms
             actions = seq_encoder.encodeActions(0, last_step)
@@ -762,21 +774,24 @@ class AgileEncoderSMT(AgileEncoder):
 
             last_step = len(actions)
 
-            # Needed for concrete-sequential. prefix
-            self.seq_encoder.horizon = len(actions)
+            # Create variables until the last step
+            self.create_variables(last_step)
+
+            # Create action encodings until the last step & bookkeeping
+            #TODO
 
             # Append execution semantics formula
             for action in actions:
                 for step in range(last_step):
-                    formula.append(self.seq_encoder.action_encodings[action][step])
+                    formula.append(self.action_encodings[action][step])
             
             # Create new frame-axtiom encodings
-            frame = self.seq_encoder.encodeFrame(0, last_step, actions=actions)
+            frame = self.encodeFrame(0, last_step, actions=actions)
             for _,enc in frame.items():
                 formula.append(enc)
             
-            #TODO improve this
             # Extract only necessary action variables
+            #TODO improve this
             action_variables = defaultdict(dict)
             for step in range(last_step):
                 for action in actions:
@@ -787,4 +802,4 @@ class AgileEncoderSMT(AgileEncoder):
             for _,encoding in execution.items():
                 formula.append(encoding)
 
-            return self.seq_encoder, formula
+            return formula

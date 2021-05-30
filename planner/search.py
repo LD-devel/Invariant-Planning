@@ -331,7 +331,7 @@ class SearchSMT(Search):
 
                 seq_encoder, general_seq_forumla = self.encoder.encode_general_seq(
                     actionsPerStep[step])
-                concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix(
+                concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix_v1(
                     seq_encoder, 
                     booleanVarsPerStep[step], booleanVarsPerStep[step+1],
                     numVarsPerStep[step], numVarsPerStep[step+1])
@@ -343,16 +343,15 @@ class SearchSMT(Search):
                 concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix( 
                     booleanVarsPerStep[step], booleanVarsPerStep[step+1],
                     numVarsPerStep[step], numVarsPerStep[step+1])
-
             
             # Assert subformulas in local solver.
             local_solver = Solver()
 
             for v in general_seq_forumla:
-            local_solver.add(v)
+                local_solver.add(v)
 
-            for v in concrete_seq_prefix.items():
-            local_solver.add(v)
+            for v in concrete_seq_prefix:
+                local_solver.add(v)
 
             # Analysis
             if(analysis):
