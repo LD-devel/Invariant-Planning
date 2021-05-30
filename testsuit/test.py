@@ -103,7 +103,7 @@ def main():
                         'horizon':horizon, 'time': (time.time()-start_time), 'time_log':time_log}
                     myReport.create_log(solution, domain_path, instance_path, log_metadata)
                 except:
-                    myReport.fail_log('parallel' , domain_name, filename)
+                    myReport.fail_log('parallel' , domain_name, filename)'''
 
                 # Test parralel incremental search for comparison
                 try:
@@ -121,7 +121,7 @@ def main():
                         'horizon':horizon, 'time': (time.time()-start_time), 'time_log':time_log}
                     myReport.create_log(solution, domain_path, instance_path, log_metadata)
                 except:
-                    myReport.fail_log('parallel incremental' , domain_name, filename)'''
+                    myReport.fail_log('parallel incremental' , domain_name, filename)
 
 
                 # Test relaxed search
@@ -146,7 +146,7 @@ def main():
                     myReport.fail_log('relaxed', domain_name, filename)
 
                 # Test relaxed search version 2
-                '''try:
+                try:
                     # Log time consuption of subroutines
                     start_time = time.time()
                     log = Log()
@@ -164,7 +164,7 @@ def main():
                     myReport.create_log(solution, domain_path, instance_path, log_metadata)
 
                 except:
-                    myReport.fail_log('relaxed v2', domain_name, filename)'''
+                    myReport.fail_log('relaxed v2', domain_name, filename)
     
     myReport.export()
 

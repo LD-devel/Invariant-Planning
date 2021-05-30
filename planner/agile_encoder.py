@@ -8,7 +8,7 @@ from translate import instantiate
 from translate import numeric_axiom_rules
 import numpy as np
 import loopformula
-from planner import modifier
+from planner import modifier as mod
 
 
 
@@ -44,15 +44,14 @@ class AgileEncoder():
         self.numeric_variables = defaultdict(dict)
         self.action_variables = defaultdict(dict)
 
+        # Initialize action-encodings dict
+        # Format = {step: {action: []}
+        self.action_encodings = defaultdict(dict)
+
         # Initialize sequentializability-ecoder depending on version
         self.version = version
-        if version == 2 :
-            # Bookkeeping over variable instances 
-            # and action encodings.
-            # Initialize step counter for each action and all variables.
-            self.horizon_log = {}
-            for action in self.actions:
-                self.horizon_log[action] = -1
+        if version == 2:
+            self.linear_modifier = mod.LinearModifier()
 
     def _ground(self):
         """
@@ -402,7 +401,7 @@ class AgileEncoder():
 
         @param first_step: Encodes actions from step no. first_step.
         @param last_step: Encodes actions til step no. last_step.
-        @return actions: dict z3 formulas encoding actions.
+        @return dict with z3 formulas encoding actions.
 
         """
 
@@ -502,6 +501,138 @@ class AgileEncoder():
                         raise Exception('Numeric conditional effects not supported yet')
 
         return action_encodings
+
+    def encodeAction(self, action, step):
+        """!
+        Encodes universal axioms: each action variable implies its preconditions and effects.
+
+        @param action: The action to be encoded
+        @param step: The step for which the action shall be encoded.
+        @return z3 formulas encoding the action.
+
+        """
+
+        # Initiialize list containing subformulas
+        action_encoding = []
+
+        # Encode preconditions
+        for pre in action.condition:
+            if utils.isBoolFluent(pre):
+                var_name = utils.varNameFromBFluent(pre)
+                if pre.negated:
+                    action_encoding.append(Implies(self.action_variables[step][action.name],Not(self.boolean_variables[step][var_name])))
+                else:
+                    action_encoding.append(Implies(self.action_variables[step][action.name],self.boolean_variables[step][var_name]))
+
+            elif isinstance(pre, pddl.conditions.FunctionComparison):
+                expr = utils.inorderTraversalFC(self,pre,self.numeric_variables[step])
+                action_encoding.append(Implies(self.action_variables[step][action.name],expr))
+
+            else:
+                raise Exception('Precondition \'{}\' of type \'{}\' not supported'.format(pre,type(pre)))
+
+        # Encode add effects
+        for add in action.add_effects:
+            # Check if effect is conditional
+            if len(add[0]) == 0:
+                action_encoding.append(Implies(self.action_variables[step][action.name],self.boolean_variables[step+1][utils.varNameFromBFluent(add[1])]))
+            else:
+                raise Exception(' Action {} contains add effect not supported'.format(action.name))
+
+
+        # Encode delete effects
+        for de in action.del_effects:
+            # Check if effect is conditional
+            if len(de[0]) == 0:
+                action_encoding.append(Implies(self.action_variables[step][action.name],Not(self.boolean_variables[step+1][utils.varNameFromBFluent(de[1])])))
+            else:
+                raise Exception(' Action {} contains del effect not supported'.format(action.name))
+
+        # Encode numeric effects
+        for ne in action.assign_effects:
+            # Check if conditional
+            if len(ne[0]) == 0:
+                ne = ne[1]
+                if isinstance(ne, pddl.f_expression.FunctionAssignment):
+                    # Num eff that are instance of this class are defined
+                    # by the following PDDL keywords: assign, increase, decrease,
+                    # scale-up, scale-down
+
+                    # Numeric effects have fluents on the left and either a const, a fluent
+                    # or a complex numeric expression on the right
+
+                    # Handle left side
+                    # retrieve variable name
+                    var_name = utils.varNameFromNFluent(ne.fluent)
+
+                    this_step_variable = self.numeric_variables[step][var_name]
+                    next_step_variable = self.numeric_variables[step+1][var_name]
+
+                    # Handle right side
+
+                    if ne.expression in self.numeric_fluents and not ne.expression.symbol.startswith('derived!'): #don't consider variables added by TFD
+                        # right side is a simple fluent
+                        var_name = utils.varNameFromNFluent(ne.expression)
+                        expr = self.numeric_variables[step][var_name]
+                    else:
+                        # retrieve axioms corresponding to expression
+                        numeric_axiom = self.axioms_by_name[ne.expression]
+                        # build SMT expression
+                        expr = utils.inorderTraversal(self,numeric_axiom, self.numeric_variables[step])
+
+
+                    if ne.symbol == '=':
+                        action_encoding.append(Implies(self.action_variables[step][action.name], next_step_variable == expr))
+                    elif ne.symbol == '+':
+                        action_encoding.append(Implies(self.action_variables[step][action.name], next_step_variable == this_step_variable + expr))
+                    elif ne.symbol == '-':
+                        action_encoding.append(Implies(self.action_variables[step][action.name], next_step_variable == this_step_variable - expr))
+                    elif ne.symbol == '*':
+                        action_encoding.append(Implies(self.action_variables[step][action.name], next_step_variable == this_step_variable * expr))
+                    elif ne.symbol == '/':
+                        action_encoding.append(Implies(self.action_variables[step][action.name], next_step_variable == this_step_variable / expr))
+                    else:
+                        raise Exception('Operator not recognized')
+                else:
+
+                    raise Exception('Numeric effect {} not supported yet'.format(ne))
+            else:
+                raise Exception('Numeric conditional effects not supported yet')
+
+        return action_encoding
+
+    def fillActionEncodings(self, first_step, last_step, actions=None):
+        """!
+        Function for encoding a set of actions for a specific step,
+        if they have not yet been encoded.
+
+        @return encodings: list of the specified encodings
+
+        """
+
+        # Default value of actions.
+        if actions is None:
+            actions = self.actions
+        
+        # List of steps to encode 
+        steps_todo = [first_step+i for i in range(last_step-first_step+1)]
+
+        # List of the specified encodings
+        encodings = []
+
+        # Fill up the actions_encodings dict accordingly
+        for step in steps_todo:
+            if not self.action_encodings.has_key(step):
+                self.action_encodings[step] = {}
+            for action in actions:
+                if not self.action_encodings.has_key(action):\
+                    self.action_encodings[step][action] = self.encodeAction(action,step)
+
+                # Append the encoding for return
+                encodings.append(self.action_encodings[step][action])
+        
+        return encodings
+ 
 
 
     def encodeFrame(self, first_step, last_step, actions=None):
@@ -631,10 +762,16 @@ class AgileEncoderSMT(AgileEncoder):
 
         # Encode universal axioms
 
-        actions = self.encodeActions(step, step)
-        for _,action_steps in actions.items():
-            for _,encoding in action_steps.items():
-                formula.append(encoding)
+        if self.version == 1:
+            actions = self.encodeActions(step, step)
+            for _,action_steps in actions.items():
+                for _,encoding in action_steps.items():
+                    formula.append(encoding)
+
+        elif self.version == 2:
+            actions = self.fillActionEncodings(step, step)
+            formula.extend(actions)
+                
  
         # Encode explanatory frame axioms
                
@@ -745,7 +882,7 @@ class AgileEncoderSMT(AgileEncoder):
             last_step = len(actions)-1
 
             seq_encoder.actions = actions
-            seq_encoder.modifier = modifier.LinearModifier()
+            seq_encoder.modifier = mod.LinearModifier()
             #TODO check whether this does something relevant
             seq_encoder.mutexes = []
 
@@ -775,15 +912,11 @@ class AgileEncoderSMT(AgileEncoder):
             last_step = len(actions)
 
             # Create variables until the last step
-            self.create_variables(last_step)
-
-            # Create action encodings until the last step & bookkeeping
-            #TODO
+            self.createVariables(last_step+1)
 
             # Append execution semantics formula
-            for action in actions:
-                for step in range(last_step):
-                    formula.append(self.action_encodings[action][step])
+            actions_encodings = self.fillActionEncodings(0, last_step, actions=actions)
+            formula.extend(actions_encodings)
             
             # Create new frame-axtiom encodings
             frame = self.encodeFrame(0, last_step, actions=actions)
@@ -791,14 +924,15 @@ class AgileEncoderSMT(AgileEncoder):
                 formula.append(enc)
             
             # Extract only necessary action variables
-            #TODO improve this
+            # TODO improvable
             action_variables = defaultdict(dict)
             for step in range(last_step):
                 for action in actions:
-                    action_variables[step][action.name] = self.seq_encoder.action_variables[step][action.name]
+                    action_variables[step][action.name] = self.action_variables[step][action.name]
 
             # Encode execution semantic
-            execution = self.seq_encoder.encodeExecutionSemantics(0, last_step, action_variables=action_variables)
+            execution = self.linear_modifier.do_encode_stepwise(action_variables, 
+                range(last_step+1))
             for _,encoding in execution.items():
                 formula.append(encoding)
 

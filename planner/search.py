@@ -374,9 +374,14 @@ class SearchSMT(Search):
                 model = local_solver.model()
                 for seq_step in range(len(actionsPerStep[step])):
                     for action in actionsPerStep[step]:
-                        if is_true(model[seq_encoder.action_variables[seq_step][action.name]]):
-                            self.plan[index] = action.name
-                            index = index +1
+                        if self.encoder.version == 1:
+                            if is_true(model[seq_encoder.action_variables[seq_step][action.name]]):
+                                self.plan[index] = action.name
+                                index = index +1
+                        elif self.encoder.version == 2:
+                            if is_true(model[self.encoder.action_variables[seq_step][action.name]]):
+                                self.plan[index] = action.name
+                                index = index +1
                 
                 # Analysis
                 if(analysis):
