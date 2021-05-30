@@ -327,30 +327,41 @@ class SearchSMT(Search):
         for step in range(self.encoder.horizon):
             # Generate forumla expressing sequentializability
             # for each step
-            seq_encoder, general_seq_forumla = self.encoder.encode_general_seq(
-                actionsPerStep[step])
+            if(self.encoder.version == 1):
+
+                seq_encoder, general_seq_forumla = self.encoder.encode_general_seq(
+                    actionsPerStep[step])
+                concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix(
+                    seq_encoder, 
+                    booleanVarsPerStep[step], booleanVarsPerStep[step+1],
+                    numVarsPerStep[step], numVarsPerStep[step+1])
             
+            elif(self.encoder.version == 2):
+
+                general_seq_forumla = self.encoder.encode_general_seq(
+                    actionsPerStep[step])
+                concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix( 
+                    booleanVarsPerStep[step], booleanVarsPerStep[step+1],
+                    numVarsPerStep[step], numVarsPerStep[step+1])
+
+            
+            # Assert subformulas in local solver.
             local_solver = Solver()
 
             for v in general_seq_forumla:
-                local_solver.add(v)
+            local_solver.add(v)
 
-            concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix(
-                seq_encoder, 
-                booleanVarsPerStep[step], booleanVarsPerStep[step+1],
-                numVarsPerStep[step], numVarsPerStep[step+1])
-            
-            # Analysis            # Analysis
+            for v in concrete_seq_prefix.items():
+            local_solver.add(v)
+
+            # Analysis
             if(analysis):
                 log.register('Encode seq of one step '+ str(step))
-
-            for k,v in concrete_seq_prefix.items():
-                local_solver.add(v)
 
             # Check for satisfiability
             res = local_solver.check()
 
-            # Analysis            # Analysis
+            # Analysis
             if(analysis):
                 log.register('Check sat of seq-formula '+ str(step))
 
@@ -368,7 +379,7 @@ class SearchSMT(Search):
                             self.plan[index] = action.name
                             index = index +1
                 
-                # Analysis            # Analysis
+                # Analysis
                 if(analysis):
                     log.register('Plan extraction '+ str(step))
 
