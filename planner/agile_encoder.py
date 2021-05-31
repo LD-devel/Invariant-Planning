@@ -771,7 +771,6 @@ class AgileEncoderSMT(AgileEncoder):
         elif self.version == 2:
             actions = self.fillActionEncodings(step, step)
             formula.extend(actions)
-                
  
         # Encode explanatory frame axioms
                
@@ -825,7 +824,8 @@ class AgileEncoderSMT(AgileEncoder):
         return initial + goal
 
     def encode_concrete_seq_prefix(self, init_bool_vars, 
-        goal_bool_vars, init_num_vars, goal_num_vars):
+        goal_bool_vars, init_num_vars, goal_num_vars,\
+        last_step):
         """
         Method for encoding a formula representing the "concrete" sequentializability.
         Only to be used if the encoder is initialized with version = 2.
@@ -850,14 +850,14 @@ class AgileEncoderSMT(AgileEncoder):
 
         # Encode values of numerical variables
         for var_name, val in goal_num_vars:
-            goal.append(self.numeric_variables[self.horizon][var_name] == val)
+            goal.append(self.numeric_variables[last_step][var_name] == val)
 
         # Encode values of propositional variables
         for var_name, val in goal_bool_vars:
             if is_true(val):
-                goal.append(self.boolean_variables[self.horizon][var_name])
+                goal.append(self.boolean_variables[last_step][var_name])
             else:
-                goal.append(Not(self.boolean_variables[self.horizon][var_name]))
+                goal.append(Not(self.boolean_variables[last_step][var_name]))
 
         return initial + goal
 
@@ -909,9 +909,9 @@ class AgileEncoderSMT(AgileEncoder):
         
         elif self.version == 2:
 
-            last_step = len(actions)
+            last_step = len(actions)-1
 
-            # Create variables until the last step
+            # Create variables up until the last state
             self.createVariables(last_step+1)
 
             # Append execution semantics formula
@@ -926,7 +926,7 @@ class AgileEncoderSMT(AgileEncoder):
             # Extract only necessary action variables
             # TODO improvable
             action_variables = defaultdict(dict)
-            for step in range(last_step):
+            for step in range(last_step+1):
                 for action in actions:
                     action_variables[step][action.name] = self.action_variables[step][action.name]
 

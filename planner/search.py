@@ -338,11 +338,13 @@ class SearchSMT(Search):
             
             elif(self.encoder.version == 2):
 
+                last_step = len(actionsPerStep[step])
                 general_seq_forumla = self.encoder.encode_general_seq(
                     actionsPerStep[step])
                 concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix( 
                     booleanVarsPerStep[step], booleanVarsPerStep[step+1],
-                    numVarsPerStep[step], numVarsPerStep[step+1])
+                    numVarsPerStep[step], numVarsPerStep[step+1],
+                    last_step)
             
             # Assert subformulas in local solver.
             local_solver = Solver()
