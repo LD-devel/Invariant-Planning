@@ -8,7 +8,7 @@ from translate import instantiate
 from translate import numeric_axiom_rules
 import numpy as np
 import loopformula
-from planner import modifier as mod
+from planner import modifier as mod, simulator
 
 
 
@@ -52,6 +52,8 @@ class AgileEncoder():
         self.version = version
         if version == 2:
             self.linear_modifier = mod.LinearModifier()
+        elif version == 3:
+            self.simulator = simulator.Simulator(self, self.boolean_fluents, self.numeric_fluents)
 
     def _ground(self):
         """
@@ -762,7 +764,7 @@ class AgileEncoderSMT(AgileEncoder):
 
         # Encode universal axioms
 
-        if self.version == 1:
+        if self.version == 1 or self.version == 3:
             actions = self.encodeActions(step, step)
             for _,action_steps in actions.items():
                 for _,encoding in action_steps.items():
@@ -802,7 +804,7 @@ class AgileEncoderSMT(AgileEncoder):
 
         # Encode values of propositional variables
         for var_name, val in init_bool_vars:
-            if is_true(val):
+            if val:
                 initial.append(seq_encoder.boolean_variables[0][var_name])
             else:
                 initial.append(Not(seq_encoder.boolean_variables[0][var_name]))
@@ -816,7 +818,7 @@ class AgileEncoderSMT(AgileEncoder):
 
         # Encode values of propositional variables
         for var_name, val in goal_bool_vars:
-            if is_true(val):
+            if val:
                 goal.append(seq_encoder.boolean_variables[seq_encoder.horizon][var_name])
             else:
                 goal.append(Not(seq_encoder.boolean_variables[seq_encoder.horizon][var_name]))
@@ -840,7 +842,7 @@ class AgileEncoderSMT(AgileEncoder):
 
         # Encode values of propositional variables
         for var_name, val in init_bool_vars:
-            if is_true(val):
+            if val:
                 initial.append(self.boolean_variables[0][var_name])
             else:
                 initial.append(Not(self.boolean_variables[0][var_name]))
@@ -854,7 +856,7 @@ class AgileEncoderSMT(AgileEncoder):
 
         # Encode values of propositional variables
         for var_name, val in goal_bool_vars:
-            if is_true(val):
+            if val:
                 goal.append(self.boolean_variables[last_step][var_name])
             else:
                 goal.append(Not(self.boolean_variables[last_step][var_name]))
