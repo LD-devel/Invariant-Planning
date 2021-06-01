@@ -45,13 +45,13 @@ def main():
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0),
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
-     r'pddl_examples\linear\fo_counters\instances',5),
+     r'pddl_examples\linear\fo_counters\instances',6),
      ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
      r'pddl_examples\linear\fo_counters_inv\instances',0),
      ('fo_counters_rnd', r'pddl_examples\linear\fo_counters_rnd\domain.pddl',
      r'pddl_examples\linear\fo_counters_rnd\instances',0),
      ('sailing_ln', r'pddl_examples\linear\sailing_ln\domain.pddl',
-     r'pddl_examples\linear\sailing_ln\instances',0),
+     r'pddl_examples\linear\sailing_ln\instances',1),
      ('tpp', r'pddl_examples\linear\tpp\domain.pddl',
      r'pddl_examples\linear\tpp\instances',0),
      ('depots_numeric', r'pddl_examples\simple\depots_numeric\domain.pddl',
@@ -103,7 +103,7 @@ def main():
                         'horizon':horizon, 'time': (time.time()-start_time), 'time_log':time_log}
                     myReport.create_log(solution, domain_path, instance_path, log_metadata)
                 except:
-                    myReport.fail_log('parallel' , domain_name, filename)
+                    myReport.fail_log('parallel' , domain_name, filename)'''
 
                 # Test parralel incremental search for comparison
                 try:
@@ -164,9 +164,9 @@ def main():
                     myReport.create_log(solution, domain_path, instance_path, log_metadata)
 
                 except:
-                    myReport.fail_log('relaxed v2', domain_name, filename)'''
+                    myReport.fail_log('relaxed v2', domain_name, filename)
 
-                # Test relaxed search version 2
+                # Test relaxed search version 3
                 try:
                     # Log time consuption of subroutines
                     start_time = time.time()
@@ -288,7 +288,9 @@ class Report():
                     elif data['found'] and data['valid'] and mode == 'relaxed v2':
                         color = '#ffcc99'
                     elif data['found'] and data['valid'] and mode == 'parallel incremental':
-                        color = '#ff95d5'                        
+                        color = '#ff95d5'
+                    elif data['found'] and data['valid'] and mode == 'relaxed v3':
+                        color = 'blue'                        
 
                     # Bar showing the time needed.
                     if countr_instance == 0:

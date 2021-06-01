@@ -314,7 +314,7 @@ class SearchSMT(Search):
 
             for key, var in self.encoder.boolean_variables[step].iteritems():
                 var_val = model[self.encoder.boolean_variables[step][key]]
-                booleanVarsPerStep[step].append((key, is_true(var_val)))
+                booleanVarsPerStep[step].append((key, var_val))
 
             for key, var in self.encoder.numeric_variables[step].iteritems():
                 var_val = model[self.encoder.numeric_variables[step][key]]
@@ -328,7 +328,7 @@ class SearchSMT(Search):
 
             # Steps containing only one action are trivially seq.
             if(len(actionsPerStep[step]) == 1):
-                self.plan[len(self.plan)] = action.name
+                self.plan[len(self.plan)] = actionsPerStep[step][0].name
                 continue
 
             if self.encoder.version == 3:
@@ -340,6 +340,10 @@ class SearchSMT(Search):
                     numVarsPerStep[step+1] + booleanVarsPerStep[step+1]
                 )
 
+                # Analysis
+                if(analysis):
+                    log.register('Simulate actions in par. step '+ str(self.horizon))
+
                 # Handle the result of the simulation.
                 if not seq:
                     return (False, {'actions': actionsPerStep[step]})
@@ -348,9 +352,6 @@ class SearchSMT(Search):
                     for a in plan:
                         self.plan[len(self.plan)] = a
                 
-                    # Analysis
-                    if(analysis):
-                        log.register('Simulate actions in par. step '+ str(self.horizon))
 
             else:
                 # Generate forumla expressing sequentializability

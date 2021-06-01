@@ -804,7 +804,7 @@ class AgileEncoderSMT(AgileEncoder):
 
         # Encode values of propositional variables
         for var_name, val in init_bool_vars:
-            if val:
+            if is_true(val):
                 initial.append(seq_encoder.boolean_variables[0][var_name])
             else:
                 initial.append(Not(seq_encoder.boolean_variables[0][var_name]))
@@ -842,7 +842,7 @@ class AgileEncoderSMT(AgileEncoder):
 
         # Encode values of propositional variables
         for var_name, val in init_bool_vars:
-            if val:
+            if is_true(val):
                 initial.append(self.boolean_variables[0][var_name])
             else:
                 initial.append(Not(self.boolean_variables[0][var_name]))
