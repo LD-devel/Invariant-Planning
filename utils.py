@@ -225,6 +225,7 @@ def inorderTraversal(encoder,nax, numeric_variables):
             else:
                 raise Exception('Operator not recognized')
 
+
 def inorderTraversalFC(encoder,condition, numeric_variables):
         """!
             Inorder traversal for Comparison axioms -- see "Using the Context-enhanced Additive Heuristic for Temporal and Numeric Planning", Eyerich et al.
@@ -259,6 +260,156 @@ def inorderTraversalFC(encoder,condition, numeric_variables):
             r_expr = numeric_variables[var_name]
         else:
             r_expr = inorderTraversal(encoder,encoder.axioms_by_name[condition.parts[1]],numeric_variables)
+
+
+        if condition.comparator == '=':
+            return l_expr == r_expr
+        elif condition.comparator == '<':
+            return l_expr < r_expr
+        elif condition.comparator == '<=':
+            return l_expr <= r_expr
+        elif condition.comparator == '>':
+            return l_expr > r_expr
+        elif condition.comparator == '>=':
+            return l_expr >= r_expr
+        else:
+            raise Exception('Comparator not recognized')
+
+def evaluate(encoder, nax, numeric_variables):
+        """!
+        Evaluates a numeric axiom.
+
+        See "Using the Context-enhanced Additive Heuristic for Temporal and Numeric Planning", Eyerich et al.
+
+        @param encoder: encoder object.
+        @param nax: numeric axioms returned by parser.
+        @param numeric_variables: dict containing facts.
+
+        @return value
+        """
+
+        for layer, lst in encoder.axioms_by_layer.items():
+            if nax in lst:
+                break
+
+        if layer < 0:
+            # it's a const, we're good
+            assert len(nax.parts) == 1
+            return nax.parts[0].value
+
+        elif layer == 0:
+            # variable assignment
+
+            assert len(nax.parts) == 2
+            # one part contains PDDL function, i.e, SMT  variable
+            # the other contains either a PDDL function or a const
+
+            if nax.parts[0] in encoder.numeric_fluents and not nax.parts[1] in encoder.numeric_fluents:
+                fluent = nax.parts[0]
+                var_name = varNameFromNFluent(fluent)
+                l_expr = numeric_variables[var_name]
+                const_ax = nax.parts[1]
+                r_expr = evaluate(encoder,encoder.axioms_by_name[const_ax],numeric_variables)
+
+            elif nax.parts[1] in encoder.numeric_fluents and not nax.parts[0] in encoder.numeric_fluents:
+                fluent = nax.parts[1]
+                var_name = varNameFromNFluent(fluent)
+                r_expr = numeric_variables[var_name]
+                const_ax = nax.parts[0]
+                l_expr = evaluate(encoder,encoder.axioms_by_name[const_ax],numeric_variables)
+
+            elif nax.parts[0] in encoder.numeric_fluents and nax.parts[1] in encoder.numeric_fluents:
+                ## fluent 1
+                l_fluent = nax.parts[0]
+                var_name = varNameFromNFluent(l_fluent)
+                l_expr = numeric_variables[var_name]
+
+                ## fluent 2
+                r_fluent = nax.parts[1]
+                var_name = varNameFromNFluent(r_fluent)
+                r_expr = numeric_variables[var_name]
+            else:
+                raise Exception('Axiom {} not recognized.'.format(nax))
+
+
+            if nax.op == '+':
+                return l_expr + r_expr
+            elif nax.op == '-':
+                return l_expr - r_expr
+            elif nax.op == '*':
+                return l_expr * r_expr
+            elif nax.op == '/':
+                return l_expr / r_expr
+            else:
+                raise Exception('Operator not recognized')
+
+
+        else:
+            # complex expression
+            # if part is just a fluent, retrieve the corresponding SMT variable
+            # otherwise go down the graph
+
+            if nax.parts[0] in encoder.numeric_fluents and not nax.parts[0].symbol.startswith('derived!'):
+                var_name = varNameFromNFluent(nax.parts[0])
+                l_expr = numeric_variables[var_name]
+            else:
+                l_expr = evaluate(encoder,encoder.axioms_by_name[nax.parts[0]],numeric_variables)
+
+
+            if nax.parts[1] in encoder.numeric_fluents and not nax.parts[1].symbol.startswith('derived!'):
+                var_name = varNameFromNFluent(nax.parts[1])
+                r_expr = numeric_variables[var_name]
+            else:
+                r_expr = evaluate(encoder,encoder.axioms_by_name[nax.parts[1]],numeric_variables)
+
+
+            if nax.op == '+':
+                return l_expr + r_expr
+            elif nax.op == '-':
+                return l_expr - r_expr
+            elif nax.op == '*':
+                return l_expr * r_expr
+            elif nax.op == '/':
+                return l_expr / r_expr
+            else:
+                raise Exception('Operator not recognized')
+
+def evaluateFC(encoder, condition, numeric_variables):
+        """!
+            Evaluation of Comparison axioms -- see "Using the Context-enhanced Additive Heuristic for Temporal and Numeric Planning", Eyerich et al.
+            Internally relies on evaluate().
+
+            WARNING only finite precision!
+
+            @param encoder
+            @param codnition: numeric PDDL condition.
+            @param numeric_variables: dictionary containing facts
+
+            @return Boolean value
+
+
+        """
+
+        assert len(condition.parts) == 2
+
+        # if part is just a fluent, retrieve the corresponding fact
+        # otherwise go down the graph
+
+        ## HACKISH check to discard derived axioms
+
+
+        if condition.parts[0] in encoder.numeric_fluents and not condition.parts[0].symbol.startswith('derived!'):
+            var_name = varNameFromNFluent(condition.parts[0])
+            l_expr = numeric_variables[var_name]
+        else:
+            l_expr = evaluate(encoder,encoder.axioms_by_name[condition.parts[0]],numeric_variables)
+
+
+        if condition.parts[1] in encoder.numeric_fluents and not condition.parts[1].symbol.startswith('derived!'):
+            var_name = utils.varNameFromNFluent(condition.parts[1])
+            r_expr = numeric_variables[var_name]
+        else:
+            r_expr = evaluate(encoder,encoder.axioms_by_name[condition.parts[1]],numeric_variables)
 
 
         if condition.comparator == '=':
