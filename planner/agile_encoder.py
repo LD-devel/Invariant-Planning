@@ -926,7 +926,7 @@ class AgileEncoderSMT(AgileEncoder):
             for enc in frame.values():
                 formula.append(enc)
             
-            # Encode linear execution semantics
+            # Encode linear execution
             sem_nxt = len(self.linear_semantics)
             sem_steps = [sem_nxt + i for i in range(last_step+1-sem_nxt)]
             new_semantics = self.linear_modifier.do_encode_stepwise_list(self.action_variables, sem_steps)
@@ -945,5 +945,46 @@ class AgileEncoderSMT(AgileEncoder):
                 range(last_step+1))
             for _,encoding in execution.items():
                 formula.append(encoding)/'''
+
+            return formula
+
+    def encode_general_seq_trackable(self, actions):
+        """
+        Encoding sequentializability of a set of actions, 
+        without specifying any state.
+        This returns a list containing tuples with names for tracking parts of the formula.
+        """
+
+        # Start encoding formula
+        formula = []
+
+        if self.version == 1:
+            print('Tracking literals is only supported with encoder version 2.')
+            system.exit()
+        
+        elif self.version == 2:
+
+            last_step = len(actions)-1
+
+            # Create variables up until the last state
+            self.createVariables(last_step+1)
+
+            # Append execution semantics formula
+            _ = self.fillActionEncodings(0, last_step, actions=actions)
+            for action in actions:
+                for step in range(last_step+1):
+                    formula.append((Bool(action.name), self.action_encodings[step][action]))
+            
+            # Create new frame-axtiom encodings
+            frame = self.encodeFrame(0, last_step, actions=actions)
+            for step_enc in frame.values():
+                formula.append((Bool('frame'),step_enc))
+            
+            # Encode linear execution
+            sem_nxt = len(self.linear_semantics)
+            sem_steps = [sem_nxt + i for i in range(last_step+1-sem_nxt)]
+            new_semantics = self.linear_modifier.do_encode_stepwise_list(self.action_variables, sem_steps)
+            self.linear_semantics.extend(new_semantics)
+            formula.append((Bool('semantics'), self.linear_semantics[:last_step+1]))
 
             return formula

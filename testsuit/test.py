@@ -39,7 +39,7 @@ def main():
      ('rover-numeric', r'pddl_examples\simple\rover-numeric\domain.pddl',
      r'pddl_examples\simple\rover-numeric\instances',4)]
     problems2 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
-     r'pddl_examples\linear\zeno-travel-linear\instances',10),
+     r'pddl_examples\linear\zeno-travel-linear\instances',1),
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0),
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
@@ -63,9 +63,10 @@ def main():
     # Define which relaxed planning version should be tested:
     relaxed_planners = [
             #Active, Name, Encoder-version, search-version
-            (1, 'relaxed e1 s1', 1, 1),
-            (1, 'relaxed e2 s1', 2, 1),
-            (1, 'relaxed e2 s2', 2, 2),
+            (0, 'relaxed e1 s1', 1, 1),
+            (0, 'relaxed e2 s1', 2, 1),
+            (0, 'relaxed e2 s2', 2, 2),
+            (1, 'relaxed e2 s3', 2, 3),
             (0, 'relaxed e3 s1', 3, 1)
         ]
 
@@ -96,7 +97,7 @@ def main():
                 print('Now solving: ' + str(domain_name) + ' ' + str(filename))
 
                 # Test parralel incremental search for comparison
-                try:
+                '''try:
                     log = Log()
 
                     # Perform the search.
@@ -110,7 +111,7 @@ def main():
                         'horizon':horizon, 'time': total_time, 'time_log':log.export()}
                     myReport.create_log(solution, domain_path, instance_path, log_metadata)
                 except:
-                    myReport.fail_log('parallel incremental' , domain_name, filename)
+                    myReport.fail_log('parallel incremental' , domain_name, filename)'''
 
                 for active, mode, encoder_v, search_v in relaxed_planners:
                     if active:
