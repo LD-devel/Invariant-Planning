@@ -109,7 +109,7 @@ class SearchSMT(Search):
         
         return self.solution
 
-    def do_linear_incremental_search(self, analysis = False):
+    def do_linear_incremental_search(self, analysis = False, log = None):
         """
         Linear search scheme for SMT encodings with unit action costs.
 
@@ -146,15 +146,15 @@ class SearchSMT(Search):
             self.solver.add(self.encoder.encodeGoalState(self.horizon))
 
             # Analysis
-            self.time_log.append(('Formula encoding at horizon: '+ str(self.horizon),time.time()-self.last_time))
-            self.last_time = time.time()
+            if(analysis):
+                log.register('Formula encoding at horizon: '+ str(self.horizon))
 
             # Check for satisfiability
             res = self.solver.check()
 
             # Analysis
-            self.time_log.append(('Sat-check at horizon: '+ str(self.horizon),time.time()-self.last_time))
-            self.last_time = time.time()
+            if(analysis):
+                log.register('Sat-check at horizon: '+ str(self.horizon))
 
             if res == sat:
                 print(self.horizon)
@@ -173,7 +173,8 @@ class SearchSMT(Search):
                 model = self.solver.model()
                 self.solution = plan.Plan(model, self.encoder)
 
-            return (self.found, self.horizon, self.solution, self.time_log)
+            log.register('Exiting search')
+            return (self.found, self.horizon, self.solution)
 
         # Extract plan from model
         model = self.solver.model()
@@ -181,7 +182,7 @@ class SearchSMT(Search):
         
         return self.solution
 
-    def do_relaxed_search(self, analysis = False, log = None):
+    def do_relaxed_search(self, analysis = False, log = None, version = 1):
         """
         Invariant guided search scheme.
         """
@@ -189,8 +190,10 @@ class SearchSMT(Search):
         # Defines initial horizon for ramp-up search
         self.horizon = 1
 
-        # Create SMT solver instance
+        # Create SMT solver instances
         self.solver = Solver()
+        # One solver for seq. tests
+        self.local_solver = Solver()
 
         # Encode Initial state
         self.encoder.createVariables(0)
@@ -227,7 +230,7 @@ class SearchSMT(Search):
 
             while res == sat and not self.found:
                 #check sequentialziability
-                seq , invariant = self.check_sequentializability(analysis=analysis,log=log)
+                seq, invariant, inv_step = self.check_sequentializability(analysis=analysis,log=log)
 
                 if(seq):
                     print('Plan fully sequentializable')
@@ -237,15 +240,25 @@ class SearchSMT(Search):
                     # Discard the generated plan
                     self.plan = {}
 
-                    # Add constraint for future horizons
-                    self.encoder.mutexes.append(invariant)
+                    # Invariant handling depends on the search-version
+                    if version == 1:
+                        # Add constraint for future horizons
+                        self.encoder.mutexes.append(invariant)
 
-                    # Encode invariant
-                    encoded_invars = self.encoder.modifier.do_encode(
-                        self.encoder.action_variables,
-                        self.encoder.boolean_variables,
-                        self.encoder.numeric_variables,
-                        [invariant], self.encoder.horizon)
+                        # Encode invariant for all previous timesteps
+                        encoded_invars = self.encoder.modifier.do_encode(
+                            self.encoder.action_variables,
+                            self.encoder.boolean_variables,
+                            self.encoder.numeric_variables,
+                            [invariant], self.encoder.horizon)
+                    
+                    elif version == 2:
+                        # Encode invariant only for the current timestep
+                        encoded_invars = self.encoder.modifier.do_encode_stepwise(
+                            self.encoder.action_variables,
+                            self.encoder.boolean_variables,
+                            self.encoder.numeric_variables,
+                            [invariant], [inv_step]).values()
                     
                     # Analysis
                     if(analysis):
@@ -278,10 +291,9 @@ class SearchSMT(Search):
         # Return useful metrics for testsuit
         if(analysis):
             if(self.found):
-                # Extract plan from model
-                model = self.solver.model()
                 self.solution = plan.Plan(None, None, None, self.plan)
 
+            log.register('Exiting search')
             return (self.found, self.horizon, self.solution)
 
         if self.found:
@@ -361,8 +373,13 @@ class SearchSMT(Search):
 
                     seq_encoder, general_seq_forumla = self.encoder.encode_general_seq(
                         actionsPerStep[step])
+                                    
+                    # Analysis
+                    if(analysis):
+                        log.register('Encode seq-form of one step '+ str(step))
+                    
                     concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix_v1(
-                        seq_encoder, 
+                        seq_encoder,
                         booleanVarsPerStep[step], booleanVarsPerStep[step+1],
                         numVarsPerStep[step], numVarsPerStep[step+1])
                 
@@ -371,26 +388,35 @@ class SearchSMT(Search):
                     last_step = len(actionsPerStep[step])
                     general_seq_forumla = self.encoder.encode_general_seq(
                         actionsPerStep[step])
+                    
+                    # Analysis
+                    if(analysis):
+                        log.register('Encode seq-form of one step '+ str(step))
+
                     concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix( 
                         booleanVarsPerStep[step], booleanVarsPerStep[step+1],
                         numVarsPerStep[step], numVarsPerStep[step+1],
                         last_step)
                 
-                # Assert subformulas in local solver.
-                local_solver = Solver()
+                # Analysis
+                if(analysis):
+                    log.register('Encode seq-prefix of one step '+ str(step))
 
-                for v in general_seq_forumla:
-                    local_solver.add(v)
+                # Assert subformulas in local solver.
+                self.local_solver.reset()
 
                 for v in concrete_seq_prefix:
-                    local_solver.add(v)
+                    self.local_solver.add(v)
+
+                for v in general_seq_forumla:
+                    self.local_solver.add(v)
 
                 # Analysis
                 if(analysis):
-                    log.register('Encode seq of one step '+ str(step))
+                    log.register('Assert subformulas-seq of one step '+ str(step))
 
                 # Check for satisfiability
-                res = local_solver.check()
+                res = self.local_solver.check()
 
                 # Analysis
                 if(analysis):
@@ -399,11 +425,11 @@ class SearchSMT(Search):
                 # If unsat, return the involved actions and values of variables
                 # for subsequent invariant generation.
                 if not (res == sat):
-                    return (False, {'actions': actionsPerStep[step]})
+                    return (False, {'actions': actionsPerStep[step]}, step)
                 else:
                     # If sat, the model has to be extracted here to extract a plan
                     index = len(self.plan)
-                    model = local_solver.model()
+                    model = self.local_solver.model()
                     for seq_step in range(len(actionsPerStep[step])):
                         for action in actionsPerStep[step]:
                             if self.encoder.version == 1:
@@ -419,7 +445,7 @@ class SearchSMT(Search):
                     if(analysis):
                         log.register('Plan extraction '+ str(step))
 
-        return (True, None)
+        return (True, None, None)
 
 
 class SearchOMT(Search):

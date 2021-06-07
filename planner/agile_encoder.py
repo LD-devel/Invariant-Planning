@@ -52,6 +52,7 @@ class AgileEncoder():
         self.version = version
         if version == 2:
             self.linear_modifier = mod.LinearModifier()
+            self.linear_semantics = []
         elif version == 3:
             self.simulator = simulator.Simulator(self, self.boolean_fluents, self.numeric_fluents)
 
@@ -777,13 +778,13 @@ class AgileEncoderSMT(AgileEncoder):
         # Encode explanatory frame axioms
                
         frame = self.encodeFrame(step, step)
-        for _,encoding in frame.items():
+        for encoding in frame.values():
             formula.append(encoding)
 
         # Encode execution semantics (lin/par/rel)
 
         execution = self.encodeExecutionSemantics(step, step)
-        for _,encoding in execution.items():
+        for encoding in execution.values():
             formula.append(encoding)
 
         return formula
@@ -893,18 +894,18 @@ class AgileEncoderSMT(AgileEncoder):
 
             # Encode universal axioms
             actions = seq_encoder.encodeActions(0, last_step)
-            for _,action_steps in actions.items():
-                for _,encoding in action_steps.items():
+            for action_steps in actions.values():
+                for encoding in action_steps.values():
                     formula.append(encoding)
 
             # Encode explanatory frame axioms
             frame = seq_encoder.encodeFrame(0, last_step)
-            for _,encoding in frame.items():
+            for encoding in frame.values():
                 formula.append(encoding)
 
             # Encode linear execution semantics
             execution = seq_encoder.encodeExecutionSemantics(0, last_step)
-            for _,encoding in execution.items():
+            for encoding in execution.values():
                 formula.append(encoding)
 
             return seq_encoder, formula
@@ -922,10 +923,17 @@ class AgileEncoderSMT(AgileEncoder):
             
             # Create new frame-axtiom encodings
             frame = self.encodeFrame(0, last_step, actions=actions)
-            for _,enc in frame.items():
+            for enc in frame.values():
                 formula.append(enc)
             
-            # Extract only necessary action variables
+            # Encode linear execution semantics
+            sem_nxt = len(self.linear_semantics)
+            sem_steps = [sem_nxt + i for i in range(last_step+1-sem_nxt)]
+            new_semantics = self.linear_modifier.do_encode_stepwise_list(self.action_variables, sem_steps)
+            self.linear_semantics.extend(new_semantics)
+            formula.extend(self.linear_semantics[:last_step+1])
+
+            '''# Extract only necessary action variables
             # TODO improvable
             action_variables = defaultdict(dict)
             for step in range(last_step+1):
@@ -936,6 +944,6 @@ class AgileEncoderSMT(AgileEncoder):
             execution = self.linear_modifier.do_encode_stepwise(action_variables, 
                 range(last_step+1))
             for _,encoding in execution.items():
-                formula.append(encoding)
+                formula.append(encoding)/'''
 
             return formula

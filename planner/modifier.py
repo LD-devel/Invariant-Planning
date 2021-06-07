@@ -64,9 +64,25 @@ class LinearModifier(Modifier):
         c = {}
 
         for step in steps:
-            c[step] = []
             pbc = [(var,1) for var in variables[step].values()]
-            c[step].append(PbLe(pbc,1))
+            c[step] = PbLe(pbc,1)
+
+        return c
+    
+    def do_encode_stepwise_list(self, variables, steps):
+        """!
+        Encodes sequential execution semantics (i.e., one action per step).
+
+        @param  variables: Z3 variables.
+        @param bound: planning horizon.
+
+        @return c: constraints enforcing sequential execution
+        """
+        c = []
+
+        for step in steps:
+            pbc = [(var,1) for var in variables[step].values()]
+            c.append(PbLe(pbc,1))
 
         return c
 
