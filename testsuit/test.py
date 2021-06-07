@@ -18,7 +18,6 @@ from planner import encoder, agile_encoder, modifier, search
 def main():
 
     # Sets of problem domains and instances:
-
     problems1 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
      r'pddl_examples\linear\zeno-travel-linear\instances',7),
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
@@ -39,19 +38,18 @@ def main():
      r'pddl_examples\simple\gardening\instances',3),
      ('rover-numeric', r'pddl_examples\simple\rover-numeric\domain.pddl',
      r'pddl_examples\simple\rover-numeric\instances',4)]
-
     problems2 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
      r'pddl_examples\linear\zeno-travel-linear\instances',0),
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0),
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
-     r'pddl_examples\linear\fo_counters\instances',6),
+     r'pddl_examples\linear\fo_counters\instances',12),
      ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
      r'pddl_examples\linear\fo_counters_inv\instances',0),
      ('fo_counters_rnd', r'pddl_examples\linear\fo_counters_rnd\domain.pddl',
      r'pddl_examples\linear\fo_counters_rnd\instances',0),
      ('sailing_ln', r'pddl_examples\linear\sailing_ln\domain.pddl',
-     r'pddl_examples\linear\sailing_ln\instances',1),
+     r'pddl_examples\linear\sailing_ln\instances',0),
      ('tpp', r'pddl_examples\linear\tpp\domain.pddl',
      r'pddl_examples\linear\tpp\instances',0),
      ('depots_numeric', r'pddl_examples\simple\depots_numeric\domain.pddl',
@@ -60,6 +58,15 @@ def main():
      r'pddl_examples\simple\gardening\instances',0),
      ('rover-numeric', r'pddl_examples\simple\rover-numeric\domain.pddl',
      r'pddl_examples\simple\rover-numeric\instances',0)]
+
+
+    # Define which relaxed planning version should be tested:
+    relaxed_planner = [
+            #Active, Name, Encoder-version
+            (1, 'relaxed', 1),
+            (1, 'relaxed v2', 2),
+            (0, 'relaxed v3', 3)
+        ]
 
     # Specify which to test:
     problems = problems2
@@ -87,24 +94,6 @@ def main():
 
                 print('Now solving: ' + str(domain_name) + ' ' + str(filename))
 
-                # Test parralel search for comparison
-                '''try:
-                    start_time = time.time()
-
-                    # Perform the search.
-                    print('encoding task....')
-                    e = encoder.EncoderSMT(task, modifier.ParallelModifier())
-                    print('.... task encoded!')
-                    s = search.SearchSMT(e,ub)
-
-                    # Log the behaviour of the search.
-                    found, horizon, solution, time_log = s.do_linear_search(True)
-                    log_metadata = {'mode':'parallel', 'domain':domain_name, 'instance':filename, 'found':found,
-                        'horizon':horizon, 'time': (time.time()-start_time), 'time_log':time_log}
-                    myReport.create_log(solution, domain_path, instance_path, log_metadata)
-                except:
-                    myReport.fail_log('parallel' , domain_name, filename)'''
-
                 # Test parralel incremental search for comparison
                 try:
                     start_time = time.time()
@@ -123,69 +112,27 @@ def main():
                 except:
                     myReport.fail_log('parallel incremental' , domain_name, filename)
 
+                for active, mode, version in relaxed_planner:
+                    if active:
+                        try:
+                            # Log time consuption of subroutines
+                            start_time = time.time()
+                            log = Log()
 
-                # Test relaxed search
-                try:
-                    # Log time consuption of subroutines
-                    start_time = time.time()
-                    log = Log()
+                            # Perform the search.
+                            e = agile_encoder.AgileEncoderSMT(task, modifier.RelaxedModifier(), version=version)
+                            s = search.SearchSMT(e,ub)
+                            log.register('Initializing encoder.')
 
-                    # Perform the search.
-                    e = agile_encoder.AgileEncoderSMT(task, modifier.RelaxedModifier())
-                    s = search.SearchSMT(e,ub)
-                    log.register('Initializing encoder.')
+                            found, horizon, solution = s.do_relaxed_search(True, log=log)
 
-                    found, horizon, solution = s.do_relaxed_search(True,log=log)
+                            # Log the behaviour of the search.
+                            log_metadata = {'mode': mode, 'domain':domain_name, 'instance':filename, 'found':found,
+                                'horizon':horizon, 'time': (time.time()-start_time), 'time_log': log.export()}
+                            myReport.create_log(solution, domain_path, instance_path, log_metadata)
 
-                    # Log the behaviour of the search.
-                    log_metadata = {'mode':'relaxed', 'domain':domain_name, 'instance':filename, 'found':found,
-                        'horizon':horizon, 'time': (time.time()-start_time), 'time_log': log.export()}
-                    myReport.create_log(solution, domain_path, instance_path, log_metadata)
-
-                except:
-                    myReport.fail_log('relaxed', domain_name, filename)
-
-                # Test relaxed search version 2
-                try:
-                    # Log time consuption of subroutines
-                    start_time = time.time()
-                    log = Log()
-
-                    # Perform the search.
-                    e = agile_encoder.AgileEncoderSMT(task, modifier.RelaxedModifier(), version=2)
-                    s = search.SearchSMT(e,ub)
-                    log.register('Initializing encoder.')
-
-                    found, horizon, solution = s.do_relaxed_search(True, log=log)
-
-                    # Log the behaviour of the search.
-                    log_metadata = {'mode':'relaxed v2', 'domain':domain_name, 'instance':filename, 'found':found,
-                        'horizon':horizon, 'time': (time.time()-start_time), 'time_log': log.export()}
-                    myReport.create_log(solution, domain_path, instance_path, log_metadata)
-
-                except:
-                    myReport.fail_log('relaxed v2', domain_name, filename)
-
-                # Test relaxed search version 3
-                try:
-                    # Log time consuption of subroutines
-                    start_time = time.time()
-                    log = Log()
-
-                    # Perform the search.
-                    e = agile_encoder.AgileEncoderSMT(task, modifier.RelaxedModifier(), version=3)
-                    s = search.SearchSMT(e,ub)
-                    log.register('Initializing encoder.')
-
-                    found, horizon, solution = s.do_relaxed_search(True, log=log)
-
-                    # Log the behaviour of the search.
-                    log_metadata = {'mode':'relaxed v3', 'domain':domain_name, 'instance':filename, 'found':found,
-                        'horizon':horizon, 'time': (time.time()-start_time), 'time_log': log.export()}
-                    myReport.create_log(solution, domain_path, instance_path, log_metadata)
-
-                except:
-                    myReport.fail_log('relaxed v3', domain_name, filename)
+                        except:
+                            myReport.fail_log(mode, domain_name, filename)
     
     myReport.export()
 
