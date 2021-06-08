@@ -488,14 +488,13 @@ class SearchSMT(Search):
                 if not (res == sat):
                     
                     if sv == 3:
-                        # TODO delete prints
                         core = self.local_solver.unsat_core()
-                        print(core)
+                        #print(core)
 
                         # Create the simple invariant only for actions
                         # invloved in the conflict
                         core_names = {str(a) for a in core}
-                        print(core_names)
+                        #print(core_names)
 
                         invar = [a for a in actionsPerStep[step] if a.name in core_names]
                         return(False, {'actions': invar}, step)

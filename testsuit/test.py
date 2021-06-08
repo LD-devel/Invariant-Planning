@@ -24,6 +24,8 @@ def main():
      r'pddl_examples\linear\farmland_ln\instances',0), # Problem in domain definition. 
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
      r'pddl_examples\linear\fo_counters\instances',15),
+     ('fo_counters_seq', r'pddl_examples\linear\fo_counters_seq\domain.pddl',
+     r'pddl_examples\linear\fo_counters_seq\instances',7),
      ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
      r'pddl_examples\linear\fo_counters_inv\instances',10),
      ('fo_counters_rnd', r'pddl_examples\linear\fo_counters_rnd\domain.pddl',
@@ -39,11 +41,13 @@ def main():
      ('rover-numeric', r'pddl_examples\simple\rover-numeric\domain.pddl',
      r'pddl_examples\simple\rover-numeric\instances',4)]
     problems2 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
-     r'pddl_examples\linear\zeno-travel-linear\instances',1),
+     r'pddl_examples\linear\zeno-travel-linear\instances',0),
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0),
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
      r'pddl_examples\linear\fo_counters\instances',0),
+     ('fo_counters_seq', r'pddl_examples\linear\fo_counters_seq\domain.pddl',
+     r'pddl_examples\linear\fo_counters_seq\instances',7),
      ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
      r'pddl_examples\linear\fo_counters_inv\instances',0),
      ('fo_counters_rnd', r'pddl_examples\linear\fo_counters_rnd\domain.pddl',
@@ -64,14 +68,14 @@ def main():
     relaxed_planners = [
             #Active, Name, Encoder-version, search-version
             (0, 'relaxed e1 s1', 1, 1),
-            (0, 'relaxed e2 s1', 2, 1),
-            (0, 'relaxed e2 s2', 2, 2),
+            (1, 'relaxed e2 s1', 2, 1),
+            (1, 'relaxed e2 s2', 2, 2),
             (1, 'relaxed e2 s3', 2, 3),
             (0, 'relaxed e3 s1', 3, 1)
         ]
 
     # Specify which to test:
-    problems = problems2
+    problems = problems1
 
     # Create report
     myReport = Report()
@@ -97,7 +101,7 @@ def main():
                 print('Now solving: ' + str(domain_name) + ' ' + str(filename))
 
                 # Test parralel incremental search for comparison
-                '''try:
+                try:
                     log = Log()
 
                     # Perform the search.
@@ -111,7 +115,7 @@ def main():
                         'horizon':horizon, 'time': total_time, 'time_log':log.export()}
                     myReport.create_log(solution, domain_path, instance_path, log_metadata)
                 except:
-                    myReport.fail_log('parallel incremental' , domain_name, filename)'''
+                    myReport.fail_log('parallel incremental' , domain_name, filename)
 
                 for active, mode, encoder_v, search_v in relaxed_planners:
                     if active:
@@ -231,21 +235,25 @@ class Report():
                     # Color of a bar remains black, if the mode is unknown or no valid plan was found.
                     color = 'black'
                     if data['found'] and data['valid'] and mode == 'parallel':
-                        color = '#ff95d1'
+                        color = '#d2a58e'
                     elif data['found'] and data['valid'] and mode == 'parallel incremental':
                         color = '#ff95d5'
                     elif data['found'] and data['valid'] and mode == 'relaxed e1 s1':
-                        color = '#99ff66'
+                        color = '#eebbf5'
                     elif data['found'] and data['valid'] and mode == 'relaxed e1 s2':
+                        color = '#afb5fc'
+                    elif data['found'] and data['valid'] and mode == 'relaxed e1 s3':
                         color = '#99ff61'
                     elif data['found'] and data['valid'] and mode == 'relaxed e2 s1':
                         color = '#ffcc99'
                     elif data['found'] and data['valid'] and mode == 'relaxed e2 s2':
-                        color = '#ffcc91'
+                        color = '#bada55'
+                    elif data['found'] and data['valid'] and mode == 'relaxed e2 s3':
+                        color = '#800020'
                     elif data['found'] and data['valid'] and mode == 'relaxed e3 s1':
-                        color = '#99ffcc'
+                        color = '#fa626d'
                     elif data['found'] and data['valid'] and mode == 'relaxed e3 s2':
-                        color = '#99ffc1'
+                        color = '#f94552'
                     
                     # Bar showing the time needed.
                     if countr_instance == 0:
