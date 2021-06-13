@@ -935,19 +935,6 @@ class AgileEncoderSMT(AgileEncoder):
             self.linear_semantics.extend(new_semantics)
             formula.extend(self.linear_semantics[:last_step+1])
 
-            '''# Extract only necessary action variables
-            # TODO improvable
-            action_variables = defaultdict(dict)
-            for step in range(last_step+1):
-                for action in actions:
-                    action_variables[step][action.name] = self.action_variables[step][action.name]
-
-            # Encode execution semantic
-            execution = self.linear_modifier.do_encode_stepwise(action_variables, 
-                range(last_step+1))
-            for _,encoding in execution.items():
-                formula.append(encoding)/'''
-
             return formula
 
     def encode_general_seq_trackable(self, actions):
@@ -1043,3 +1030,24 @@ class AgileEncoderSMT(AgileEncoder):
             solver_log['MAX'] = last_step
         
         return formula, active_execs
+
+    def encode_fixed_order_gen_seq(self, actions):
+        
+        encoding = []
+        trackers = []
+
+        self.createVariables(len(actions))
+
+        step = 0
+        for action in actions:
+
+            # Add encoding to stored encodings if necessary
+            if not self.action_encodings.has_key(step):
+                self.action_encodings[step] = {}
+            if not self.action_encodings[step].has_key(action):
+                self.action_encodings[step][action] = self.encodeAction(action,step)
+            
+            encoding.append(self.action_encodings[step][action])
+            trackers.append(self.action_variables[step][action.name])
+
+        return encoding, trackers

@@ -20,7 +20,7 @@ def main():
     # Sets of problem domains and instances:
     # First file to be included, fist file to be excluded
     problems1 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
-     r'pddl_examples\linear\zeno-travel-linear\instances',7),
+     r'pddl_examples\linear\zeno-travel-linear\instances',0,5),
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0,0), # Problem in domain definition. 
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
@@ -34,7 +34,7 @@ def main():
      ('sailing_ln', r'pddl_examples\linear\sailing_ln\domain.pddl',
      r'pddl_examples\linear\sailing_ln\instances',0,0), # Does not seem to be solvable in reasonable time at horizon 24
      ('tpp', r'pddl_examples\linear\tpp\domain.pddl',
-     r'pddl_examples\linear\tpp\instances',0,5),
+     r'pddl_examples\linear\tpp\instances',0,2),
      ('depots_numeric', r'pddl_examples\simple\depots_numeric\domain.pddl',
      r'pddl_examples\simple\depots_numeric\instances',0,2),
      ('gardening', r'pddl_examples\simple\gardening\domain.pddl',
@@ -46,7 +46,7 @@ def main():
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0,0),
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
-     r'pddl_examples\linear\fo_counters\instances',0,20),
+     r'pddl_examples\linear\fo_counters\instances',0,15),
      ('fo_counters_seq', r'pddl_examples\linear\fo_counters_seq\domain.pddl',
      r'pddl_examples\linear\fo_counters_seq\instances',0,0),
      ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
@@ -72,8 +72,9 @@ def main():
             (0, 'relaxed e2 s1', 2, 1),
             (0, 'relaxed e2 s2', 2, 2),
             (1, 'relaxed e2 s3', 2, 3),
-            (1, 'relaxed e2 s3.1', 2, 31),
-            (1, 'relaxed e2 s3.2', 2, 32),
+            (0, 'relaxed e2 s3.1', 2, 31),
+            (0, 'relaxed e2 s3.2', 2, 32),
+            (1, 'relaxed e2 s4', 2, 4),
             (0, 'relaxed e3 s1', 3, 1)
         ]
 
@@ -262,7 +263,9 @@ class Report():
                     elif data['found'] and data['valid'] and mode == 'relaxed e3 s1':
                         color = '#fa626d'
                     elif data['found'] and data['valid'] and mode == 'relaxed e3 s2':
-                        color = '#f94552'
+                        color = '#f94552'                    
+                    elif data['found'] and data['valid'] and mode == 'relaxed e2 s4':
+                        color = 'green'
                     
                     # Bar showing the time needed.
                     if countr_instance == 0:

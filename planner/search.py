@@ -195,7 +195,7 @@ class SearchSMT(Search):
 
         # One solver for seq. tests
         self.local_solver = Solver()
-        if version in {3,31,32}:
+        if version in {3,31,32,4}:
             self.local_solver.set(unsat_core=True)
             # Create dict for bookkeeping
             self.solver_log = {a:-1 for a in self.encoder.actions}
@@ -258,7 +258,7 @@ class SearchSMT(Search):
                             self.encoder.numeric_variables,
                             [invariant], self.encoder.horizon)
                     
-                    elif version in {2,3,32}:
+                    elif version in {2,3,32,4}:
                         # Encode invariant only for the current timestep
                         encoded_invars = self.encoder.modifier.do_encode_stepwise(
                             self.encoder.action_variables,
@@ -531,6 +531,46 @@ class SearchSMT(Search):
 
                     # Check for satisfiability
                     res = self.local_solver.check(trackers)
+
+                elif (self.encoder.version == 2 and sv == 4):
+
+                    last_step = len(actionsPerStep[step])
+                    general_seq_forumla, trackers = self.encoder.encode_fixed_order_gen_seq(
+                        actionsPerStep[step]
+                    )
+                    
+                    # Analysis
+                    if(analysis):
+                        log.register('Encode seq-form of one step '+ str(step))
+
+                    # Assert subformulas in local solver.
+                    self.local_solver.reset()
+                    for v in general_seq_forumla:
+                        self.local_solver.add(v)
+
+                    # Check general satisfiability
+                    res = self.local_solver.check(trackers)
+
+                    # Analysis
+                    if(analysis):
+                        log.register('Check sat of gen. seq-formula '+ str(step))
+
+                    if (res == sat):
+                        concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix( 
+                            booleanVarsPerStep[step], booleanVarsPerStep[step+1],
+                            numVarsPerStep[step], numVarsPerStep[step+1],
+                            last_step
+                        )
+                    
+                        for v in concrete_seq_prefix:
+                            self.local_solver.add(v)
+
+                        # Analysis
+                        if(analysis):
+                           log.register('Encode seq-prefix of one step '+ str(step))
+
+                        # Check general satisfiability
+                        res = self.local_solver.check(trackers)
 
                 # Analysis
                 if(analysis):
