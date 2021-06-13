@@ -45,9 +45,9 @@ def main():
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0),
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
-     r'pddl_examples\linear\fo_counters\instances',0),
+     r'pddl_examples\linear\fo_counters\instances',1),
      ('fo_counters_seq', r'pddl_examples\linear\fo_counters_seq\domain.pddl',
-     r'pddl_examples\linear\fo_counters_seq\instances',7),
+     r'pddl_examples\linear\fo_counters_seq\instances',0),
      ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
      r'pddl_examples\linear\fo_counters_inv\instances',0),
      ('fo_counters_rnd', r'pddl_examples\linear\fo_counters_rnd\domain.pddl',
@@ -68,14 +68,15 @@ def main():
     relaxed_planners = [
             #Active, Name, Encoder-version, search-version
             (0, 'relaxed e1 s1', 1, 1),
-            (1, 'relaxed e2 s1', 2, 1),
-            (1, 'relaxed e2 s2', 2, 2),
+            (0, 'relaxed e2 s1', 2, 1),
+            (0, 'relaxed e2 s2', 2, 2),
             (1, 'relaxed e2 s3', 2, 3),
+            (1, 'relaxed e2 s3.1', 2, 31),
             (0, 'relaxed e3 s1', 3, 1)
         ]
 
     # Specify which to test:
-    problems = problems1
+    problems = problems2
 
     # Create report
     myReport = Report()

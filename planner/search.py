@@ -195,8 +195,11 @@ class SearchSMT(Search):
 
         # One solver for seq. tests
         self.local_solver = Solver()
-        if version == 3:
+        if version in {3,31,32}:
             self.local_solver.set(unsat_core=True)
+            # Create dict for bookkeeping
+            self.solver_log = {a:-1 for a in self.encoder.actions}
+            self.solver_log['MAX'] = -1
 
         # Encode Initial state
         self.encoder.createVariables(0)
@@ -244,7 +247,7 @@ class SearchSMT(Search):
                     self.plan = {}
 
                     # Invariant handling depends on the search-version
-                    if version == 1:
+                    if version in {1,31}:
                         # Add constraint for future horizons
                         self.encoder.mutexes.append(invariant)
 
@@ -255,7 +258,7 @@ class SearchSMT(Search):
                             self.encoder.numeric_variables,
                             [invariant], self.encoder.horizon)
                     
-                    elif version == 2 or version ==3:
+                    elif version in {2,3,32}:
                         # Encode invariant only for the current timestep
                         encoded_invars = self.encoder.modifier.do_encode_stepwise(
                             self.encoder.action_variables,
@@ -367,12 +370,11 @@ class SearchSMT(Search):
                     for a in plan:
                         self.plan[len(self.plan)] = a
                 
-
             else:
                 # Generate forumla expressing sequentializability
                 # for each step
 
-                if(self.encoder.version == 1):
+                if (self.encoder.version == 1):
 
                     seq_encoder, general_seq_forumla = self.encoder.encode_general_seq(
                         actionsPerStep[step])
@@ -406,12 +408,12 @@ class SearchSMT(Search):
                     # Check for satisfiability
                     res = self.local_solver.check()
 
-                elif(self.encoder.version == 2 and not (sv == 3)):
+                elif (self.encoder.version == 2 and (sv == 1 or sv == 2)):
 
                     last_step = len(actionsPerStep[step])
                     general_seq_forumla = self.encoder.encode_general_seq(
                         actionsPerStep[step])
-                    
+
                     # Analysis
                     if(analysis):
                         log.register('Encode seq-form of one step '+ str(step))
@@ -420,7 +422,7 @@ class SearchSMT(Search):
                         booleanVarsPerStep[step], booleanVarsPerStep[step+1],
                         numVarsPerStep[step], numVarsPerStep[step+1],
                         last_step)
-                
+
                     # Analysis
                     if(analysis):
                         log.register('Encode seq-prefix of one step '+ str(step))
@@ -441,11 +443,13 @@ class SearchSMT(Search):
                     # Check for satisfiability
                     res = self.local_solver.check()
 
-                elif(self.encoder.version == 2 and sv == 3):
+                elif (self.encoder.version == 2 and sv == 3):
+
                     #Track assertions
                     last_step = len(actionsPerStep[step])
                     general_seq_forumla = self.encoder.encode_general_seq_trackable(
-                        actionsPerStep[step])
+                        actionsPerStep[step]
+                    )
                     
                     # Analysis
                     if(analysis):
@@ -479,6 +483,55 @@ class SearchSMT(Search):
                     # Check for satisfiability
                     res = self.local_solver.check(trackers)
 
+                elif (self.encoder.version == 2 and sv == 31):
+
+                    if self.solver_log['MAX'] > -1:
+                         self.local_solver.pop()
+                    last_step = len(actionsPerStep[step])
+                    
+                    # Encode and assert only the actions needed
+                    action_formulas, active_actions = self.encoder.encode_general_seq_increment(
+                        actionsPerStep[step], self.solver_log
+                    )
+                    for a in action_formulas:
+                        self.local_solver.add(a)
+
+                    trackers = active_actions.keys()
+
+                    exec_formulas, exec_trackers = self.encoder.encode_exec_increment(
+                        actionsPerStep[step], self.solver_log
+                    )
+                    for e in exec_formulas:
+                        self.local_solver.add(e)
+
+                    trackers.extend(exec_trackers)
+
+                    self.local_solver.push()
+
+                    # Encode Frame
+                    frame = self.encoder.encodeFrame(0, last_step, actions=actionsPerStep[step])
+                    for step_enc in frame.values():
+                        self.local_solver.add(step_enc)
+                            
+                    # Analysis
+                    if(analysis):
+                        log.register('Encode seq-form of one step '+ str(step))
+
+                    concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix( 
+                        booleanVarsPerStep[step], booleanVarsPerStep[step+1],
+                        numVarsPerStep[step], numVarsPerStep[step+1],
+                        last_step)
+                
+                    for v in concrete_seq_prefix:
+                        self.local_solver.add(v)
+
+                    # Analysis
+                    if(analysis):
+                        log.register('Encode seq-prefix of one step '+ str(step))
+
+                    # Check for satisfiability
+                    res = self.local_solver.check(trackers)
+
                 # Analysis
                 if(analysis):
                     log.register('Check sat of seq-formula '+ str(step))
@@ -487,7 +540,7 @@ class SearchSMT(Search):
                 # for subsequent invariant generation.
                 if not (res == sat):
                     
-                    if sv == 3:
+                    if sv in {3}:
                         core = self.local_solver.unsat_core()
                         #print(core)
 
@@ -499,8 +552,14 @@ class SearchSMT(Search):
                         invar = [a for a in actionsPerStep[step] if a.name in core_names]
                         return(False, {'actions': invar}, step)
 
+                    if sv in {31}:
+                        core = self.local_solver.unsat_core()
+                        core_names = {active_actions[a] for a in core}
+                        invar = [a for a in actionsPerStep[step] if a.name in core_names]
+                        return(False, {'actions': invar}, step)
 
                     return (False, {'actions': actionsPerStep[step]}, step)
+
                 else:
                     # If sat, the model has to be extracted here to extract a plan
                     index = len(self.plan)

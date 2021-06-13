@@ -53,6 +53,8 @@ class AgileEncoder():
         if version == 2:
             self.linear_modifier = mod.LinearModifier()
             self.linear_semantics = []
+            self.action_trackers = defaultdict(dict)
+            self.exec_trackers = {}
         elif version == 3:
             self.simulator = simulator.Simulator(self, self.boolean_fluents, self.numeric_fluents)
 
@@ -628,7 +630,7 @@ class AgileEncoder():
             if not self.action_encodings.has_key(step):
                 self.action_encodings[step] = {}
             for action in actions:
-                if not self.action_encodings.has_key(action):\
+                if not self.action_encodings[step].has_key(action):
                     self.action_encodings[step][action] = self.encodeAction(action,step)
 
                 # Append the encoding for return
@@ -988,3 +990,59 @@ class AgileEncoderSMT(AgileEncoder):
             formula.append((Bool('semantics'), self.linear_semantics[:last_step+1]))
 
             return formula
+        
+    def encode_general_seq_increment(self, actions, solver_log):
+
+        last_step = len(actions) - 1
+
+        action_formulas = []
+        active_actions = {}
+        other_formulas = []
+
+        # Create variables up until the last state
+        self.createVariables(last_step+2)
+
+        # Create list of tuples containing action encodings 
+        _ = self.fillActionEncodings(0, last_step, actions=actions)
+
+        for action in actions:
+            for step in range(last_step+1):
+
+                # Append action encoding, if said encoding is not in the solver yet
+                if solver_log[action] < step:
+                    action_tracker = Bool('a_{}_{}'.format(action.name, step))
+                    self.action_trackers[action][step] = action_tracker
+                    action_formulas.append(Implies(action_tracker, And(self.action_encodings[step][action])))
+                
+                # Append the propositional variable of included actions
+                active_actions[self.action_trackers[action][step]] = action.name
+            
+            # Update solver_log
+            solver_log[action] = last_step
+
+        return action_formulas, active_actions
+
+    def encode_exec_increment(self, actions, solver_log):
+
+        last_step = len(actions) - 1
+        formula = []
+        active_execs = []
+
+        # Encode linear execution
+        sem_nxt = solver_log['MAX']
+        sem_steps = [sem_nxt + i for i in range(last_step+1-sem_nxt)]
+        new_semantics = self.linear_modifier.do_encode_stepwise_list(self.action_variables, sem_steps)
+
+        for step in range(last_step+1):
+
+            if solver_log['MAX'] < step:
+                exec_tracker = Bool('e_{}'.format(step))
+                self.exec_trackers[step] = exec_tracker
+                formula.append(Implies(exec_tracker, And(self.linear_semantics[:last_step+1])))
+            
+            active_execs.append(self.exec_trackers[step])
+
+        if solver_log['MAX'] < last_step:
+            solver_log['MAX'] = last_step
+        
+        return formula, active_execs
