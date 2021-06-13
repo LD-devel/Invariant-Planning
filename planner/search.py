@@ -483,7 +483,7 @@ class SearchSMT(Search):
                     # Check for satisfiability
                     res = self.local_solver.check(trackers)
 
-                elif (self.encoder.version == 2 and sv == 31):
+                elif (self.encoder.version == 2 and sv in {31,32}):
 
                     if self.solver_log['MAX'] > -1:
                          self.local_solver.pop()
@@ -552,7 +552,7 @@ class SearchSMT(Search):
                         invar = [a for a in actionsPerStep[step] if a.name in core_names]
                         return(False, {'actions': invar}, step)
 
-                    if sv in {31}:
+                    if sv in {31,32}:
                         core = self.local_solver.unsat_core()
                         core_names = {active_actions[a] for a in core}
                         invar = [a for a in actionsPerStep[step] if a.name in core_names]

@@ -1029,18 +1029,15 @@ class AgileEncoderSMT(AgileEncoder):
         active_execs = []
 
         # Encode linear execution
-        sem_nxt = solver_log['MAX']
+        sem_nxt = solver_log['MAX']+1
         sem_steps = [sem_nxt + i for i in range(last_step+1-sem_nxt)]
-        new_semantics = self.linear_modifier.do_encode_stepwise_list(self.action_variables, sem_steps)
+        new_semantics = self.linear_modifier.do_encode_stepwise(self.action_variables, sem_steps)
 
-        for step in range(last_step+1):
+        for step in sem_steps:
+            self.exec_trackers[step] = Bool('e_{}'.format(step))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+            formula.append(Implies(self.exec_trackers[step], And(new_semantics[step])))
 
-            if solver_log['MAX'] < step:
-                exec_tracker = Bool('e_{}'.format(step))
-                self.exec_trackers[step] = exec_tracker
-                formula.append(Implies(exec_tracker, And(self.linear_semantics[:last_step+1])))
-            
-            active_execs.append(self.exec_trackers[step])
+        active_execs = [self.exec_trackers[step] for step in range(last_step+1)]
 
         if solver_log['MAX'] < last_step:
             solver_log['MAX'] = last_step

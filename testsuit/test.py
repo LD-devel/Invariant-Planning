@@ -18,50 +18,51 @@ from planner import encoder, agile_encoder, modifier, search
 def main():
 
     # Sets of problem domains and instances:
+    # First file to be included, fist file to be excluded
     problems1 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
      r'pddl_examples\linear\zeno-travel-linear\instances',7),
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
-     r'pddl_examples\linear\farmland_ln\instances',0), # Problem in domain definition. 
+     r'pddl_examples\linear\farmland_ln\instances',0,0), # Problem in domain definition. 
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
-     r'pddl_examples\linear\fo_counters\instances',15),
+     r'pddl_examples\linear\fo_counters\instances',0,15),
      ('fo_counters_seq', r'pddl_examples\linear\fo_counters_seq\domain.pddl',
-     r'pddl_examples\linear\fo_counters_seq\instances',7),
+     r'pddl_examples\linear\fo_counters_seq\instances',0,7),
      ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
-     r'pddl_examples\linear\fo_counters_inv\instances',10),
+     r'pddl_examples\linear\fo_counters_inv\instances',0,10),
      ('fo_counters_rnd', r'pddl_examples\linear\fo_counters_rnd\domain.pddl',
-     r'pddl_examples\linear\fo_counters_rnd\instances',10),
+     r'pddl_examples\linear\fo_counters_rnd\instances',0,10),
      ('sailing_ln', r'pddl_examples\linear\sailing_ln\domain.pddl',
-     r'pddl_examples\linear\sailing_ln\instances',0), # Does not seem to be solvable in reasonable time at horizon 24
+     r'pddl_examples\linear\sailing_ln\instances',0,0), # Does not seem to be solvable in reasonable time at horizon 24
      ('tpp', r'pddl_examples\linear\tpp\domain.pddl',
-     r'pddl_examples\linear\tpp\instances',5),
+     r'pddl_examples\linear\tpp\instances',0,5),
      ('depots_numeric', r'pddl_examples\simple\depots_numeric\domain.pddl',
-     r'pddl_examples\simple\depots_numeric\instances',2),
+     r'pddl_examples\simple\depots_numeric\instances',0,2),
      ('gardening', r'pddl_examples\simple\gardening\domain.pddl',
-     r'pddl_examples\simple\gardening\instances',3),
+     r'pddl_examples\simple\gardening\instances',0,3),
      ('rover-numeric', r'pddl_examples\simple\rover-numeric\domain.pddl',
-     r'pddl_examples\simple\rover-numeric\instances',4)]
+     r'pddl_examples\simple\rover-numeric\instances',0,4)]
     problems2 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
-     r'pddl_examples\linear\zeno-travel-linear\instances',0),
+     r'pddl_examples\linear\zeno-travel-linear\instances',0,0), 
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
-     r'pddl_examples\linear\farmland_ln\instances',0),
+     r'pddl_examples\linear\farmland_ln\instances',0,0),
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
-     r'pddl_examples\linear\fo_counters\instances',1),
+     r'pddl_examples\linear\fo_counters\instances',0,20),
      ('fo_counters_seq', r'pddl_examples\linear\fo_counters_seq\domain.pddl',
-     r'pddl_examples\linear\fo_counters_seq\instances',0),
+     r'pddl_examples\linear\fo_counters_seq\instances',0,0),
      ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
-     r'pddl_examples\linear\fo_counters_inv\instances',0),
+     r'pddl_examples\linear\fo_counters_inv\instances',0,0),
      ('fo_counters_rnd', r'pddl_examples\linear\fo_counters_rnd\domain.pddl',
-     r'pddl_examples\linear\fo_counters_rnd\instances',0),
+     r'pddl_examples\linear\fo_counters_rnd\instances',0,0),
      ('sailing_ln', r'pddl_examples\linear\sailing_ln\domain.pddl',
-     r'pddl_examples\linear\sailing_ln\instances',0),
+     r'pddl_examples\linear\sailing_ln\instances',0,0),
      ('tpp', r'pddl_examples\linear\tpp\domain.pddl',
-     r'pddl_examples\linear\tpp\instances',0),
+     r'pddl_examples\linear\tpp\instances',0,0),
      ('depots_numeric', r'pddl_examples\simple\depots_numeric\domain.pddl',
-     r'pddl_examples\simple\depots_numeric\instances',0),
+     r'pddl_examples\simple\depots_numeric\instances',0,0),
      ('gardening', r'pddl_examples\simple\gardening\domain.pddl',
-     r'pddl_examples\simple\gardening\instances',0),
+     r'pddl_examples\simple\gardening\instances',0,0),
      ('rover-numeric', r'pddl_examples\simple\rover-numeric\domain.pddl',
-     r'pddl_examples\simple\rover-numeric\instances',0)]
+     r'pddl_examples\simple\rover-numeric\instances',0,0)]
 
 
     # Define which relaxed planning version should be tested:
@@ -72,6 +73,7 @@ def main():
             (0, 'relaxed e2 s2', 2, 2),
             (1, 'relaxed e2 s3', 2, 3),
             (1, 'relaxed e2 s3.1', 2, 31),
+            (1, 'relaxed e2 s3.2', 2, 32),
             (0, 'relaxed e3 s1', 3, 1)
         ]
 
@@ -84,15 +86,17 @@ def main():
     # Set upper bound
     ub = 100
     
-    for domain_name, domain, instance_dir, domain_bound in problems:
+    for domain_name, domain, instance_dir, lb_files, ub_files in problems:
         counter = 0
         abs_instance_dir = os.path.join(BASE_DIR, instance_dir)
         #abs_instance_dir = BASE_DIR + instance_dir
 
         for filename in natsorted(os.listdir(abs_instance_dir)):
-            if filename.endswith('.pddl') and counter < domain_bound:
+            if filename.endswith('.pddl') and counter < ub_files:
 
                 counter = counter +1
+                if counter <= lb_files:
+                    continue
 
                 instance_path = os.path.join(abs_instance_dir, filename)
                 domain_path = os.path.join(BASE_DIR, domain)
@@ -251,6 +255,10 @@ class Report():
                         color = '#bada55'
                     elif data['found'] and data['valid'] and mode == 'relaxed e2 s3':
                         color = '#800020'
+                    elif data['found'] and data['valid'] and mode == 'relaxed e2 s3.1':
+                        color = '#d2a58e'
+                    elif data['found'] and data['valid'] and mode == 'relaxed e2 s3.2':
+                        color = '#eebbf5'
                     elif data['found'] and data['valid'] and mode == 'relaxed e3 s1':
                         color = '#fa626d'
                     elif data['found'] and data['valid'] and mode == 'relaxed e3 s2':
