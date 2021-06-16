@@ -46,7 +46,7 @@ def main():
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0,0),
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
-     r'pddl_examples\linear\fo_counters\instances',0,15),
+     r'pddl_examples\linear\fo_counters\instances',0,7),
      ('fo_counters_seq', r'pddl_examples\linear\fo_counters_seq\domain.pddl',
      r'pddl_examples\linear\fo_counters_seq\instances',0,0),
      ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
@@ -71,11 +71,12 @@ def main():
             (0, 'relaxed e1 s1', 1, 1),
             (0, 'relaxed e2 s1', 2, 1),
             (0, 'relaxed e2 s2', 2, 2),
-            (1, 'relaxed e2 s3', 2, 3),
-            (0, 'relaxed e2 s3.1', 2, 31),
-            (0, 'relaxed e2 s3.2', 2, 32),
-            (1, 'relaxed e2 s4', 2, 4),
-            (0, 'relaxed e3 s1', 3, 1)
+            (0, 'relaxed e2 s3', 2, 3),
+            (1, 'relaxed e2 s3.1', 2, 31),
+            (1, 'relaxed e2 s3.2', 2, 32),
+            (0, 'relaxed e2 s4', 2, 4),
+            (0, 'relaxed e3 s1', 3, 1),
+            (0, 'relaxed mutexes', 4, 5)
         ]
 
     # Specify which to test:

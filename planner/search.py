@@ -241,13 +241,12 @@ class SearchSMT(Search):
                 if(seq):
                     print('Plan fully sequentializable')
                     self.found = True
-                    
                 else:
                     # Discard the generated plan
                     self.plan = {}
 
                     # Invariant handling depends on the search-version
-                    if version in {1,31}:
+                    if version in {1,31} or str(inv_step) == 'All':
                         # Add constraint for future horizons
                         self.encoder.mutexes.append(invariant)
 
@@ -265,6 +264,14 @@ class SearchSMT(Search):
                             self.encoder.boolean_variables,
                             self.encoder.numeric_variables,
                             [invariant], [inv_step]).values()
+                    
+                    elif version == 5:
+                        # Encode all new invariants only for the current timestep
+                        encoded_invars = self.encoder.modifier.do_encode_stepwise(
+                            self.encoder.action_variables,
+                            self.encoder.boolean_variables,
+                            self.encoder.numeric_variables,
+                            [{'actions': [a1,a2]} for (a1,a2) in invariant], [inv_step]).values()
                     
                     # Analysis
                     if(analysis):
@@ -364,12 +371,23 @@ class SearchSMT(Search):
 
                 # Handle the result of the simulation.
                 if not seq:
-                    return (False, {'actions': actionsPerStep[step]})
+                    return (False, {'actions': actionsPerStep[step]}, step)
                 else:
                     # Insert action sequence into plan
                     for a in plan:
                         self.plan[len(self.plan)] = a
                 
+            elif self.encoder.version == 4 and sv == 5:
+
+                mutexes = self.encoder.computeLocalParallelMutexes(actionsPerStep[step])
+                if len(mutexes) != 0:
+                    return(False, mutexes, step)
+
+                index = len(self.plan)
+                for action in actionsPerStep[step]:
+                    self.plan[index] = action.name
+                    index = index +1
+
             else:
                 # Generate forumla expressing sequentializability
                 # for each step
@@ -455,7 +473,7 @@ class SearchSMT(Search):
                     if(analysis):
                         log.register('Encode seq-form of one step '+ str(step))
 
-                    concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix( 
+                    concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix(
                         booleanVarsPerStep[step], booleanVarsPerStep[step+1],
                         numVarsPerStep[step], numVarsPerStep[step+1],
                         last_step)
@@ -546,15 +564,19 @@ class SearchSMT(Search):
                     # Assert subformulas in local solver.
                     self.local_solver.reset()
                     for v in general_seq_forumla:
+                        #print(v)
                         self.local_solver.add(v)
 
                     # Check general satisfiability
                     res = self.local_solver.check(trackers)
+                    #print(self.local_solver.unsat_core())
 
                     # Analysis
                     if(analysis):
                         log.register('Check sat of gen. seq-formula '+ str(step))
-
+                    all = False
+                    if res != sat:
+                        all = True
                     if (res == sat):
                         concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix( 
                             booleanVarsPerStep[step], booleanVarsPerStep[step+1],
@@ -563,6 +585,7 @@ class SearchSMT(Search):
                         )
                     
                         for v in concrete_seq_prefix:
+                            #print(v)
                             self.local_solver.add(v)
 
                         # Analysis
@@ -580,9 +603,9 @@ class SearchSMT(Search):
                 # for subsequent invariant generation.
                 if not (res == sat):
                     
-                    if sv in {3}:
+                    if sv == 3:
+                        # Basic variant for checking the unsat core
                         core = self.local_solver.unsat_core()
-                        #print(core)
 
                         # Create the simple invariant only for actions
                         # invloved in the conflict
@@ -590,14 +613,30 @@ class SearchSMT(Search):
                         #print(core_names)
 
                         invar = [a for a in actionsPerStep[step] if a.name in core_names]
-                        return(False, {'actions': invar}, step)
+                        return (False, {'actions': invar}, step)
 
-                    if sv in {31,32}:
+                    elif sv in {31,32}:
+                        # Checking the unsat core using an incremental solver
                         core = self.local_solver.unsat_core()
                         core_names = {active_actions[a] for a in core}
                         invar = [a for a in actionsPerStep[step] if a.name in core_names]
-                        return(False, {'actions': invar}, step)
+                        print(core_names)
+                        return (False, {'actions': invar}, step)
 
+                    elif sv == 4:
+                        # Checking the unsat core for fixed order checks
+                        invar = []
+                        core = set(self.local_solver.unsat_core())
+                        for s in range(len(actionsPerStep[step])):
+                            for action in actionsPerStep[step]:
+                                if self.encoder.action_variables[s][action.name] in core:
+                                    invar.append(action)
+                                    break
+                        if all:
+                            return (False, {'actions': invar}, 'All')
+                        return (False, {'actions': invar}, step)
+
+                    # Default invariant
                     return (False, {'actions': actionsPerStep[step]}, step)
 
                 else:

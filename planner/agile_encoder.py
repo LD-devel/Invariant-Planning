@@ -57,6 +57,8 @@ class AgileEncoder():
             self.exec_trackers = {}
         elif version == 3:
             self.simulator = simulator.Simulator(self, self.boolean_fluents, self.numeric_fluents)
+        elif version == 4:
+            self.local_mutexes = set()
 
     def _ground(self):
         """
@@ -213,6 +215,116 @@ class AgileEncoder():
 
         return mutexes
        
+    def computeLocalParallelMutexes(self, actions):
+        """!
+        Computes mutually exclusive actions:
+        Two actions (a1, a2) are mutex if:
+            - intersection pre_a1 and eff_a2 (or viceversa) is non-empty
+            - intersection between eff_a1+ and eff_a2- (or viceversa) is non-empty
+            - intersection between numeric effects is non-empty
+
+        See, e.g., 'A Compilation of the Full PDDL+ Language into SMT'', Cashmore et al.
+
+        @return mutex: list of tuples defining action mutexes
+        """
+        # Stores mutexes
+        mutexes = []
+
+        # Stores mutexes, which have already been identified earlier
+        old_mutexes = []
+
+        for a1 in actions:
+
+            fetched_a1 = False
+            add_a1  = None
+            del_a1  = None
+            num_a1 = None 
+            variables_pre = None
+
+            for a2 in actions:
+                # Skip same action
+                if not a1.name == a2.name:
+
+                    if (a1,a2) in self.local_mutexes:
+                        # Mutex has already been identified earlier
+                        old_mutexes.append((a1,a2))
+                        continue
+
+                    if not fetched_a1:
+                        # Fetch all propositional fluents involved in effects of a1
+                        add_a1 = set([add[1] for add in a1.add_effects])
+                        del_a1 = set([de[1] for de in a1.del_effects])
+                        # fetch all numeric fluents involved in effects of a2
+                        # need to remove auxiliary fluents added by TFD parser
+                        num_a1 = set([ne[1].fluent for ne in a1.assign_effects]).union(set([ne[1].expression for ne in a1.assign_effects if not ne[1].expression.symbol.startswith('derived!') ]))
+
+                        # Variables in numeric preconditions of a1
+                        variables_pre = []
+                        for pre in a1.condition:
+                            if isinstance(pre,pddl.conditions.FunctionComparison):
+                                variables_pre.append(utils.extractVariablesFC(self,pre))
+
+                        variables_pre = set([item for sublist in variables_pre for item in sublist])
+
+                        fetched_a1 = True
+
+                    # Fetch all propositional fluents involved in effects of a2
+                    add_a2 = set([add[1] for add in a2.add_effects])
+                    del_a2 = set([de[1] for de in a2.del_effects])
+                    # fetch all numeric fluents involved in effects of a2
+                    # need to remove auxiliary fluents added by TFD parser
+                    num_a2 = set([ne[1].fluent for ne in a2.assign_effects]).union(set([ne[1].expression for ne in a2.assign_effects if not ne[1].expression.symbol.startswith('derived!') ]))
+
+                    # Condition 1
+
+                    # for propositional variables
+                    if any(el in add_a2 for el in a1.condition):
+                            mutexes.append((a1,a2))
+
+                    if any(el in del_a2 for el in a1.condition):
+                            mutexes.append((a1,a2))
+
+                    ## for numeric variables
+
+                    variables_eff = []
+                    for ne in a2.assign_effects:
+                        if isinstance(ne[1],pddl.conditions.FunctionComparison):
+                            variables_eff.append(utils.extractVariablesFC(self,ne[1]))
+
+                        else:
+                            variables_eff.append(utils.varNameFromNFluent(ne[1].fluent))
+
+                            if ne[1].expression in self.numeric_fluents:
+                                variables_eff.append(utils.varNameFromNFluent(ne[1].expression))
+                            else:
+                                utils.extractVariables(self,self.axioms_by_name[ne[1].expression],variables_eff)
+
+                    variables_eff = set(variables_eff)
+
+                    if variables_pre &  variables_eff:
+                            mutexes.append((a1,a2))
+
+
+                    ## Condition 2
+                    if add_a1 & del_a2:
+                            mutexes.append((a1,a2))
+
+                    if add_a2 & del_a1:
+                            mutexes.append((a1,a2))
+
+                    ## Condition 3
+                    if num_a1 & num_a2:
+                            mutexes.append((a1,a2))
+
+
+        mutexes = set(tuple(sorted(t)) for t in mutexes)
+        mutexes = mutexes.union(set(tuple(sorted(t)) for t in old_mutexes))
+
+        # Update mutexes 
+        for m in mutexes:
+            self.local_mutexes.add(tuple(sorted(m)))
+
+        return mutexes
 
     def createVariables(self,last_state):
         """!
@@ -773,7 +885,7 @@ class AgileEncoderSMT(AgileEncoder):
                 for _,encoding in action_steps.items():
                     formula.append(encoding)
 
-        elif self.version == 2:
+        else:
             actions = self.fillActionEncodings(step, step)
             formula.extend(actions)
  
@@ -1032,11 +1144,13 @@ class AgileEncoderSMT(AgileEncoder):
         return formula, active_execs
 
     def encode_fixed_order_gen_seq(self, actions):
-        
+       
+        f = Bool('f') 
         encoding = []
         trackers = []
 
         self.createVariables(len(actions))
+
 
         step = 0
         for action in actions:
@@ -1047,7 +1161,13 @@ class AgileEncoderSMT(AgileEncoder):
             if not self.action_encodings[step].has_key(action):
                 self.action_encodings[step][action] = self.encodeAction(action,step)
             
+            #Frame
+            frame = And(self.encodeFrame(step,step,[action]).values()[0])
+
             encoding.append(self.action_encodings[step][action])
+            encoding.append(Implies(self.action_variables[step][action.name],frame))
             trackers.append(self.action_variables[step][action.name])
+
+            step +=1
 
         return encoding, trackers
