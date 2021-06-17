@@ -56,6 +56,7 @@ class SearchSMT(Search):
         # Time log for analysis
         self.last_time = time.time()
         self.time_log = []
+        formula_cnt = 0 
 
         # Defines initial horizon for ramp-up SMT search
 
@@ -70,6 +71,7 @@ class SearchSMT(Search):
             self.solver = Solver()
 
             # Build planning subformulas
+            formula_cnt = 0
             formula =  self.encoder.encode(self.horizon)
 
             # Analysis
@@ -78,6 +80,7 @@ class SearchSMT(Search):
 
             # Assert subformulas in solver
             for k,v in formula.items():
+                formula_cnt += 1
                 self.solver.add(v)
 
             # Check for satisfiability
@@ -283,6 +286,7 @@ class SearchSMT(Search):
                     # self.solver.add the encoded invariant
                     for v in encoded_invars:
                         self.solver.add(v)
+                        self.encoder.semantics_f_cnt += 1
                     self.solver.push()
 
                     # Add the goal befor sat-check and remove it afterwards

@@ -20,7 +20,7 @@ def main():
     # Sets of problem domains and instances:
     # First file to be included, fist file to be excluded
     problems1 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
-     r'pddl_examples\linear\zeno-travel-linear\instances',0,5),
+     r'pddl_examples\linear\zeno-travel-linear\instances',0,1),
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0,0), # Problem in domain definition. 
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
@@ -42,7 +42,7 @@ def main():
      ('rover-numeric', r'pddl_examples\simple\rover-numeric\domain.pddl',
      r'pddl_examples\simple\rover-numeric\instances',0,4)]
     problems2 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
-     r'pddl_examples\linear\zeno-travel-linear\instances',0,3), 
+     r'pddl_examples\linear\zeno-travel-linear\instances',0,8), 
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0,0),
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
@@ -63,7 +63,28 @@ def main():
      r'pddl_examples\simple\gardening\instances',0,0),
      ('rover-numeric', r'pddl_examples\simple\rover-numeric\domain.pddl',
      r'pddl_examples\simple\rover-numeric\instances',0,0)]
-
+    problems3 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
+     r'pddl_examples\linear\zeno-travel-linear\instances',0,3),
+     ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
+     r'pddl_examples\linear\farmland_ln\instances',0,0), # Problem in domain definition. 
+     ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
+     r'pddl_examples\linear\fo_counters\instances',0,6),
+     ('fo_counters_seq', r'pddl_examples\linear\fo_counters_seq\domain.pddl',
+     r'pddl_examples\linear\fo_counters_seq\instances',0,6),
+     ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
+     r'pddl_examples\linear\fo_counters_inv\instances',0,6),
+     ('fo_counters_rnd', r'pddl_examples\linear\fo_counters_rnd\domain.pddl',
+     r'pddl_examples\linear\fo_counters_rnd\instances',0,6),
+     ('sailing_ln', r'pddl_examples\linear\sailing_ln\domain.pddl',
+     r'pddl_examples\linear\sailing_ln\instances',0,0), # Does not seem to be solvable in reasonable time at horizon 24
+     ('tpp', r'pddl_examples\linear\tpp\domain.pddl',
+     r'pddl_examples\linear\tpp\instances',0,2),
+     ('depots_numeric', r'pddl_examples\simple\depots_numeric\domain.pddl',
+     r'pddl_examples\simple\depots_numeric\instances',0,2),
+     ('gardening', r'pddl_examples\simple\gardening\domain.pddl',
+     r'pddl_examples\simple\gardening\instances',0,2),
+     ('rover-numeric', r'pddl_examples\simple\rover-numeric\domain.pddl',
+     r'pddl_examples\simple\rover-numeric\instances',0,3)]
 
     # Define which relaxed planning version should be tested:
     relaxed_planners = [
@@ -71,12 +92,12 @@ def main():
             (0, 'relaxed e1 s1', 1, 1),
             (0, 'relaxed e2 s1', 2, 1),
             (0, 'relaxed e2 s2', 2, 2),
-            (0, 'relaxed e2 s3', 2, 3),
-            (1, 'relaxed e2 s3.1', 2, 31),
-            (1, 'relaxed e2 s3.2', 2, 32),
-            (0, 'relaxed e2 s4', 2, 4),
+            (0, 'relaxed e2 s3', 2, 3), #Unsat core
+            (1, 'relaxed e2 s3.1', 2, 31), #uc incremental
+            (1, 'relaxed e2 s3.2', 2, 32), #one vs for all ts
+            (0, 'relaxed e2 s4', 2, 4),  #Fixed order check
             (0, 'relaxed e3 s1', 3, 1),
-            (0, 'relaxed mutexes', 4, 5)
+            (0, 'relaxed e4 s5', 4, 5) #Syntactical
         ]
 
     # Specify which to test:
@@ -116,10 +137,14 @@ def main():
                     s = search.SearchSMT(e,ub)
                     found, horizon, solution = s.do_linear_incremental_search(analysis=True, log=log)
                     
+                    print('COUNT:')
+                    print(e.f_cnt)
+
                     # Log the behaviour of the search.
                     total_time = log.finish()
                     log_metadata = {'mode':'parallel incremental', 'domain':domain_name, 'instance':filename, 'found':found,
-                        'horizon':horizon, 'time': total_time, 'time_log':log.export()}
+                        'horizon':horizon, 'time': total_time, 'time_log':log.export(), 'f_count': e.f_cnt,
+                        'semantics_f_count': e.semantics_f_cnt}
                     myReport.create_log(solution, domain_path, instance_path, log_metadata)
                 except:
                     myReport.fail_log('parallel incremental' , domain_name, filename)
@@ -136,11 +161,15 @@ def main():
                             log.register('Initializing encoder.')
 
                             found, horizon, solution = s.do_relaxed_search(True, log=log, version=search_v)
+                    
+                            print('COUNT:')
+                            print(e.f_cnt)
 
                             # Log the behaviour of the search.
                             total_time = log.finish()
                             log_metadata = {'mode': mode, 'domain':domain_name, 'instance':filename, 'found':found,
-                                'horizon':horizon, 'time': total_time, 'time_log': log.export()}
+                                'horizon':horizon, 'time': total_time, 'time_log': log.export(), 'f_count': e.f_cnt,
+                                'semantics_f_count': e.semantics_f_cnt}
                             myReport.create_log(solution, domain_path, instance_path, log_metadata)
 
                         except:
@@ -172,6 +201,10 @@ class Report():
         
         # Insert number of steps in plan
         self.logs[domain][instance][mode]['steps'] = log_metadata['horizon']
+
+        # Formula numbers
+        self.logs[domain][instance][mode]['f_count'] = log_metadata['f_count']
+        self.logs[domain][instance][mode]['semantics_f_count'] = log_metadata['semantics_f_count']
 
         # Time to compute
         self.logs[domain][instance][mode]['time'] = log_metadata['time']
@@ -217,7 +250,7 @@ class Report():
         # Format: {domain : { instance: { mode: {steps: ?, time: ?, found: ?, valid: ?}}}}
         for domain, dom  in self.logs.iteritems():
             # New fig for each domain
-            _, axes = plt.subplots(nrows=1, ncols=2, sharex=False, sharey=False, squeeze=False)
+            _, axes = plt.subplots(nrows=2, ncols=2, sharex=False, sharey=False, squeeze=True, constrained_layout=True)
             
             # Plot in subplot
             axes[0,0].set_title(domain)
@@ -225,6 +258,10 @@ class Report():
             axes[0,0].set_ylabel('t in s')
             axes[0,1].set_xlabel('Instance')
             axes[0,1].set_ylabel('Steps')
+            axes[1,0].set_xlabel('Instance')
+            axes[1,0].set_ylabel('Basic Subformulas')
+            axes[1,1].set_xlabel('Instance')
+            axes[1,1].set_ylabel('Learned/Mutex Subformulas')
 
             countr_instance = 0
 
@@ -267,6 +304,8 @@ class Report():
                         color = '#f94552'                    
                     elif data['found'] and data['valid'] and mode == 'relaxed e2 s4':
                         color = 'green'
+                    elif data['found'] and data['valid'] and mode == 'relaxed e4 s5':
+                        color = 'yellow'
                     
                     # Bar showing the time needed.
                     if countr_instance == 0:
@@ -277,6 +316,12 @@ class Report():
 
                     # Bar showing the parallel-steps needed.
                     axes[0,1].bar(position, s, width=bar_width, color=color, align='center')
+
+                    # Bar showing the number of basic formulas needed.
+                    axes[1,0].bar(position, data['f_count'], width=bar_width, color=color, align='center')
+
+                    # Bar showing the number of semantics-formulas needed.
+                    axes[1,1].bar(position, data['semantics_f_count'], width=bar_width, color=color, align='center')
                     
                     countr_mode += 1
                 

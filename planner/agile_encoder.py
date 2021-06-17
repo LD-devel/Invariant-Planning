@@ -60,6 +60,10 @@ class AgileEncoder():
         elif version == 4:
             self.local_mutexes = set()
 
+        # For analysis - counting number of subformulas
+        self.f_cnt = 0
+        self.semantics_f_cnt = 0
+
     def _ground(self):
         """
         Grounds action schemas as per TFD parser)
@@ -894,12 +898,14 @@ class AgileEncoderSMT(AgileEncoder):
         frame = self.encodeFrame(step, step)
         for encoding in frame.values():
             formula.append(encoding)
+        self.f_cnt += len(formula)
 
         # Encode execution semantics (lin/par/rel)
 
         execution = self.encodeExecutionSemantics(step, step)
         for encoding in execution.values():
             formula.append(encoding)
+            self.semantics_f_cnt += 1
 
         return formula
 
