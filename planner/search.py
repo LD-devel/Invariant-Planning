@@ -618,9 +618,8 @@ class SearchSMT(Search):
                     elif sv in {31,32}:
                         # Checking the unsat core using an incremental solver
                         core = self.local_solver.unsat_core()
-                        core_names = {active_actions[a] for a in core}
+                        core_names = {active_actions[a] for a in core if a in active_actions}
                         invar = [a for a in actionsPerStep[step] if a.name in core_names]
-                        print(core_names)
                         return (False, {'actions': invar}, step)
 
                     elif sv == 4:
