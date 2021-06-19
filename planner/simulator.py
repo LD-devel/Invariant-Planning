@@ -89,7 +89,6 @@ class Simulator():
                     else:
                         raise Exception(' Action {} contains add effect not supported'.format(action.name))
 
-
                 # Execute delete effects
                 for de in action.del_effects:
                     # Check if effect is conditional

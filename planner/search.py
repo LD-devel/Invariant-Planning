@@ -109,7 +109,7 @@ class SearchSMT(Search):
         
         return self.solution
 
-    def do_linear_incremental_search(self, analysis = False):
+    def do_linear_incremental_search(self, analysis = False, log = None):
         """
         Linear search scheme for SMT encodings with unit action costs.
 
@@ -146,15 +146,15 @@ class SearchSMT(Search):
             self.solver.add(self.encoder.encodeGoalState(self.horizon))
 
             # Analysis
-            self.time_log.append(('Formula encoding at horizon: '+ str(self.horizon),time.time()-self.last_time))
-            self.last_time = time.time()
+            if(analysis):
+                log.register('Formula encoding at horizon: '+ str(self.horizon))
 
             # Check for satisfiability
             res = self.solver.check()
 
             # Analysis
-            self.time_log.append(('Sat-check at horizon: '+ str(self.horizon),time.time()-self.last_time))
-            self.last_time = time.time()
+            if(analysis):
+                log.register('Sat-check at horizon: '+ str(self.horizon))
 
             if res == sat:
                 print(self.horizon)
@@ -173,7 +173,8 @@ class SearchSMT(Search):
                 model = self.solver.model()
                 self.solution = plan.Plan(model, self.encoder)
 
-            return (self.found, self.horizon, self.solution, self.time_log)
+            log.register('Exiting search')
+            return (self.found, self.horizon, self.solution)
 
         # Extract plan from model
         model = self.solver.model()
@@ -181,7 +182,7 @@ class SearchSMT(Search):
         
         return self.solution
 
-    def do_relaxed_search(self, analysis = False, log = None):
+    def do_relaxed_search(self, analysis = False, log = None, version = 1):
         """
         Invariant guided search scheme.
         """
@@ -189,8 +190,16 @@ class SearchSMT(Search):
         # Defines initial horizon for ramp-up search
         self.horizon = 1
 
-        # Create SMT solver instance
+        # Create SMT solver instances
         self.solver = Solver()
+
+        # One solver for seq. tests
+        self.local_solver = Solver()
+        if version in {3,31,32,4}:
+            self.local_solver.set(unsat_core=True)
+            # Create dict for bookkeeping
+            self.solver_log = {a:-1 for a in self.encoder.actions}
+            self.solver_log['MAX'] = -1
 
         # Encode Initial state
         self.encoder.createVariables(0)
@@ -227,25 +236,42 @@ class SearchSMT(Search):
 
             while res == sat and not self.found:
                 #check sequentialziability
-                seq , invariant = self.check_sequentializability(analysis=analysis,log=log)
+                seq, invariant, inv_step = self.check_sequentializability(analysis=analysis, log=log, sv=version)
 
                 if(seq):
                     print('Plan fully sequentializable')
                     self.found = True
-                    
                 else:
                     # Discard the generated plan
                     self.plan = {}
 
-                    # Add constraint for future horizons
-                    self.encoder.mutexes.append(invariant)
+                    # Invariant handling depends on the search-version
+                    if version in {1,31} or str(inv_step) == 'All':
+                        # Add constraint for future horizons
+                        self.encoder.mutexes.append(invariant)
 
-                    # Encode invariant
-                    encoded_invars = self.encoder.modifier.do_encode(
-                        self.encoder.action_variables,
-                        self.encoder.boolean_variables,
-                        self.encoder.numeric_variables,
-                        [invariant], self.encoder.horizon)
+                        # Encode invariant for all previous timesteps
+                        encoded_invars = self.encoder.modifier.do_encode(
+                            self.encoder.action_variables,
+                            self.encoder.boolean_variables,
+                            self.encoder.numeric_variables,
+                            [invariant], self.encoder.horizon)
+                    
+                    elif version in {2,3,32,4}:
+                        # Encode invariant only for the current timestep
+                        encoded_invars = self.encoder.modifier.do_encode_stepwise(
+                            self.encoder.action_variables,
+                            self.encoder.boolean_variables,
+                            self.encoder.numeric_variables,
+                            [invariant], [inv_step]).values()
+                    
+                    elif version == 5:
+                        # Encode all new invariants only for the current timestep
+                        encoded_invars = self.encoder.modifier.do_encode_stepwise(
+                            self.encoder.action_variables,
+                            self.encoder.boolean_variables,
+                            self.encoder.numeric_variables,
+                            [{'actions': [a1,a2]} for (a1,a2) in invariant], [inv_step]).values()
                     
                     # Analysis
                     if(analysis):
@@ -278,10 +304,9 @@ class SearchSMT(Search):
         # Return useful metrics for testsuit
         if(analysis):
             if(self.found):
-                # Extract plan from model
-                model = self.solver.model()
                 self.solution = plan.Plan(None, None, None, self.plan)
 
+            log.register('Exiting search')
             return (self.found, self.horizon, self.solution)
 
         if self.found:
@@ -292,7 +317,7 @@ class SearchSMT(Search):
             print('No plan found within upper bound.')
             sys.exit()
 
-    def check_sequentializability(self, analysis = False, log= None):
+    def check_sequentializability(self, analysis = False, log= None, sv=1):
 
         # Extract parallel plan steps from the model
         actionsPerStep = []
@@ -346,51 +371,229 @@ class SearchSMT(Search):
 
                 # Handle the result of the simulation.
                 if not seq:
-                    return (False, {'actions': actionsPerStep[step]})
+                    return (False, {'actions': actionsPerStep[step]}, step)
                 else:
                     # Insert action sequence into plan
                     for a in plan:
                         self.plan[len(self.plan)] = a
                 
+            elif self.encoder.version == 4 and sv == 5:
+
+                mutexes = self.encoder.computeLocalParallelMutexes(actionsPerStep[step])
+                if len(mutexes) != 0:
+                    return(False, mutexes, step)
+
+                index = len(self.plan)
+                for action in actionsPerStep[step]:
+                    self.plan[index] = action.name
+                    index = index +1
 
             else:
                 # Generate forumla expressing sequentializability
                 # for each step
 
-                if(self.encoder.version == 1):
+                if (self.encoder.version == 1):
 
                     seq_encoder, general_seq_forumla = self.encoder.encode_general_seq(
                         actionsPerStep[step])
+                                    
+                    # Analysis
+                    if(analysis):
+                        log.register('Encode seq-form of one step '+ str(step))
+                    
                     concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix_v1(
-                        seq_encoder, 
+                        seq_encoder,
                         booleanVarsPerStep[step], booleanVarsPerStep[step+1],
                         numVarsPerStep[step], numVarsPerStep[step+1])
-                
-                elif(self.encoder.version == 2):
+                    
+                    # Analysis
+                    if(analysis):
+                        log.register('Encode seq-prefix of one step '+ str(step))
+
+                    # Assert subformulas in local solver.
+                    self.local_solver.reset()
+
+                    for v in concrete_seq_prefix:
+                        self.local_solver.add(v)
+
+                    for v in general_seq_forumla:
+                        self.local_solver.add(v)
+
+                    # Analysis
+                    if(analysis):
+                        log.register('Assert subformulas-seq of one step '+ str(step))
+
+                    # Check for satisfiability
+                    res = self.local_solver.check()
+
+                elif (self.encoder.version == 2 and (sv == 1 or sv == 2)):
 
                     last_step = len(actionsPerStep[step])
                     general_seq_forumla = self.encoder.encode_general_seq(
                         actionsPerStep[step])
+
+                    # Analysis
+                    if(analysis):
+                        log.register('Encode seq-form of one step '+ str(step))
+
+                    concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix( 
+                        booleanVarsPerStep[step], booleanVarsPerStep[step+1],
+                        numVarsPerStep[step], numVarsPerStep[step+1],
+                        last_step)
+
+                    # Analysis
+                    if(analysis):
+                        log.register('Encode seq-prefix of one step '+ str(step))
+
+                    # Assert subformulas in local solver.
+                    self.local_solver.reset()
+
+                    for v in concrete_seq_prefix:
+                        self.local_solver.add(v)
+
+                    for v in general_seq_forumla:
+                        self.local_solver.add(v)
+
+                    # Analysis
+                    if(analysis):
+                        log.register('Assert subformulas-seq of one step '+ str(step))
+                    
+                    # Check for satisfiability
+                    res = self.local_solver.check()
+
+                elif (self.encoder.version == 2 and sv == 3):
+
+                    #Track assertions
+                    last_step = len(actionsPerStep[step])
+                    general_seq_forumla = self.encoder.encode_general_seq_trackable(
+                        actionsPerStep[step]
+                    )
+                    
+                    # Analysis
+                    if(analysis):
+                        log.register('Encode seq-form of one step '+ str(step))
+
+                    concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix(
+                        booleanVarsPerStep[step], booleanVarsPerStep[step+1],
+                        numVarsPerStep[step], numVarsPerStep[step+1],
+                        last_step)
+                
+                    # Analysis
+                    if(analysis):
+                        log.register('Encode seq-prefix of one step '+ str(step))
+
+                    # Assert subformulas in local solver.
+                    self.local_solver.reset()
+
+                    for v in concrete_seq_prefix:
+                        self.local_solver.add(v)
+
+                    trackers = []
+                    for p, a in general_seq_forumla:
+                        constraint = And(a)
+                        self.local_solver.add(Implies(p,constraint))
+                        trackers.append(p)
+
+                    # Analysis
+                    if(analysis):
+                        log.register('Assert subformulas-seq of one step '+ str(step))
+
+                    # Check for satisfiability
+                    res = self.local_solver.check(trackers)
+
+                elif (self.encoder.version == 2 and sv in {31,32}):
+
+                    if self.solver_log['MAX'] > -1:
+                         self.local_solver.pop()
+                    last_step = len(actionsPerStep[step])
+                    
+                    # Encode and assert only the actions needed
+                    action_formulas, active_actions = self.encoder.encode_general_seq_increment(
+                        actionsPerStep[step], self.solver_log
+                    )
+                    for a in action_formulas:
+                        self.local_solver.add(a)
+
+                    trackers = active_actions.keys()
+
+                    exec_formulas, exec_trackers = self.encoder.encode_exec_increment(
+                        actionsPerStep[step], self.solver_log
+                    )
+                    for e in exec_formulas:
+                        self.local_solver.add(e)
+
+                    trackers.extend(exec_trackers)
+
+                    self.local_solver.push()
+
+                    # Encode Frame
+                    frame = self.encoder.encodeFrame(0, last_step, actions=actionsPerStep[step])
+                    for step_enc in frame.values():
+                        self.local_solver.add(step_enc)
+                            
+                    # Analysis
+                    if(analysis):
+                        log.register('Encode seq-form of one step '+ str(step))
+
                     concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix( 
                         booleanVarsPerStep[step], booleanVarsPerStep[step+1],
                         numVarsPerStep[step], numVarsPerStep[step+1],
                         last_step)
                 
-                # Assert subformulas in local solver.
-                local_solver = Solver()
+                    for v in concrete_seq_prefix:
+                        self.local_solver.add(v)
 
-                for v in general_seq_forumla:
-                    local_solver.add(v)
+                    # Analysis
+                    if(analysis):
+                        log.register('Encode seq-prefix of one step '+ str(step))
 
-                for v in concrete_seq_prefix:
-                    local_solver.add(v)
+                    # Check for satisfiability
+                    res = self.local_solver.check(trackers)
 
-                # Analysis
-                if(analysis):
-                    log.register('Encode seq of one step '+ str(step))
+                elif (self.encoder.version == 2 and sv == 4):
 
-                # Check for satisfiability
-                res = local_solver.check()
+                    last_step = len(actionsPerStep[step])
+                    general_seq_forumla, trackers = self.encoder.encode_fixed_order_gen_seq(
+                        actionsPerStep[step]
+                    )
+                    
+                    # Analysis
+                    if(analysis):
+                        log.register('Encode seq-form of one step '+ str(step))
+
+                    # Assert subformulas in local solver.
+                    self.local_solver.reset()
+                    for v in general_seq_forumla:
+                        #print(v)
+                        self.local_solver.add(v)
+
+                    # Check general satisfiability
+                    res = self.local_solver.check(trackers)
+                    #print(self.local_solver.unsat_core())
+
+                    # Analysis
+                    if(analysis):
+                        log.register('Check sat of gen. seq-formula '+ str(step))
+                    all = False
+                    if res != sat:
+                        all = True
+                    if (res == sat):
+                        concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix( 
+                            booleanVarsPerStep[step], booleanVarsPerStep[step+1],
+                            numVarsPerStep[step], numVarsPerStep[step+1],
+                            last_step
+                        )
+                    
+                        for v in concrete_seq_prefix:
+                            #print(v)
+                            self.local_solver.add(v)
+
+                        # Analysis
+                        if(analysis):
+                           log.register('Encode seq-prefix of one step '+ str(step))
+
+                        # Check general satisfiability
+                        res = self.local_solver.check(trackers)
 
                 # Analysis
                 if(analysis):
@@ -399,11 +602,47 @@ class SearchSMT(Search):
                 # If unsat, return the involved actions and values of variables
                 # for subsequent invariant generation.
                 if not (res == sat):
-                    return (False, {'actions': actionsPerStep[step]})
+                    
+                    if sv == 3:
+                        # Basic variant for checking the unsat core
+                        core = self.local_solver.unsat_core()
+
+                        # Create the simple invariant only for actions
+                        # invloved in the conflict
+                        core_names = {str(a) for a in core}
+                        #print(core_names)
+
+                        invar = [a for a in actionsPerStep[step] if a.name in core_names]
+                        return (False, {'actions': invar}, step)
+
+                    elif sv in {31,32}:
+                        # Checking the unsat core using an incremental solver
+                        core = self.local_solver.unsat_core()
+                        core_names = {active_actions[a] for a in core}
+                        invar = [a for a in actionsPerStep[step] if a.name in core_names]
+                        print(core_names)
+                        return (False, {'actions': invar}, step)
+
+                    elif sv == 4:
+                        # Checking the unsat core for fixed order checks
+                        invar = []
+                        core = set(self.local_solver.unsat_core())
+                        for s in range(len(actionsPerStep[step])):
+                            for action in actionsPerStep[step]:
+                                if self.encoder.action_variables[s][action.name] in core:
+                                    invar.append(action)
+                                    break
+                        if all:
+                            return (False, {'actions': invar}, 'All')
+                        return (False, {'actions': invar}, step)
+
+                    # Default invariant
+                    return (False, {'actions': actionsPerStep[step]}, step)
+
                 else:
                     # If sat, the model has to be extracted here to extract a plan
                     index = len(self.plan)
-                    model = local_solver.model()
+                    model = self.local_solver.model()
                     for seq_step in range(len(actionsPerStep[step])):
                         for action in actionsPerStep[step]:
                             if self.encoder.version == 1:
@@ -419,7 +658,7 @@ class SearchSMT(Search):
                     if(analysis):
                         log.register('Plan extraction '+ str(step))
 
-        return (True, None)
+        return (True, None, None)
 
 
 class SearchOMT(Search):
