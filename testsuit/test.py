@@ -42,7 +42,7 @@ def main():
      ('rover-numeric', r'pddl_examples\simple\rover-numeric\domain.pddl',
      r'pddl_examples\simple\rover-numeric\instances',0,4)]
     problems2 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
-     r'pddl_examples\linear\zeno-travel-linear\instances',0,1), 
+     r'pddl_examples\linear\zeno-travel-linear\instances',0,6), 
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0,0),
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
@@ -93,7 +93,7 @@ def main():
             (0, 'relaxed e2 s1', 2, 1),
             (0, 'relaxed e2 s2', 2, 2),
             (0, 'relaxed e2 s3', 2, 3), #Unsat core
-            (0, 'relaxed e2 s3.1', 2, 31), #uc incremental
+            (1, 'relaxed e2 s3.1', 2, 31), #uc incremental
             (0, 'relaxed e2 s3.2', 2, 32), #one vs for all ts
             (0, 'relaxed e2 s4', 2, 4),  #Fixed order check
             (0, 'relaxed e3 s1', 3, 1),
@@ -182,7 +182,7 @@ def main():
                 log = Log()
 
                 # Perform the search.
-                e = agile_encoder.AgileEncoderSMT(task, modifier.RelaxedModifier(), version=encoder_v)
+                e = agile_encoder.AgileEncoderSMT(task, modifier.RelaxedModifier(), version=2)
                 s = search.SearchSMT(e,ub)
                 log.register('Initializing encoder.')
 

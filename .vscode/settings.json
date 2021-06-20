@@ -1,3 +1,5 @@
 {
-    "python.pythonPath": "c:\\Users\\ldirk\\Desktop\\Code\\Thesis\\myVenv\\Scripts\\python.exe"
+    "python.pythonPath": "c:\\Users\\ldirk\\Desktop\\Code\\Thesis\\myVenv\\Scripts\\python.exe",
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true
 }

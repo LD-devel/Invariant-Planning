@@ -197,8 +197,7 @@ class SearchSMT(Search):
             options['Timesteps'] = 0
             # 0 corresponds to all timsteps
             # 1 corresponds to only the corresponding timestep
-            # 2 allows for dynamic behaviour and defaults to 0
-            # 3 allows for dynamic behavoiur and defaults to 1
+            # 2 allows for dynamic behaviour
         if not options.has_key('Seq-check'):
             options['Seq-check'] = 'general'
         
@@ -212,7 +211,15 @@ class SearchSMT(Search):
         self.local_solver = Solver()
         if options['UnsatCore']:
             self.local_solver.set(unsat_core=True)
-        
+            # Create dict for bookkeeping
+            self.solver_log = {a:-1 for a in self.encoder.actions}
+            self.solver_log['MAX'] = -1
+
+        # Encode Initial state
+        self.encoder.createVariables(0)
+        self.solver.add(self.encoder.encodeInitialState())
+        self.solver.push()
+
         # Create empty plan, to be amended during seq.-tests
         self.plan = {}
         print('Start CEGAR search with options:')
@@ -230,6 +237,10 @@ class SearchSMT(Search):
             # Create backtracking mark, for incrementality
             self.solver.push()
         
+            # Encode goal step
+            goal = self.encoder.encodeGoalState(self.horizon)
+            self.solver.add(goal)
+
             # Analysis
             if not log is None:
                 log.register('Initial formula encoding at horizon: '+ str(self.horizon))
@@ -242,7 +253,15 @@ class SearchSMT(Search):
             while res == sat and not self.found:
                 # Check the sequentializibility
                 #TODO
-                seq, invariant, inv_step = True, None, None
+                seq, invariant, inv_step = False, None, None
+
+                if options['Seq-check'] == 'general':
+                    if options['UnsatCore']:
+                        # Incrementality is currently only supported
+                        # in combination with the unsat core
+                        if not self.encoder.version == 2:
+                            print('Encoder unsuitable for the selected options.')
+                        seq, invariant, inv_step = self._seq_check_orderless_core(log=log)
 
                 if seq:
                     print('Plan fully sequentializable')
@@ -252,8 +271,29 @@ class SearchSMT(Search):
                     self.plan = {}
 
                     # Handle invariant creation, depending on options
-                    #TODO
                     encoded_invars = []
+
+                    if ((options['Timesteps'] == 2 and str(inv_step) == 'All')
+                        or options['Timesteps'] == 0):
+                        # Encode invariant for all timesteps
+
+                        # Add constraint for future horizons
+                        self.encoder.mutexes.append(invariant)
+
+                        # Encode invariant for all previous timesteps
+                        encoded_invars = self.encoder.modifier.do_encode(
+                            self.encoder.action_variables,
+                            self.encoder.boolean_variables,
+                            self.encoder.numeric_variables,
+                            [invariant], self.encoder.horizon)
+
+                    elif options['Timesteps'] == 1:
+                        # Encode invariant for current timestep
+                        encoded_invars = self.encoder.modifier.do_encode_stepwise(
+                        self.encoder.action_variables,
+                        self.encoder.boolean_variables,
+                        self.encoder.numeric_variables,
+                        [invariant], [inv_step]).values()
 
                     # Remove the goal encoding
                     self.solver.pop()
@@ -297,6 +337,139 @@ class SearchSMT(Search):
 
         return self.solution
 
+    def _seq_check_orderless_core(self, log = None):
+
+        model = self.solver.model()
+
+        # Extract parallel plan steps from the model
+        actionsPerStep = self._extract_actions(model)
+        booleanVarsPerStep, numVarsPerStep = self._extract_vars(model)
+
+        # Analysis
+        if not log is None:
+            log.register('Extract model at horizon '+ str(self.horizon))
+        
+        # Check for each step
+        for step in range(self.encoder.horizon):
+
+            # Steps containing only one action are trivially seq.
+            if(len(actionsPerStep[step]) == 1):
+                self.plan[len(self.plan)] = actionsPerStep[step][0].name
+                continue
+
+            # Pop seq-prefix, only if asserted before.
+            if self.solver_log['MAX'] > -1:
+                self.local_solver.pop()
+            last_step = len(actionsPerStep[step])
+            
+            # Encode and assert only the actions needed
+            action_formulas, active_actions = self.encoder.encode_general_seq_increment(
+                actionsPerStep[step], self.solver_log
+            )
+            for a in action_formulas:
+                self.local_solver.add(a)
+
+            trackers = active_actions.keys()
+
+            exec_formulas, exec_trackers = self.encoder.encode_exec_increment(
+                actionsPerStep[step], self.solver_log
+            )
+            for e in exec_formulas:
+                self.local_solver.add(e)
+
+            trackers.extend(exec_trackers)
+
+            self.local_solver.push()
+
+            # Encode Frame
+            frame = self.encoder.encodeFrame(0, last_step, actions=actionsPerStep[step])
+            for step_enc in frame.values():
+                self.local_solver.add(step_enc)
+                    
+            # Analysis
+            if not log is None:
+                log.register('Encode seq-form of one step '+ str(step))
+
+            concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix( 
+                booleanVarsPerStep[step], booleanVarsPerStep[step+1],
+                numVarsPerStep[step], numVarsPerStep[step+1],
+                last_step)
+        
+            for v in concrete_seq_prefix:
+                self.local_solver.add(v)
+
+            # Analysis
+            if not log is None:
+                log.register('Encode seq-prefix of one step '+ str(step))
+
+            # Check for satisfiability
+            res = self.local_solver.check(trackers)
+
+            # Analysis
+            if not log is None:
+                log.register('Check sat of seq-formula '+ str(step))
+            
+            if not res == sat:
+                # Checking the unsat core using an incremental solver
+                core = self.local_solver.unsat_core()
+                core_names = {active_actions[a] for a in core if a in active_actions}
+                invar = [a for a in actionsPerStep[step] if a.name in core_names]
+                return (False, {'actions': invar}, step)
+            else:
+                local_model = self.local_solver.model()
+                self._plan_extraction(local_model, actionsPerStep[step])
+
+                # Analysis
+                if not log is None:
+                    log.register('Check sat of seq-formula '+ str(step))
+        
+        return True, None, None
+                         
+    def _plan_extraction(self, model, actions):
+        index = len(self.plan)
+        for seq_step in range(len(actions)):
+            for action in actions:
+                if is_true(model[self.encoder.action_variables[seq_step][action.name]]):
+                    self.plan[index] = action.name
+                    index = index +1
+
+    def _extract_actions(self, model):
+        """
+        Extract actions in parallel plan steps from the model
+        """
+
+        actionsPerStep = []
+        
+        for step in range(self.encoder.horizon):
+            actionsPerStep.append([])
+
+            for action in self.encoder.actions:
+                if is_true(model[self.encoder.action_variables[step][action.name]]):
+                    actionsPerStep[step].append(action)
+        
+        return actionsPerStep
+
+    def _extract_vars(self, model):
+        """
+        Extract varibale values in parallel plan steps from the model
+        """
+
+        booleanVarsPerStep = []
+        numVarsPerStep = []
+
+        for step in range(self.encoder.horizon+1):
+            booleanVarsPerStep.append([])
+            numVarsPerStep.append([])
+
+            for key, var in self.encoder.boolean_variables[step].iteritems():
+                var_val = model[self.encoder.boolean_variables[step][key]]
+                booleanVarsPerStep[step].append((key, var_val))
+
+            for key, var in self.encoder.numeric_variables[step].iteritems():
+                var_val = model[self.encoder.numeric_variables[step][key]]
+                numVarsPerStep[step].append((key, var_val))\
+        
+        return booleanVarsPerStep, numVarsPerStep
 
     def do_relaxed_search_working(self, analysis = False, log = None, version = 1):
         """
