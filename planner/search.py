@@ -262,6 +262,10 @@ class SearchSMT(Search):
                         if not self.encoder.version == 2:
                             print('Encoder unsuitable for the selected options.')
                         seq, invariant, inv_step = self._seq_check_orderless_core(log=log)
+                    else:
+                        if not self.encoder.version == 2:
+                            print('Encoder unsuitable for the selected options.')
+                        seq, invariant, inv_step = self._seq_check_orderless(log=log)
 
                 if seq:
                     print('Plan fully sequentializable')
@@ -336,6 +340,72 @@ class SearchSMT(Search):
             print('No plan found within upper bound.')
 
         return self.solution
+    
+    def _seq_check_orderless(self, log = None):
+
+        model = self.solver.model()
+
+        # Extract parallel plan steps from the model
+        actionsPerStep = self._extract_actions(model)
+        booleanVarsPerStep, numVarsPerStep = self._extract_vars(model)
+
+        # Analysis
+        if not log is None:
+            log.register('Extract model at horizon '+ str(self.horizon))
+        
+        # Check for each step
+        for step in range(self.encoder.horizon):
+
+            # Steps containing only one action are trivially seq.
+            if(len(actionsPerStep[step]) == 1):
+                self.plan[len(self.plan)] = actionsPerStep[step][0].name
+                continue
+
+            last_step = len(actionsPerStep[step])
+            general_seq_forumla = self.encoder.encode_general_seq(
+                actionsPerStep[step])
+
+            # Analysis
+            if not log is None:
+                log.register('Encode seq-form of one step '+ str(step))
+
+            concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix( 
+                booleanVarsPerStep[step], booleanVarsPerStep[step+1],
+                numVarsPerStep[step], numVarsPerStep[step+1],
+                last_step)
+
+            # Analysis
+            if not log is None:
+                log.register('Encode seq-prefix of one step '+ str(step))
+
+            # Assert subformulas in local solver.
+            self.local_solver.reset()
+
+            for v in concrete_seq_prefix:
+                self.local_solver.add(v)
+
+            for v in general_seq_forumla:
+                self.local_solver.add(v)
+
+            # Analysis
+            if not log is None:
+                log.register('Assert subformulas-seq of one step '+ str(step))
+            
+            # Check for satisfiability
+            res = self.local_solver.check()
+
+            # Analysis
+            if not log is None:
+                log.register('Check sat of seq-formula '+ str(step))
+            
+            if not res == sat:
+                # Default invariant
+                return (False, {'actions': actionsPerStep[step]}, step)
+            else:
+                local_model = self.local_solver.model()
+                self._plan_extraction(local_model, actionsPerStep[step])
+        
+        return True, None, None
 
     def _seq_check_orderless_core(self, log = None):
 
@@ -418,10 +488,6 @@ class SearchSMT(Search):
             else:
                 local_model = self.local_solver.model()
                 self._plan_extraction(local_model, actionsPerStep[step])
-
-                # Analysis
-                if not log is None:
-                    log.register('Check sat of seq-formula '+ str(step))
         
         return True, None, None
                          

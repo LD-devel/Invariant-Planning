@@ -186,7 +186,7 @@ def main():
                 s = search.SearchSMT(e,ub)
                 log.register('Initializing encoder.')
 
-                options = {}
+                options = {'UnsatCore': False}
                 found, horizon, solution = s.do_relaxed_search(options, log=log)
 
                 # Log the behaviour of the search.
