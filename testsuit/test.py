@@ -42,7 +42,7 @@ def main():
      ('rover-numeric', r'pddl_examples\simple\rover-numeric\domain.pddl',
      r'pddl_examples\simple\rover-numeric\instances',0,4)]
     problems2 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
-     r'pddl_examples\linear\zeno-travel-linear\instances',0,8), 
+     r'pddl_examples\linear\zeno-travel-linear\instances',0,1), 
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0,0),
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
@@ -93,12 +93,13 @@ def main():
             (0, 'relaxed e2 s1', 2, 1),
             (0, 'relaxed e2 s2', 2, 2),
             (0, 'relaxed e2 s3', 2, 3), #Unsat core
-            (1, 'relaxed e2 s3.1', 2, 31), #uc incremental
-            (1, 'relaxed e2 s3.2', 2, 32), #one vs for all ts
+            (0, 'relaxed e2 s3.1', 2, 31), #uc incremental
+            (0, 'relaxed e2 s3.2', 2, 32), #one vs for all ts
             (0, 'relaxed e2 s4', 2, 4),  #Fixed order check
             (0, 'relaxed e3 s1', 3, 1),
             (0, 'relaxed e4 s5', 4, 5) #Syntactical
         ]
+    og_planner = 0
 
     # Specify which to test:
     problems = problems2
@@ -130,22 +131,23 @@ def main():
 
                 # Test parralel incremental search for comparison
                 try:
-                    log = Log()
+                    if og_planner:
+                        log = Log()
 
-                    # Perform the search.
-                    e = agile_encoder.AgileEncoderSMT(task, modifier.ParallelModifier())
-                    s = search.SearchSMT(e,ub)
-                    found, horizon, solution = s.do_linear_incremental_search(analysis=True, log=log)
-                    
-                    print('COUNT:')
-                    print(e.f_cnt)
+                        # Perform the search.
+                        e = agile_encoder.AgileEncoderSMT(task, modifier.ParallelModifier())
+                        s = search.SearchSMT(e,ub)
+                        found, horizon, solution = s.do_linear_incremental_search(analysis=True, log=log)
+                        
+                        print('COUNT:')
+                        print(e.f_cnt)
 
-                    # Log the behaviour of the search.
-                    total_time = log.finish()
-                    log_metadata = {'mode':'parallel incremental', 'domain':domain_name, 'instance':filename, 'found':found,
-                        'horizon':horizon, 'time': total_time, 'time_log':log.export(), 'f_count': e.f_cnt,
-                        'semantics_f_count': e.semantics_f_cnt}
-                    myReport.create_log(solution, domain_path, instance_path, log_metadata)
+                        # Log the behaviour of the search.
+                        total_time = log.finish()
+                        log_metadata = {'mode':'parallel incremental', 'domain':domain_name, 'instance':filename, 'found':found,
+                            'horizon':horizon, 'time': total_time, 'time_log':log.export(), 'f_count': e.f_cnt,
+                            'semantics_f_count': e.semantics_f_cnt}
+                        myReport.create_log(solution, domain_path, instance_path, log_metadata)
                 except:
                     myReport.fail_log('parallel incremental' , domain_name, filename)
 
@@ -160,7 +162,7 @@ def main():
                             s = search.SearchSMT(e,ub)
                             log.register('Initializing encoder.')
 
-                            found, horizon, solution = s.do_relaxed_search(True, log=log, version=search_v)
+                            found, horizon, solution = s.do_relaxed_search_working(True, log=log, version=search_v)
                     
                             print('COUNT:')
                             print(e.f_cnt)
@@ -174,6 +176,25 @@ def main():
 
                         except:
                             myReport.fail_log(mode, domain_name, filename)
+                
+                
+                # Log time consuption of subroutines
+                log = Log()
+
+                # Perform the search.
+                e = agile_encoder.AgileEncoderSMT(task, modifier.RelaxedModifier(), version=encoder_v)
+                s = search.SearchSMT(e,ub)
+                log.register('Initializing encoder.')
+
+                options = {}
+                found, horizon, solution = s.do_relaxed_search(options, log=log)
+
+                # Log the behaviour of the search.
+                total_time = log.finish()
+                log_metadata = {'mode': 'TBA', 'domain':domain_name, 'instance':filename, 'found':found,
+                    'horizon':horizon, 'time': total_time, 'time_log': log.export(), 'f_count': e.f_cnt,
+                    'semantics_f_count': e.semantics_f_cnt}
+                myReport.create_log(solution, domain_path, instance_path, log_metadata)
     
     myReport.export()
 

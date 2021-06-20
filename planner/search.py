@@ -185,7 +185,120 @@ class SearchSMT(Search):
         
         return self.solution
 
-    def do_relaxed_search(self, analysis = False, log = None, version = 1):
+    def do_relaxed_search(self, options, log = None):
+        """
+        Invariant guided search scheme.
+        """
+
+        # Define default search behaviour.
+        if not options.has_key('UnsatCore'):
+            options['UnsatCore'] = True
+        if not options.has_key('Timesteps'):
+            options['Timesteps'] = 0
+            # 0 corresponds to all timsteps
+            # 1 corresponds to only the corresponding timestep
+            # 2 allows for dynamic behaviour and defaults to 0
+            # 3 allows for dynamic behavoiur and defaults to 1
+        if not options.has_key('Seq-check'):
+            options['Seq-check'] = 'general'
+        
+        # Defines initial horizon for ramp-up search
+        self.horizon = 1
+
+        # Create SMT solver instances
+        self.solver = Solver()
+
+        # One solver for seq. tests
+        self.local_solver = Solver()
+        if options['UnsatCore']:
+            self.local_solver.set(unsat_core=True)
+        
+        # Create empty plan, to be amended during seq.-tests
+        self.plan = {}
+        print('Start CEGAR search with options:')
+        print('UnsatCore:' + str(options['UnsatCore']))
+        print('Timesteps:' + str(options['Timesteps']))
+        print('Seq-check:' + str(options['Seq-check']))
+
+        # Build formula until a plan is found or upper bound is reached
+        while not self.found and self.horizon < self.ub:
+
+            # Encode next step
+            for enc in self.encoder.encode_step(self.horizon-1):
+                self.solver.add(enc)
+
+            # Create backtracking mark, for incrementality
+            self.solver.push()
+        
+            # Analysis
+            if not log is None:
+                log.register('Initial formula encoding at horizon: '+ str(self.horizon))
+            
+            # Check for satisfiability
+            res = self.solver.check()
+
+            # Check sequentializability and refine search
+            # until the current horizion can be precluded
+            while res == sat and not self.found:
+                # Check the sequentializibility
+                #TODO
+                seq, invariant, inv_step = True, None, None
+
+                if seq:
+                    print('Plan fully sequentializable')
+                    self.found = True
+                else:
+                    # Discard the generated plan
+                    self.plan = {}
+
+                    # Handle invariant creation, depending on options
+                    #TODO
+                    encoded_invars = []
+
+                    # Remove the goal encoding
+                    self.solver.pop()
+
+                    # Assert the encoded invariant into the solver
+                    for v in encoded_invars:
+                        self.solver.add(v)
+                    self.solver.push()
+
+                    # Analysis
+                    if not log is None:
+                        log.register('Invariant encoding & assertion.')
+                    
+                    # Assert the goal encoding before the sat check
+                    self.solver.add(goal)
+                    res = self.solver.check()
+
+                    # Analysis
+                    if not log is None:
+                        log.register('Refined sat-check.')
+            
+            # If no plan canbe found, move to the next horizon
+            if not self.found:
+                # Remove the goal encoding
+                self.solver.pop()
+
+                # Increment the horizon variable
+                self.horizon += 1
+        
+        # Create plan object, if possible.
+        if self.found:
+            self.solution = plan.Plan(None, None, None, self.plan)
+
+        # Return usefull metrics for analysis purposes
+        if not log is None:
+            log.register('Exiting search')
+            return (self.found, self.horizon, self.solution)
+        
+        if not self.found:
+            print('No plan found within upper bound.')
+
+        return self.solution
+
+
+    def do_relaxed_search_working(self, analysis = False, log = None, version = 1):
         """
         Invariant guided search scheme.
         """
@@ -238,7 +351,7 @@ class SearchSMT(Search):
                 log.register('Inital Sat-check at horizon: '+ str(self.horizon))
 
             while res == sat and not self.found:
-                #check sequentialziability
+                #check sequentializability
                 seq, invariant, inv_step = self.check_sequentializability(analysis=analysis, log=log, sv=version)
 
                 if(seq):
@@ -289,7 +402,7 @@ class SearchSMT(Search):
                         self.encoder.semantics_f_cnt += 1
                     self.solver.push()
 
-                    # Add the goal befor sat-check and remove it afterwards
+                    # Add the goal before sat-check and remove it afterwards
                     self.solver.add(goal)
                     res = self.solver.check()
 
