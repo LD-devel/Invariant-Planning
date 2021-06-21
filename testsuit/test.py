@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+import multiprocessing
 import matplotlib.pyplot as plt
 from PIL import Image, ImageFont, ImageDraw, ImageEnhance
 from natsort import natsorted
@@ -15,8 +16,129 @@ import subprocess
 import utils
 from planner import encoder, agile_encoder, modifier, search
 
-def main():
 
+# Set upper bound
+ub = 100
+
+def main():
+    run_comparison()
+
+def run_comparison():
+    problems = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
+     r'pddl_examples\linear\zeno-travel-linear\instances',0,1),
+     ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
+     r'pddl_examples\linear\farmland_ln\instances',0,0), # Problem in domain definition. 
+     ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
+     r'pddl_examples\linear\fo_counters\instances',0,15),
+     ('fo_counters_seq', r'pddl_examples\linear\fo_counters_seq\domain.pddl',
+     r'pddl_examples\linear\fo_counters_seq\instances',0,7),
+     ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
+     r'pddl_examples\linear\fo_counters_inv\instances',0,10),
+     ('fo_counters_rnd', r'pddl_examples\linear\fo_counters_rnd\domain.pddl',
+     r'pddl_examples\linear\fo_counters_rnd\instances',0,10),
+     ('sailing_ln', r'pddl_examples\linear\sailing_ln\domain.pddl',
+     r'pddl_examples\linear\sailing_ln\instances',0,0), # Does not seem to be solvable in reasonable time at horizon 24
+     ('tpp', r'pddl_examples\linear\tpp\domain.pddl',
+     r'pddl_examples\linear\tpp\instances',0,2),
+     ('depots_numeric', r'pddl_examples\simple\depots_numeric\domain.pddl',
+     r'pddl_examples\simple\depots_numeric\instances',0,2),
+     ('gardening', r'pddl_examples\simple\gardening\domain.pddl',
+     r'pddl_examples\simple\gardening\instances',0,3),
+     ('rover-numeric', r'pddl_examples\simple\rover-numeric\domain.pddl',
+     r'pddl_examples\simple\rover-numeric\instances',0,4)]
+
+    # Create Statistics
+    manager = multiprocessing.Manager()
+    logs = manager.dict()
+    myReport = SparseReport(logs)
+    
+    for domain_name, domain, instance_dir, _, _ in problems:
+        abs_instance_dir = os.path.join(BASE_DIR, instance_dir)
+
+        p = multiprocessing.Process(target=linear_search,
+            args=(abs_instance_dir, domain, domain_name, myReport)
+        )
+        timeout_wrapper(p)
+
+        p = multiprocessing.Process(target=relaxed_search_wrapper,
+            args=(abs_instance_dir, domain, domain_name, myReport, 2, {})
+        )
+        timeout_wrapper(p)
+    
+    myReport.export()
+
+def timeout_wrapper(process):
+    process.start()
+    process.join(5)
+    # Terminate the search, if unfinished.
+    if process.is_alive():
+        process.terminate()
+        process.join()
+
+def linear_search(dir, domain, domain_name, report):
+
+    for filename in natsorted(os.listdir(dir)):
+            if filename.endswith('.pddl'):
+
+                instance_path = os.path.join(dir, filename)
+                domain_path = os.path.join(BASE_DIR, domain)
+
+                task = translate.pddl.open(instance_path, domain_path)
+
+                print('Now solving: ' + str(domain_name) + ' ' + str(filename))
+
+                #try:
+                # Log time consuption of subroutines
+                log = Log()
+
+                # Perform the search.
+                e = agile_encoder.AgileEncoderSMT(task, modifier.ParallelModifier())
+                s = search.SearchSMT(e,ub)
+                found, horizon, solution = s.do_linear_incremental_search(analysis=True, log=log)
+
+                # Log the behaviour of the search.
+                total_time = log.finish()
+                log_metadata = {'mode': 'parallel incremental', 'domain':domain_name, 'instance':filename, 'found':found,
+                    'horizon':horizon, 'time': total_time, 'time_log': log.export()}
+                report.create_log(solution, domain_path, instance_path, log_metadata)
+
+                #except:
+                #    report.fail_log('parallel incremental', domain_name, filename)
+
+def relaxed_search_wrapper(dir, domain, domain_name, report, encoder_version, options):
+
+    for filename in natsorted(os.listdir(dir)):
+            if filename.endswith('.pddl'):
+
+                instance_path = os.path.join(dir, filename)
+                domain_path = os.path.join(BASE_DIR, domain)
+
+                task = translate.pddl.open(instance_path, domain_path)
+
+                print('Now solving: ' + str(domain_name) + ' ' + str(filename))
+
+                #try:
+                # Log time consuption of subroutines
+                log = Log()
+
+                # Perform the search.
+                e = agile_encoder.AgileEncoderSMT(task, modifier.RelaxedModifier(), version=encoder_version)
+                s = search.SearchSMT(e,ub)
+                log.register('Initializing encoder.')
+
+                found, horizon, solution = s.do_relaxed_search(options, log=log)
+
+                # Log the behaviour of the search.
+                total_time = log.finish()
+                log_metadata = {'mode': str(options), 'domain':domain_name, 'instance':filename, 'found':found,
+                    'horizon':horizon, 'time': total_time, 'time_log': log.export(), 'f_count': e.f_cnt,
+                    'semantics_f_count': e.semantics_f_cnt}
+                report.create_log(solution, domain_path, instance_path, log_metadata)
+
+                #except:
+                #    report.fail_log(str(options), domain_name, filename)
+
+def run_controlled_test():
     # Sets of problem domains and instances:
     # First file to be included, fist file to be excluded
     problems1 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
@@ -42,7 +164,7 @@ def main():
      ('rover-numeric', r'pddl_examples\simple\rover-numeric\domain.pddl',
      r'pddl_examples\simple\rover-numeric\instances',0,4)]
     problems2 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
-     r'pddl_examples\linear\zeno-travel-linear\instances',0,6), 
+     r'pddl_examples\linear\zeno-travel-linear\instances',0,4), 
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0,0),
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
@@ -176,12 +298,12 @@ def main():
                 log = Log()
 
                 # Perform the search.
-                e = agile_encoder.AgileEncoderSMT(task, modifier.RelaxedModifier(), version=2)
+                e = agile_encoder.AgileEncoderSMT(task, modifier.RelaxedModifier(), version=4)
                 s = search.SearchSMT(e,ub)
                 log.register('Initializing encoder.')
 
                 #options = {'UnsatCore': False}
-                options = {'Seq-check':'FixedOrder'}
+                options = {'Seq-check':'Syntactical'}
                 found, horizon, solution = s.do_relaxed_search(options, log=log)
 
                 # Log the behaviour of the search.
@@ -192,6 +314,47 @@ def main():
                 myReport.create_log(solution, domain_path, instance_path, log_metadata)
     
     myReport.export()
+
+class SparseReport():
+
+    def __init__(self, logs):
+        self.logs = logs
+    
+    def create_log(self, solution, domain_path, instance_path, log_metadata):
+        val = BASE_DIR + val_path
+        domain = log_metadata['domain']
+        instance = log_metadata['instance']
+        mode = log_metadata['mode']
+
+        #{domain: [[ mode name, time1, time2, ...] , ... ]}
+        # Create dict of lists of lists according to above format.
+        if not self.logs.has_key(domain):
+            self.logs[domain] = []
+        local_domain = self.logs[domain]
+
+        mode_log = None
+        for v in local_domain:
+            if v[0] == mode:
+                mode_log = v
+        if mode_log is None:
+            mode_log = [mode]
+            local_domain += [mode_log]
+        mode_log.append(log_metadata['time'])
+
+        self.logs[domain] = local_domain
+
+        # Validate
+        try:
+            if solution.validate(val, domain_path, instance_path):
+                print('Valid plan found! in time: ' + str(log_metadata['time']))
+            else:
+                print('CAUTION! Plan not valid.' + str(domain) + ' , ' + str(instance))
+        except:
+            print('Exception during plan valitation.' + str(domain) + ' , ' + str(instance))
+    
+    def export(self):
+        for k,v in self.logs.items():
+            print(str(k) + str(v))
 
 class Report():
 
@@ -246,6 +409,8 @@ class Report():
         if not self.time_logs.has_key(key):
             self.time_logs[key] = {}
         self.time_logs[key][mode] = log_metadata['time_log']
+
+
 
     def fail_log(self, mode, domain_name, filename):
         print('***************** Fail during search: ' + mode + domain_name + filename)

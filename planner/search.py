@@ -225,9 +225,8 @@ class SearchSMT(Search):
         # Create empty plan, to be amended during seq.-tests
         self.plan = {}
         print('Start CEGAR search with options:')
-        print('UnsatCore:' + str(options['UnsatCore']))
-        print('Timesteps:' + str(options['Timesteps']))
         print('Seq-check:' + str(options['Seq-check']))
+        print('Timesteps:' + str(options['Timesteps']))
 
         # Build formula until a plan is found or upper bound is reached
         while not self.found and self.horizon < self.ub:
@@ -254,23 +253,35 @@ class SearchSMT(Search):
             # until the current horizion can be precluded
             while res == sat and not self.found:
                 # Check the sequentializibility
-                seq, invariant, inv_step = False, None, None
+                seq, invariants, inv_step = False, None, None
 
                 if options['Seq-check'] == 'general':
+                    
+                    print('UnsatCore:' + str(options['UnsatCore']))
 
                     if not self.encoder.version == 2:
                         print('Encoder unsuitable for the selected options.')
                     
-                    seq, invariant, inv_step = self._seq_check_orderless(
+                    seq, invariants, inv_step = self._seq_check_orderless(
                         u_core=options['UnsatCore'], log=log)
                 
                 elif options['Seq-check'] == 'FixedOrder':
                     
+                    print('UnsatCore:' + str(options['UnsatCore']))
+                    
                     if not self.encoder.version == 2:
                         print('Encoder unsuitable for the selected options.')
                     
-                    seq, invariant, inv_step = self._seq_check_ordered(
+                    seq, invariants, inv_step = self._seq_check_ordered(
                         u_core=options['UnsatCore'], log=log)
+                
+                elif options['Seq-check'] == 'Syntactical':
+                    
+                    if not self.encoder.version == 4:
+                        print('Encoder unsuitable for the selected options.')
+                    
+                    seq, invariants, inv_step = self._seq_check_syntactical(
+                        log=log)
 
                 if seq:
                     print('Plan fully sequentializable')
@@ -287,14 +298,14 @@ class SearchSMT(Search):
                         # Encode invariant for all timesteps
 
                         # Add constraint for future horizons
-                        self.encoder.mutexes.append(invariant)
+                        self.encoder.mutexes.extend(invariants)
 
                         # Encode invariant for all previous and the current timesteps
                         encoded_invars = self.encoder.modifier.do_encode(
                             self.encoder.action_variables,
                             self.encoder.boolean_variables,
                             self.encoder.numeric_variables,
-                            [invariant], self.encoder.horizon)
+                            invariants, self.encoder.horizon)
 
                     elif options['Timesteps'] == 1:
                         # Encode invariant for current timestep
@@ -302,7 +313,7 @@ class SearchSMT(Search):
                         self.encoder.action_variables,
                         self.encoder.boolean_variables,
                         self.encoder.numeric_variables,
-                        [invariant], [inv_step]).values()
+                        invariants, [inv_step]).values()
 
                     # Remove the goal encoding
                     self.solver.pop()
@@ -345,6 +356,40 @@ class SearchSMT(Search):
             print('No plan found within upper bound.')
 
         return self.solution
+
+    def _seq_check_syntactical(self, log = None):
+        
+        model = self.solver.model()
+
+        # Extract parallel plan steps from the model
+        actionsPerStep = self._extract_actions(model)
+        booleanVarsPerStep, numVarsPerStep = self._extract_vars(model)
+
+        # Analysis
+        if not log is None:
+            log.register('Extract model at horizon '+ str(self.horizon))
+        
+        # Check for each step
+        for step in range(self.encoder.horizon):
+
+            # Compute via a syntactical check whether two
+            # two actions interfere
+            mutexes = self.encoder.computeLocalParallelMutexes(actionsPerStep[step])
+
+            # Analysis
+            if not log is None:
+                log.register('Syntax check at step '+ str(step))
+
+            if len(mutexes) != 0:
+                invars = [{'actions': [a1,a2]} for (a1,a2) in mutexes]
+                return (False, invars, step)
+
+            index = len(self.plan)
+            for action in actionsPerStep[step]:
+                self.plan[index] = action.name
+                index = index +1
+
+        return (True, None, None)
 
     def _seq_check_orderless(self, u_core = True, log = None):
 
@@ -425,10 +470,10 @@ class SearchSMT(Search):
                     core = self.local_solver.unsat_core()
                     core_names = {active_actions[a] for a in core if a in active_actions}
                     invar = [a for a in actionsPerStep[step] if a.name in core_names]
-                    return (False, {'actions': invar}, step)
+                    return (False, [{'actions': invar}], step)
                 
                 # Default invariant
-                return (False, {'actions': actionsPerStep[step]}, step)
+                return (False, [{'actions': actionsPerStep[step]}], step)
             else:
                 local_model = self.local_solver.model()
                 self._plan_extraction(local_model, actionsPerStep[step])
@@ -514,11 +559,11 @@ class SearchSMT(Search):
                                 invar.append(action)
                                 break
                     if all:
-                        return (False, {'actions': invar}, 'All')
-                    return (False, {'actions': invar}, step)
+                        return (False, [{'actions': invar}], 'All')
+                    return (False, [{'actions': invar}], step)
                 
                 # Default invariant
-                return (False, {'actions': actionsPerStep[step]}, step)
+                return (False, [{'actions': actionsPerStep[step]}], step)
             
             else:
                 local_model = self.local_solver.model()
