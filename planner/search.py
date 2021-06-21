@@ -208,9 +208,11 @@ class SearchSMT(Search):
         self.solver = Solver()
 
         # One solver for seq. tests
+        # The solver has to be set up depending on options
         self.local_solver = Solver()
         if options['UnsatCore']:
             self.local_solver.set(unsat_core=True)
+        if options['Seq-check'] == 'general':
             # Create dict for bookkeeping
             self.solver_log = {a:-1 for a in self.encoder.actions}
             self.solver_log['MAX'] = -1
@@ -256,16 +258,17 @@ class SearchSMT(Search):
                 seq, invariant, inv_step = False, None, None
 
                 if options['Seq-check'] == 'general':
-                    if options['UnsatCore']:
-                        # Incrementality is currently only supported
-                        # in combination with the unsat core
-                        if not self.encoder.version == 2:
-                            print('Encoder unsuitable for the selected options.')
-                        seq, invariant, inv_step = self._seq_check_orderless_core(log=log)
-                    else:
-                        if not self.encoder.version == 2:
-                            print('Encoder unsuitable for the selected options.')
-                        seq, invariant, inv_step = self._seq_check_orderless(log=log)
+
+                    if not self.encoder.version == 2:
+                        print('Encoder unsuitable for the selected options.')
+                    
+                    seq, invariant, inv_step = self._seq_check_orderless(
+                        u_core=options['UnsatCore'], log=log)
+                
+                elif options['Seq-check'] == 'FixedOrder':
+                    
+                    if not self.encoder.version == 2:
+                        print('Encoder unsuitable for the selected options.')
 
                 if seq:
                     print('Plan fully sequentializable')
@@ -284,7 +287,7 @@ class SearchSMT(Search):
                         # Add constraint for future horizons
                         self.encoder.mutexes.append(invariant)
 
-                        # Encode invariant for all previous timesteps
+                        # Encode invariant for all previous and the current timesteps
                         encoded_invars = self.encoder.modifier.do_encode(
                             self.encoder.action_variables,
                             self.encoder.boolean_variables,
@@ -340,74 +343,8 @@ class SearchSMT(Search):
             print('No plan found within upper bound.')
 
         return self.solution
-    
-    def _seq_check_orderless(self, log = None):
 
-        model = self.solver.model()
-
-        # Extract parallel plan steps from the model
-        actionsPerStep = self._extract_actions(model)
-        booleanVarsPerStep, numVarsPerStep = self._extract_vars(model)
-
-        # Analysis
-        if not log is None:
-            log.register('Extract model at horizon '+ str(self.horizon))
-        
-        # Check for each step
-        for step in range(self.encoder.horizon):
-
-            # Steps containing only one action are trivially seq.
-            if(len(actionsPerStep[step]) == 1):
-                self.plan[len(self.plan)] = actionsPerStep[step][0].name
-                continue
-
-            last_step = len(actionsPerStep[step])
-            general_seq_forumla = self.encoder.encode_general_seq(
-                actionsPerStep[step])
-
-            # Analysis
-            if not log is None:
-                log.register('Encode seq-form of one step '+ str(step))
-
-            concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix( 
-                booleanVarsPerStep[step], booleanVarsPerStep[step+1],
-                numVarsPerStep[step], numVarsPerStep[step+1],
-                last_step)
-
-            # Analysis
-            if not log is None:
-                log.register('Encode seq-prefix of one step '+ str(step))
-
-            # Assert subformulas in local solver.
-            self.local_solver.reset()
-
-            for v in concrete_seq_prefix:
-                self.local_solver.add(v)
-
-            for v in general_seq_forumla:
-                self.local_solver.add(v)
-
-            # Analysis
-            if not log is None:
-                log.register('Assert subformulas-seq of one step '+ str(step))
-            
-            # Check for satisfiability
-            res = self.local_solver.check()
-
-            # Analysis
-            if not log is None:
-                log.register('Check sat of seq-formula '+ str(step))
-            
-            if not res == sat:
-                # Default invariant
-                return (False, {'actions': actionsPerStep[step]}, step)
-            else:
-                local_model = self.local_solver.model()
-                self._plan_extraction(local_model, actionsPerStep[step])
-        
-        return True, None, None
-
-    def _seq_check_orderless_core(self, log = None):
+    def _seq_check_orderless(self, u_core = True, log = None):
 
         model = self.solver.model()
 
@@ -480,11 +417,16 @@ class SearchSMT(Search):
                 log.register('Check sat of seq-formula '+ str(step))
             
             if not res == sat:
-                # Checking the unsat core using an incremental solver
-                core = self.local_solver.unsat_core()
-                core_names = {active_actions[a] for a in core if a in active_actions}
-                invar = [a for a in actionsPerStep[step] if a.name in core_names]
-                return (False, {'actions': invar}, step)
+
+                if u_core:
+                    # Checking the unsat core using an incremental solver
+                    core = self.local_solver.unsat_core()
+                    core_names = {active_actions[a] for a in core if a in active_actions}
+                    invar = [a for a in actionsPerStep[step] if a.name in core_names]
+                    return (False, {'actions': invar}, step)
+                
+                # Default invariant
+                return (False, {'actions': actionsPerStep[step]}, step)
             else:
                 local_model = self.local_solver.model()
                 self._plan_extraction(local_model, actionsPerStep[step])

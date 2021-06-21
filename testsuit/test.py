@@ -138,9 +138,6 @@ def main():
                         e = agile_encoder.AgileEncoderSMT(task, modifier.ParallelModifier())
                         s = search.SearchSMT(e,ub)
                         found, horizon, solution = s.do_linear_incremental_search(analysis=True, log=log)
-                        
-                        print('COUNT:')
-                        print(e.f_cnt)
 
                         # Log the behaviour of the search.
                         total_time = log.finish()
@@ -163,9 +160,6 @@ def main():
                             log.register('Initializing encoder.')
 
                             found, horizon, solution = s.do_relaxed_search_working(True, log=log, version=search_v)
-                    
-                            print('COUNT:')
-                            print(e.f_cnt)
 
                             # Log the behaviour of the search.
                             total_time = log.finish()
