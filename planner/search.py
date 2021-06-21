@@ -254,7 +254,6 @@ class SearchSMT(Search):
             # until the current horizion can be precluded
             while res == sat and not self.found:
                 # Check the sequentializibility
-                #TODO
                 seq, invariant, inv_step = False, None, None
 
                 if options['Seq-check'] == 'general':
@@ -269,6 +268,9 @@ class SearchSMT(Search):
                     
                     if not self.encoder.version == 2:
                         print('Encoder unsuitable for the selected options.')
+                    
+                    seq, invariant, inv_step = self._seq_check_ordered(
+                        u_core=options['UnsatCore'], log=log)
 
                 if seq:
                     print('Plan fully sequentializable')
@@ -432,7 +434,98 @@ class SearchSMT(Search):
                 self._plan_extraction(local_model, actionsPerStep[step])
         
         return True, None, None
-                         
+
+    def _seq_check_ordered(self, u_core = True, log = None):
+        #TODO add order as parameter
+
+        model = self.solver.model()
+
+        # Extract parallel plan steps from the model
+        actionsPerStep = self._extract_actions(model)
+        booleanVarsPerStep, numVarsPerStep = self._extract_vars(model)
+
+        # Analysis
+        if not log is None:
+            log.register('Extract model at horizon '+ str(self.horizon))
+        
+        # Check for each step
+        for step in range(self.encoder.horizon):
+
+            # Steps containing only one action are trivially seq.
+            if(len(actionsPerStep[step]) == 1):
+                self.plan[len(self.plan)] = actionsPerStep[step][0].name
+                continue
+
+            last_step = len(actionsPerStep[step])
+            general_seq_forumla, trackers = self.encoder.encode_fixed_order_gen_seq(
+                actionsPerStep[step]
+            )
+    
+            # Assert subformulas in local solver.
+            self.local_solver.reset()
+            for v in general_seq_forumla:
+                #print(v)
+                self.local_solver.add(v)
+            
+            # Analysis
+            if not log is None:
+                log.register('Encode & assert general seq-form step '+ str(step))
+
+            # Check general satisfiability
+            res = self.local_solver.check(trackers)
+
+            # Analysis
+            if not log is None:
+                log.register('Check sat of gen. seq-formula '+ str(step))
+            
+            # For dynamic invariant timesteps
+            all = (res != sat)
+
+            if res == sat:
+                concrete_seq_prefix = self.encoder.encode_concrete_seq_prefix( 
+                    booleanVarsPerStep[step], booleanVarsPerStep[step+1],
+                    numVarsPerStep[step], numVarsPerStep[step+1],
+                    last_step)
+            
+                for v in concrete_seq_prefix:
+                    #print(v)
+                    self.local_solver.add(v)
+
+                # Analysis
+                if not log is None:
+                    log.register('Encode & assert seq-prefix step '+ str(step))
+
+                # Check general satisfiability
+                res = self.local_solver.check(trackers)
+
+                # Analysis
+                if not log is None:
+                    log.register('Check sat of seq-formula '+ str(step))
+            
+            if not res == sat:
+
+                if u_core:
+                    # Checking the unsat core for fixed order checks
+                    invar = []
+                    core = set(self.local_solver.unsat_core())
+                    for s in range(len(actionsPerStep[step])):
+                        for action in actionsPerStep[step]:
+                            if self.encoder.action_variables[s][action.name] in core:
+                                invar.append(action)
+                                break
+                    if all:
+                        return (False, {'actions': invar}, 'All')
+                    return (False, {'actions': invar}, step)
+                
+                # Default invariant
+                return (False, {'actions': actionsPerStep[step]}, step)
+            
+            else:
+                local_model = self.local_solver.model()
+                self._plan_extraction(local_model, actionsPerStep[step])
+        
+        return True, None, None
+
     def _plan_extraction(self, model, actions):
         index = len(self.plan)
         for seq_step in range(len(actions)):

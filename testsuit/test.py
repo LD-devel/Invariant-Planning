@@ -46,7 +46,7 @@ def main():
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0,0),
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
-     r'pddl_examples\linear\fo_counters\instances',0,0),
+     r'pddl_examples\linear\fo_counters\instances',0,5),
      ('fo_counters_seq', r'pddl_examples\linear\fo_counters_seq\domain.pddl',
      r'pddl_examples\linear\fo_counters_seq\instances',0,0),
      ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
@@ -180,7 +180,8 @@ def main():
                 s = search.SearchSMT(e,ub)
                 log.register('Initializing encoder.')
 
-                options = {'UnsatCore': False}
+                #options = {'UnsatCore': False}
+                options = {'Seq-check':'FixedOrder'}
                 found, horizon, solution = s.do_relaxed_search(options, log=log)
 
                 # Log the behaviour of the search.
