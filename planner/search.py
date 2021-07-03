@@ -199,7 +199,7 @@ class SearchSMT(Search):
             # 1 corresponds to only the corresponding timestep
             # 2 allows for dynamic behaviour
         if not options.has_key('Seq-check'):
-            options['Seq-check'] = 'general'
+            options['Seq-check'] = 'General'
         
         # Defines initial horizon for ramp-up search
         self.horizon = 1
@@ -212,7 +212,7 @@ class SearchSMT(Search):
         self.local_solver = Solver()
         if options['UnsatCore']:
             self.local_solver.set(unsat_core=True)
-        if options['Seq-check'] == 'general':
+        if options['Seq-check'] == 'General':
             # Create dict for bookkeeping
             self.solver_log = {a:-1 for a in self.encoder.actions}
             self.solver_log['MAX'] = -1
@@ -255,7 +255,7 @@ class SearchSMT(Search):
                 # Check the sequentializibility
                 seq, invariants, inv_step = False, None, None
 
-                if options['Seq-check'] == 'general':
+                if options['Seq-check'] == 'General':
                     
                     print('UnsatCore:' + str(options['UnsatCore']))
 

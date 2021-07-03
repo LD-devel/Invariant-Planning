@@ -1,6 +1,5 @@
-import os
-import sys
-import time
+import os, sys, time
+import copy
 import multiprocessing
 import matplotlib.pyplot as plt
 from PIL import Image, ImageFont, ImageDraw, ImageEnhance
@@ -16,6 +15,8 @@ import subprocess
 import utils
 from planner import encoder, agile_encoder, modifier, search
 
+# Timeout per instance in seconds
+timeout = 30
 
 # Set upper bound
 ub = 100
@@ -24,20 +25,24 @@ def main():
     run_comparison()
 
 def run_comparison():
-    problems = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
+    problems0 = [('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
+     r'pddl_examples\linear\fo_counters\instances',0,1),
+     ('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
+     r'pddl_examples\linear\zeno-travel-linear\instances',0,1)]
+    problems1 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
      r'pddl_examples\linear\zeno-travel-linear\instances',0,1),
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0,0), # Problem in domain definition. 
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
      r'pddl_examples\linear\fo_counters\instances',0,15),
-     ('fo_counters_seq', r'pddl_examples\linear\fo_counters_seq\domain.pddl',
-     r'pddl_examples\linear\fo_counters_seq\instances',0,7),
-     ('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
-     r'pddl_examples\linear\fo_counters_inv\instances',0,10),
+     #('fo_counters_seq', r'pddl_examples\linear\fo_counters_seq\domain.pddl',
+     #r'pddl_examples\linear\fo_counters_seq\instances',0,7),
+     #('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
+     #r'pddl_examples\linear\fo_counters_inv\instances',0,10),
      ('fo_counters_rnd', r'pddl_examples\linear\fo_counters_rnd\domain.pddl',
      r'pddl_examples\linear\fo_counters_rnd\instances',0,10),
-     ('sailing_ln', r'pddl_examples\linear\sailing_ln\domain.pddl',
-     r'pddl_examples\linear\sailing_ln\instances',0,0), # Does not seem to be solvable in reasonable time at horizon 24
+     #('sailing_ln', r'pddl_examples\linear\sailing_ln\domain.pddl',
+     #r'pddl_examples\linear\sailing_ln\instances',0,0), # Does not seem to be solvable in reasonable time at horizon 24
      ('tpp', r'pddl_examples\linear\tpp\domain.pddl',
      r'pddl_examples\linear\tpp\instances',0,2),
      ('depots_numeric', r'pddl_examples\simple\depots_numeric\domain.pddl',
@@ -47,96 +52,118 @@ def run_comparison():
      ('rover-numeric', r'pddl_examples\simple\rover-numeric\domain.pddl',
      r'pddl_examples\simple\rover-numeric\instances',0,4)]
 
+    problems = problems0
+
     # Create Statistics
     manager = multiprocessing.Manager()
     logs = manager.dict()
     myReport = SparseReport(logs)
     
-    for domain_name, domain, instance_dir, _, _ in problems:
+    for domain_name, domain, instance_dir, lowerbound, upperbound in problems:
         abs_instance_dir = os.path.join(BASE_DIR, instance_dir)
 
-        p = multiprocessing.Process(target=linear_search,
-            args=(abs_instance_dir, domain, domain_name, myReport)
-        )
-        timeout_wrapper(p)
+        counter = 0
+        for filename in natsorted(os.listdir(abs_instance_dir)):
+            if filename.endswith('.pddl') and counter >= lowerbound and counter < upperbound:
+                counter+= 1
 
-        p = multiprocessing.Process(target=relaxed_search_wrapper,
-            args=(abs_instance_dir, domain, domain_name, myReport, 2, {})
-        )
-        timeout_wrapper(p)
-    
+                p = multiprocessing.Process(target=relaxed_search_wrapper,
+                    args=(abs_instance_dir, filename, domain, domain_name, myReport, 2, 
+                        {'Timesteps':0,'UnsatCore':True,'Seq-check':'General'},
+                        'Timesteps-Current__UnsatCore-True__Seq-check-General'
+                    )
+                )
+                timeout_wrapper(p)
+
+                p = multiprocessing.Process(target=relaxed_search_wrapper,
+                    args=(abs_instance_dir, filename, domain, domain_name, myReport, 2, 
+                        {'Timesteps':2,'UnsatCore':True,'Seq-check':'FixedOrder'},
+                        'Timesteps-Dynamic__UnsatCore-True__Seq-check-FixedOrder'
+                    )
+                )
+                timeout_wrapper(p)
+
+                p = multiprocessing.Process(target=relaxed_search_wrapper,
+                    args=(abs_instance_dir, filename, domain, domain_name, myReport, 4, 
+                        {'Timesteps':0,'UnsatCore':True,'Seq-check':'Syntactical'},
+                        'Timesteps-Current__UnsatCore-True__Seq-check-Syntactical'
+                    )
+                )
+                timeout_wrapper(p)
+            
+                p = multiprocessing.Process(target=linear_search,
+                    args=(abs_instance_dir, filename, domain, domain_name, myReport)
+                )
+                timeout_wrapper(p)
+
     myReport.export()
 
 def timeout_wrapper(process):
     process.start()
-    process.join(5)
+    process.join(timeout)
     # Terminate the search, if unfinished.
     if process.is_alive():
         process.terminate()
         process.join()
 
-def linear_search(dir, domain, domain_name, report):
+def linear_search(dir, filename, domain, domain_name, report):
 
-    for filename in natsorted(os.listdir(dir)):
-            if filename.endswith('.pddl'):
+    instance_path = os.path.join(dir, filename)
+    domain_path = os.path.join(BASE_DIR, domain)
 
-                instance_path = os.path.join(dir, filename)
-                domain_path = os.path.join(BASE_DIR, domain)
+    task = translate.pddl.open(instance_path, domain_path)
 
-                task = translate.pddl.open(instance_path, domain_path)
+    print('Now solving: ' + str(domain_name) + ' ' + str(filename))
 
-                print('Now solving: ' + str(domain_name) + ' ' + str(filename))
+    #try:
+    # Log time consuption of subroutines
+    log = Log()
 
-                #try:
-                # Log time consuption of subroutines
-                log = Log()
+    # Perform the search.
+    e = agile_encoder.AgileEncoderSMT(task, modifier.ParallelModifier())
+    s = search.SearchSMT(e,ub)
+    found, horizon, solution = s.do_linear_incremental_search(analysis=True, log=log)
 
-                # Perform the search.
-                e = agile_encoder.AgileEncoderSMT(task, modifier.ParallelModifier())
-                s = search.SearchSMT(e,ub)
-                found, horizon, solution = s.do_linear_incremental_search(analysis=True, log=log)
+    # Log the behaviour of the search.
+    total_time = log.finish()
+    log_metadata = {'mode': 'parallel incremental', 'domain':domain_name, 'instance':filename, 'found':found,
+        'horizon':horizon, 'time': total_time, 'time_log': log.export()}
+    report.create_log(solution, domain_path, instance_path, log_metadata)
 
-                # Log the behaviour of the search.
-                total_time = log.finish()
-                log_metadata = {'mode': 'parallel incremental', 'domain':domain_name, 'instance':filename, 'found':found,
-                    'horizon':horizon, 'time': total_time, 'time_log': log.export()}
-                report.create_log(solution, domain_path, instance_path, log_metadata)
+    #except:
+    #report.fail_log('parallel incremental', domain_name, filename)
 
-                #except:
-                #    report.fail_log('parallel incremental', domain_name, filename)
+def relaxed_search_wrapper(dir, filename, domain, domain_name, report, encoder_version, options, name):
 
-def relaxed_search_wrapper(dir, domain, domain_name, report, encoder_version, options):
+    instance_path = os.path.join(dir, filename)
+    domain_path = os.path.join(BASE_DIR, domain)
 
-    for filename in natsorted(os.listdir(dir)):
-            if filename.endswith('.pddl'):
+    task = translate.pddl.open(instance_path, domain_path)
 
-                instance_path = os.path.join(dir, filename)
-                domain_path = os.path.join(BASE_DIR, domain)
+    print('Now solving: ' + str(domain_name) + ' ' + str(filename))
 
-                task = translate.pddl.open(instance_path, domain_path)
+    #try:
 
-                print('Now solving: ' + str(domain_name) + ' ' + str(filename))
+    # Log time consuption of subroutines
+    log = Log()
 
-                #try:
-                # Log time consuption of subroutines
-                log = Log()
+    # Perform the search.
+    e = agile_encoder.AgileEncoderSMT(task, modifier.RelaxedModifier(), version=encoder_version)
+    s = search.SearchSMT(e,ub)
+    log.register('Initializing encoder.')
 
-                # Perform the search.
-                e = agile_encoder.AgileEncoderSMT(task, modifier.RelaxedModifier(), version=encoder_version)
-                s = search.SearchSMT(e,ub)
-                log.register('Initializing encoder.')
+    found, horizon, solution = s.do_relaxed_search(options, log=log)
 
-                found, horizon, solution = s.do_relaxed_search(options, log=log)
+    # Log the behaviour of the search.
+    total_time = log.finish()
+    log_metadata = {'mode': name, 'domain':domain_name, 'instance':filename, 'found':found,
+        'horizon':horizon, 'time': total_time, 'time_log': log.export(), 'f_count': e.f_cnt,
+        'semantics_f_count': e.semantics_f_cnt}
+    report.create_log(solution, domain_path, instance_path, log_metadata)
 
-                # Log the behaviour of the search.
-                total_time = log.finish()
-                log_metadata = {'mode': str(options), 'domain':domain_name, 'instance':filename, 'found':found,
-                    'horizon':horizon, 'time': total_time, 'time_log': log.export(), 'f_count': e.f_cnt,
-                    'semantics_f_count': e.semantics_f_cnt}
-                report.create_log(solution, domain_path, instance_path, log_metadata)
+    #except:
 
-                #except:
-                #    report.fail_log(str(options), domain_name, filename)
+    #    report.fail_log(str(options), domain_name, filename)
 
 def run_controlled_test():
     # Sets of problem domains and instances:
@@ -353,8 +380,52 @@ class SparseReport():
             print('Exception during plan valitation.' + str(domain) + ' , ' + str(instance))
     
     def export(self):
-        for k,v in self.logs.items():
-            print(str(k) + str(v))
+        
+        # Here the files will be stored.
+        folder = os.path.join(BASE_DIR, r'testsuit/output/analysis_' + str(time.time()))
+        try:
+            os.makedirs(folder)
+        except FileExistsError:
+            print('Output directory already exists. Test results cannot be stored properly.')
+            print('Exeting ...')
+            sys.exit()
+        
+        print(self.logs)
+
+        for name, domain in self.logs.items():
+            for mode1 in domain:
+                for mode2 in domain:
+                    if mode1 != mode2:
+                        print(str(mode1) + str(mode2))
+                        self.scatter_plot(name, mode1, mode2, folder)
+                domain.remove(mode1)
+
+    def scatter_plot(self, domain_name, mode1, mode2, folder):
+
+        figure = plt.figure()
+
+        nameA = str(mode1[0])
+        modeA = copy.copy(mode1)[1:]
+        nameB = str(mode2[0])
+        modeB = copy.copy(mode2)[1:]
+
+        maximum = max([max(modeA), max(modeB)])
+
+        if len(modeA) < len(modeB):
+            modeA.extend([maximum + 0.2*maximum for i in range(len(modeB) - len(modeA))])
+        else:
+            modeB.extend([maximum + 0.2*maximum for i in range(len(modeA) - len(modeB))])
+
+        plt.plot([0,maximum],[maximum,maximum])
+        plt.plot([maximum,maximum],[0,maximum])
+        plt.plot([0,maximum],[0,maximum])
+
+        print(modeA)
+        print(modeB)
+        plt.scatter(modeA, modeB)
+        plt.xlabel(nameA)
+        plt.ylabel(nameB)
+        plt.savefig(os.path.join(folder, str(domain_name)+'_'+nameA+nameB+'.png'))
 
 class Report():
 
@@ -409,8 +480,6 @@ class Report():
         if not self.time_logs.has_key(key):
             self.time_logs[key] = {}
         self.time_logs[key][mode] = log_metadata['time_log']
-
-
 
     def fail_log(self, mode, domain_name, filename):
         print('***************** Fail during search: ' + mode + domain_name + filename)
