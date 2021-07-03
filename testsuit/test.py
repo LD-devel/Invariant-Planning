@@ -1,6 +1,8 @@
 import os, sys, time
 import copy
 import multiprocessing
+import signal
+import subprocess, threading
 import matplotlib.pyplot as plt
 from PIL import Image, ImageFont, ImageDraw, ImageEnhance
 from natsort import natsorted
@@ -16,7 +18,7 @@ import utils
 from planner import encoder, agile_encoder, modifier, search
 
 # Timeout per instance in seconds
-timeout = 30
+timeout = 60
 
 # Set upper bound
 ub = 100
@@ -29,8 +31,9 @@ def run_comparison():
      r'pddl_examples\linear\fo_counters\instances',0,1),
      ('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
      r'pddl_examples\linear\zeno-travel-linear\instances',0,1)]
-    problems1 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
-     r'pddl_examples\linear\zeno-travel-linear\instances',0,1),
+    problems1 = [('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
+     r'pddl_examples\linear\fo_counters\instances',0,10),('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
+     r'pddl_examples\linear\zeno-travel-linear\instances',0,3),
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0,0), # Problem in domain definition. 
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
@@ -52,7 +55,7 @@ def run_comparison():
      ('rover-numeric', r'pddl_examples\simple\rover-numeric\domain.pddl',
      r'pddl_examples\simple\rover-numeric\instances',0,4)]
 
-    problems = problems0
+    problems = problems1
 
     # Create Statistics
     manager = multiprocessing.Manager()
@@ -67,6 +70,11 @@ def run_comparison():
             if filename.endswith('.pddl') and counter >= lowerbound and counter < upperbound:
                 counter+= 1
 
+                print('Solving: '+ filename +' ********************')
+
+                mySpringRoll = SpringrollWrapper()
+                mySpringRoll.run_springroll(abs_instance_dir, filename, domain, domain_name, myReport)
+
                 p = multiprocessing.Process(target=relaxed_search_wrapper,
                     args=(abs_instance_dir, filename, domain, domain_name, myReport, 2, 
                         {'Timesteps':0,'UnsatCore':True,'Seq-check':'General'},
@@ -75,7 +83,7 @@ def run_comparison():
                 )
                 timeout_wrapper(p)
 
-                p = multiprocessing.Process(target=relaxed_search_wrapper,
+                '''p = multiprocessing.Process(target=relaxed_search_wrapper,
                     args=(abs_instance_dir, filename, domain, domain_name, myReport, 2, 
                         {'Timesteps':2,'UnsatCore':True,'Seq-check':'FixedOrder'},
                         'Timesteps-Dynamic__UnsatCore-True__Seq-check-FixedOrder'
@@ -94,7 +102,7 @@ def run_comparison():
                 p = multiprocessing.Process(target=linear_search,
                     args=(abs_instance_dir, filename, domain, domain_name, myReport)
                 )
-                timeout_wrapper(p)
+                timeout_wrapper(p)'''
 
     myReport.export()
 
@@ -164,6 +172,53 @@ def relaxed_search_wrapper(dir, filename, domain, domain_name, report, encoder_v
     #except:
 
     #    report.fail_log(str(options), domain_name, filename)
+
+def fry(dir, filename, domain, domain_name, report):
+
+    instance_path = os.path.join(dir, filename)
+    domain_path = os.path.join(BASE_DIR, domain)
+
+    output = subprocess.check_output(
+        ['java', '-classpath', '\".\\testsuit\\dist\\lib\\antlr-3.4-complete.jar;.\\testsuit\\dist\\lib\\jgraph-5.13.0.0.jar;.\\testsuit\\dist\\lib\\jgrapht-core-0.9.0.jar;.\\testsuit\\dist\\lib\\PPMaJal2.jar;.\\testsuit\dist\\springroll_fixed.jar;\"','runner.SMTHybridPlanner',
+        '-o',domain_path, '-f',instance_path ])
+    print(output)
+
+class SpringrollWrapper:
+
+    def __init__(self):
+        self.process = None
+        self.output = None
+
+    def run_springroll(self, dir, filename, domain, domain_name, report):
+
+        instance_path = os.path.join(dir, filename)
+        domain_path = os.path.join(BASE_DIR, domain)
+
+        def target():
+            if os.name == 'nt':
+                self.process = subprocess.Popen(
+                    ['java', '-classpath', '\".\\testsuit\\dist\\lib\\antlr-3.4-complete.jar;.\\testsuit\\dist\\lib\\jgraph-5.13.0.0.jar;.\\testsuit\\dist\\lib\\jgrapht-core-0.9.0.jar;.\\testsuit\\dist\\lib\\PPMaJal2.jar;.\\testsuit\dist\\springroll_fixed.jar;\"','runner.SMTHybridPlanner',
+                    '-o',domain_path, '-f',instance_path ],
+                    shell=True, stdout=subprocess.PIPE)
+                self.output = self.process.communicate()[0]
+            else:
+                print('Calling springroll not yet possible for this os.')
+        
+        thread = threading.Thread(target=target)
+        thread.start()
+
+        thread.join(timeout)
+        if thread.is_alive():
+            print 'Terminating process (in a brutal way)'
+            subprocess.Popen("TASKKILL /F /PID {pid} /T".format(pid=self.process.pid))
+            #self.process.terminate()
+            thread.join()
+        
+        print self.process.returncode
+        print('OUTPUT START')
+        print(self.output)
+        print('OUTPUT END')
+
 
 def run_controlled_test():
     # Sets of problem domains and instances:
