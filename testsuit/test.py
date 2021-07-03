@@ -31,8 +31,7 @@ def run_comparison():
      r'pddl_examples\linear\fo_counters\instances',0,1),
      ('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
      r'pddl_examples\linear\zeno-travel-linear\instances',0,1)]
-    problems1 = [('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
-     r'pddl_examples\linear\fo_counters\instances',0,10),('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
+    problems1 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
      r'pddl_examples\linear\zeno-travel-linear\instances',0,3),
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0,0), # Problem in domain definition. 
@@ -173,16 +172,6 @@ def relaxed_search_wrapper(dir, filename, domain, domain_name, report, encoder_v
 
     #    report.fail_log(str(options), domain_name, filename)
 
-def fry(dir, filename, domain, domain_name, report):
-
-    instance_path = os.path.join(dir, filename)
-    domain_path = os.path.join(BASE_DIR, domain)
-
-    output = subprocess.check_output(
-        ['java', '-classpath', '\".\\testsuit\\dist\\lib\\antlr-3.4-complete.jar;.\\testsuit\\dist\\lib\\jgraph-5.13.0.0.jar;.\\testsuit\\dist\\lib\\jgrapht-core-0.9.0.jar;.\\testsuit\\dist\\lib\\PPMaJal2.jar;.\\testsuit\dist\\springroll_fixed.jar;\"','runner.SMTHybridPlanner',
-        '-o',domain_path, '-f',instance_path ])
-    print(output)
-
 class SpringrollWrapper:
 
     def __init__(self):
@@ -203,9 +192,15 @@ class SpringrollWrapper:
                 self.output = self.process.communicate()[0]
             else:
                 print('Calling springroll not yet possible for this os.')
-        
+
         thread = threading.Thread(target=target)
+        start = time.time()
         thread.start()
+        end = time.time() - start
+
+        log_metadata = {'mode': 'springrill', 'domain':domain_name, 'instance':filename,
+            'found':True, 'horizon':0, 'time': end, 'time_log': None}
+        report.create_log(None, domain_path, instance_path, log_metadata)
 
         thread.join(timeout)
         if thread.is_alive():
