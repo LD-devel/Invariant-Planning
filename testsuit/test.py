@@ -1,10 +1,9 @@
 import os, sys, time
 import copy
 import multiprocessing
-import signal
 import subprocess, threading
 import matplotlib.pyplot as plt
-from PIL import Image, ImageFont, ImageDraw, ImageEnhance
+from PIL import Image, ImageFont, ImageDraw
 from natsort import natsorted
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..'))
@@ -27,12 +26,12 @@ def main():
     run_comparison()
 
 def run_comparison():
-    problems0 = [('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
-     r'pddl_examples\linear\fo_counters\instances',0,1),
-     ('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
-     r'pddl_examples\linear\zeno-travel-linear\instances',0,1)]
-    problems1 = [('zeno-travel-linear', r'pddl_examples\linear\zeno-travel-linear\domain.pddl',
-     r'pddl_examples\linear\zeno-travel-linear\instances',0,3),
+    problems0 = [('fo_counters', r'pddl_examples/linear/fo_counters/domain.pddl',
+     r'pddl_examples/linear/fo_counters/instances',0,1),
+     ('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
+     r'pddl_examples/linear/zeno-travel-linear/instances',0,1)]
+    problems1 = [('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
+     r'pddl_examples/linear/zeno-travel-linear/instances',0,3),
      ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
      r'pddl_examples\linear\farmland_ln\instances',0,0), # Problem in domain definition. 
      ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
@@ -54,7 +53,7 @@ def run_comparison():
      ('rover-numeric', r'pddl_examples\simple\rover-numeric\domain.pddl',
      r'pddl_examples\simple\rover-numeric\instances',0,4)]
 
-    problems = problems1
+    problems = problems0
 
     # Create Statistics
     manager = multiprocessing.Manager()
@@ -191,7 +190,12 @@ class SpringrollWrapper:
                     shell=True, stdout=subprocess.PIPE)
                 self.output = self.process.communicate()[0]
             else:
-                print('Calling springroll not yet possible for this os.')
+                # This does not necessarily work on any other os
+                cmd = ['java -classpath testsuit/dist/lib/antlr-3.4-complete.jar:testsuit/dist/lib/jgraph-5.13.0.0.jar:testsuit/dist/lib/jgrapht-core-0.9.0.jar:testsuit/dist/lib/PPMaJal2.jar:testsuit/dist/springroll.jar runner.SMTHybridPlanner -o '
+                    + domain_path + ' -f ' + instance_path]
+                self.process = subprocess.Popen(
+                    cmd, shell=True, stdout=subprocess.PIPE)
+                self.output = self.process.communicate()[0]
 
         thread = threading.Thread(target=target)
         start = time.time()
@@ -204,12 +208,15 @@ class SpringrollWrapper:
 
         thread.join(timeout)
         if thread.is_alive():
-            print 'Terminating process (in a brutal way)'
-            subprocess.Popen("TASKKILL /F /PID {pid} /T".format(pid=self.process.pid))
-            #self.process.terminate()
+            if os.name == 'nt':
+                print 'Terminating process (in a sketchy way)'
+                subprocess.Popen("TASKKILL /F /PID {pid} /T".format(pid=self.process.pid))
+            else:
+                # This does not necessarily work on any os
+                self.process.terminate()
             thread.join()
         
-        print self.process.returncode
+        print(self.process.returncode)
         print('OUTPUT START')
         print(self.output)
         print('OUTPUT END')
