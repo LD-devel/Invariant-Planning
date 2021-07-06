@@ -181,7 +181,7 @@ class RelaxedModifier(Modifier):
         Encodes learned invariants for each step.
 
         @param a_vars, b_vars, n_vars,: Z3 variables.
-        @param mutexes: invariants.
+        @param mutexes: invariants - list of dicts.
         @param bound: planning horizon.
 
         @return c: constraints enforcing relaxed parallel execution
