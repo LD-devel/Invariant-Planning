@@ -109,3 +109,6 @@ testsuit/output/
 
 # VSCode
 .vscode/
+
+# Springroll output
+.plan

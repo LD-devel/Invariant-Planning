@@ -1,6 +1,6 @@
 import os, sys, time
 import copy
-import multiprocessing
+import multiprocessing, pickle
 import subprocess, threading
 import matplotlib.pyplot as plt
 from PIL import Image, ImageFont, ImageDraw
@@ -70,8 +70,8 @@ def run_comparison():
 
                 print('Solving: '+ filename +' ********************')
 
-                mySpringRoll = SpringrollWrapper()
-                mySpringRoll.run_springroll(abs_instance_dir, filename, domain, domain_name, myReport)
+                '''mySpringRoll = SpringrollWrapper()
+                mySpringRoll.run_springroll(abs_instance_dir, filename, domain, domain_name, myReport)'''
 
                 p = multiprocessing.Process(target=relaxed_search_wrapper,
                     args=(abs_instance_dir, filename, domain, domain_name, myReport, 2, 
@@ -87,20 +87,20 @@ def run_comparison():
                         'Timesteps-Dynamic__UnsatCore-True__Seq-check-FixedOrder'
                     )
                 )
-                timeout_wrapper(p)
+                timeout_wrapper(p)'''
 
-                p = multiprocessing.Process(target=relaxed_search_wrapper,
+                '''p = multiprocessing.Process(target=relaxed_search_wrapper,
                     args=(abs_instance_dir, filename, domain, domain_name, myReport, 4, 
                         {'Timesteps':0,'UnsatCore':True,'Seq-check':'Syntactical'},
                         'Timesteps-Current__UnsatCore-True__Seq-check-Syntactical'
                     )
                 )
-                timeout_wrapper(p)
+                timeout_wrapper(p)'''
             
                 p = multiprocessing.Process(target=linear_search,
                     args=(abs_instance_dir, filename, domain, domain_name, myReport)
                 )
-                timeout_wrapper(p)'''
+                timeout_wrapper(p)
 
     myReport.export()
 
@@ -437,52 +437,14 @@ class SparseReport():
             print('Exception during plan valitation.' + str(domain) + ' , ' + str(instance))
     
     def export(self):
-        
-        # Here the files will be stored.
-        folder = os.path.join(BASE_DIR, r'testsuit/output/analysis_' + str(time.time()))
-        try:
-            os.makedirs(folder)
-        except FileExistsError:
-            print('Output directory already exists. Test results cannot be stored properly.')
-            print('Exeting ...')
-            sys.exit()
-        
-        print(self.logs)
+        # Convert logs manager.dict into a normal dict
+        logs_dict = {key: val for key, val in self.logs.items()}
 
-        for name, domain in self.logs.items():
-            for mode1 in domain:
-                for mode2 in domain:
-                    if mode1 != mode2:
-                        print(str(mode1) + str(mode2))
-                        self.scatter_plot(name, mode1, mode2, folder)
-                domain.remove(mode1)
+        # The logs of the report will be pickled and stored in a file
+        path = os.path.join(BASE_DIR,'testsuit','output','analysis_' + str(time.time())+'.sparse')
+        with open(path, 'wb') as output_file:
+            pickle.dump(logs_dict, output_file)
 
-    def scatter_plot(self, domain_name, mode1, mode2, folder):
-
-        figure = plt.figure()
-
-        nameA = str(mode1[0])
-        modeA = copy.copy(mode1)[1:]
-        nameB = str(mode2[0])
-        modeB = copy.copy(mode2)[1:]
-
-        maximum = max([max(modeA), max(modeB)])
-
-        if len(modeA) < len(modeB):
-            modeA.extend([maximum + 0.2*maximum for i in range(len(modeB) - len(modeA))])
-        else:
-            modeB.extend([maximum + 0.2*maximum for i in range(len(modeA) - len(modeB))])
-
-        plt.plot([0,maximum],[maximum,maximum])
-        plt.plot([maximum,maximum],[0,maximum])
-        plt.plot([0,maximum],[0,maximum])
-
-        print(modeA)
-        print(modeB)
-        plt.scatter(modeA, modeB)
-        plt.xlabel(nameA)
-        plt.ylabel(nameB)
-        plt.savefig(os.path.join(folder, str(domain_name)+'_'+nameA+nameB+'.png'))
 
 class Report():
 
