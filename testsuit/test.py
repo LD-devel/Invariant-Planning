@@ -21,8 +21,8 @@ timeout = 60
 ub = 100
 
 def main():
-    #run_comparison()
-    run_controlled_test()
+    run_comparison()
+    #run_controlled_test()
 
 def run_comparison():
     problems0 = [('fo_counters', r'pddl_examples/linear/fo_counters/domain.pddl',
@@ -56,9 +56,9 @@ def run_comparison():
 
     # Create Statistics
     manager = multiprocessing.Manager()
-    logs = manager.dict()
-    myReport = SparseReport(logs)
-    
+    result = manager.Queue()
+    myReport = SparseReport()
+
     for domain_name, domain, instance_dir, lowerbound, upperbound in problems:
         abs_instance_dir = os.path.join(BASE_DIR, instance_dir)
 
@@ -72,46 +72,51 @@ def run_comparison():
                 '''mySpringRoll = SpringrollWrapper()
                 mySpringRoll.run_springroll(abs_instance_dir, filename, domain, domain_name, myReport)'''
 
+                name = 'Timesteps-Current__UnsatCore-True__Seq-check-General'
                 p = multiprocessing.Process(target=relaxed_search_wrapper,
-                    args=(abs_instance_dir, filename, domain, domain_name, myReport, 2, 
+                    args=(abs_instance_dir, filename, domain, domain_name, 2, 
                         {'Timesteps':0,'UnsatCore':True,'Seq-check':'General'},
-                        'Timesteps-Current__UnsatCore-True__Seq-check-General'
+                        name, result
                     )
                 )
-                timeout_wrapper(p)
-
-                '''p = multiprocessing.Process(target=relaxed_search_wrapper,
-                    args=(abs_instance_dir, filename, domain, domain_name, myReport, 2, 
-                        {'Timesteps':2,'UnsatCore':True,'Seq-check':'FixedOrder'},
-                        'Timesteps-Dynamic__UnsatCore-True__Seq-check-FixedOrder'
-                    )
-                )
-                timeout_wrapper(p)'''
-
-                '''p = multiprocessing.Process(target=relaxed_search_wrapper,
-                    args=(abs_instance_dir, filename, domain, domain_name, myReport, 4, 
-                        {'Timesteps':0,'UnsatCore':True,'Seq-check':'Syntactical'},
-                        'Timesteps-Current__UnsatCore-True__Seq-check-Syntactical'
-                    )
-                )
-                timeout_wrapper(p)'''
+                timeout_wrapper(p, name, domain_name, filename, result, myReport)
             
+                name = 'parallel incremental'
                 p = multiprocessing.Process(target=linear_search,
-                    args=(abs_instance_dir, filename, domain, domain_name, myReport)
+                    args=(abs_instance_dir, filename, domain, domain_name, result)
                 )
-                timeout_wrapper(p)
+                timeout_wrapper(p, name, domain_name, filename, result, myReport)
 
     myReport.export()
 
-def timeout_wrapper(process):
+def timeout_wrapper(process, mode, domain_name, instance_name, result, report):
+    logged = False
+    start_time = time.time()
+
     process.start()
     process.join(timeout)
     # Terminate the search, if unfinished.
     if process.is_alive():
         process.terminate()
         process.join()
+    
+    # Log behaviour of the search-proc
+    if result.empty():
+        val_data = (None, None, None)
+        if time.time() - start_time < timeout:
+            # Log that the search must have crashed: errorcode time = -2
+            log_metadata = {'mode':mode, 'domain':domain_name, 'instance':instance_name, 'found':False,
+                'horizon':None, 'time':-2, 'time_log':None}
+        else:
+            # Log a timeout: errorcode: time = -1
+            log_metadata = {'mode':mode, 'domain':domain_name, 'instance':instance_name, 'found':False,
+                'horizon':None, 'time':-1, 'time_log':None}
+    else:
+        val_data, log_metadata = result.get()
+        report.create_log(val_data, log_metadata)
 
-def linear_search(dir, filename, domain, domain_name, report):
+
+def linear_search(dir, filename, domain, domain_name, result):
 
     instance_path = os.path.join(dir, filename)
     domain_path = os.path.join(BASE_DIR, domain)
@@ -120,7 +125,6 @@ def linear_search(dir, filename, domain, domain_name, report):
 
     print('Now solving: ' + str(domain_name) + ' ' + str(filename))
 
-    #try:
     # Log time consuption of subroutines
     log = Log()
 
@@ -133,12 +137,12 @@ def linear_search(dir, filename, domain, domain_name, report):
     total_time = log.finish()
     log_metadata = {'mode': 'parallel incremental', 'domain':domain_name, 'instance':filename, 'found':found,
         'horizon':horizon, 'time': total_time, 'time_log': log.export()}
-    report.create_log(solution, domain_path, instance_path, log_metadata)
+    val_data = (solution, domain_path, instance_path)
 
-    #except:
-    #report.fail_log('parallel incremental', domain_name, filename)
+    # Return the information
+    result.put((val_data, log_metadata))
 
-def relaxed_search_wrapper(dir, filename, domain, domain_name, report, encoder_version, options, name):
+def relaxed_search_wrapper(dir, filename, domain, domain_name, encoder_version, options, name, result):
 
     instance_path = os.path.join(dir, filename)
     domain_path = os.path.join(BASE_DIR, domain)
@@ -146,8 +150,6 @@ def relaxed_search_wrapper(dir, filename, domain, domain_name, report, encoder_v
     task = translate.pddl.open(instance_path, domain_path)
 
     print('Now solving: ' + str(domain_name) + ' ' + str(filename))
-
-    #try:
 
     # Log time consuption of subroutines
     log = Log()
@@ -164,11 +166,10 @@ def relaxed_search_wrapper(dir, filename, domain, domain_name, report, encoder_v
     log_metadata = {'mode': name, 'domain':domain_name, 'instance':filename, 'found':found,
         'horizon':horizon, 'time': total_time, 'time_log': log.export(), 'f_count': e.f_cnt,
         'semantics_f_count': e.semantics_f_cnt}
-    report.create_log(solution, domain_path, instance_path, log_metadata)
+    val_data = (solution, domain_path, instance_path)
 
-    #except:
-
-    #    report.fail_log(str(options), domain_name, filename)
+    # Return the information
+    result.put((val_data, log_metadata))
 
 class SpringrollWrapper:
 
@@ -201,6 +202,7 @@ class SpringrollWrapper:
         thread.start()
         end = time.time() - start
 
+        # TODO actually check the output
         log_metadata = {'mode': 'springrill', 'domain':domain_name, 'instance':filename,
             'found':True, 'horizon':0, 'time': end, 'time_log': None}
         report.create_log(None, domain_path, instance_path, log_metadata)
@@ -400,10 +402,12 @@ def run_controlled_test():
 
 class SparseReport():
 
-    def __init__(self, logs):
-        self.logs = logs
+    def __init__(self):
+        self.logs = {}
     
-    def create_log(self, solution, domain_path, instance_path, log_metadata):
+    def create_log(self, val_data, log_metadata):
+        # Unfold the input
+        solution, domain_path, instance_path = val_data
         val = BASE_DIR + val_path
         domain = log_metadata['domain']
         instance = log_metadata['instance']
@@ -444,7 +448,7 @@ class SparseReport():
         try:
             path = os.path.join(BASE_DIR,'testsuit','output','analysis_' + str(time.time())+'.sparse')
             with open(path, 'wb') as output_file:
-                pickle.dump(logs_dict, output_file)
+                pickle.dump((timeout, logs_dict), output_file)
         except:
             print('Export failed.')
 
@@ -455,7 +459,9 @@ class Report():
         self.logs = {}
         self.time_logs = {}
 
-    def create_log(self, solution, domain_path, instance_path, log_metadata):
+    def create_log(self, val_data, log_metadata):
+        # Unfold the input
+        solution, domain_path, instance_path = val_data
         val = BASE_DIR + val_path
         domain = log_metadata['domain']
         instance = log_metadata['instance']
@@ -513,7 +519,7 @@ class Report():
         try:
             path = os.path.join(BASE_DIR,'testsuit','output','analysis_' + str(time.time())+'.detailed')
             with open(path, 'wb') as output_file:
-                pickle.dump((self.logs, self.time_logs), output_file)
+                pickle.dump((timeout, self.logs, self.time_logs), output_file)
         except:
             print('Export failed.')
 
