@@ -108,7 +108,6 @@ class Plan():
 
             try:
                 output = subprocess.check_output([val, domain, problem, temp.name])
-                print('The -plan- file is stored at: ' + str(temp.name))
 
             except subprocess.CalledProcessError as e:
                 print('Unknown error, exiting now...')

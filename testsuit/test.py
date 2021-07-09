@@ -1,11 +1,11 @@
 import os, sys, time
 import copy
 import multiprocessing, pickle
-import subprocess, threading
+import subprocess, threading, signal
 from natsort import natsorted
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..'))
-val_path = '/bin/validate'
+val_path = '/bin/Validate'
 
 sys.path.insert(0, BASE_DIR) 
 
@@ -15,7 +15,7 @@ import utils
 from planner import encoder, agile_encoder, modifier, search
 
 # Timeout per instance in seconds
-timeout = 60
+timeout = 5
 
 # Set upper bound
 ub = 100
@@ -30,29 +30,29 @@ def run_comparison():
      ('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
      r'pddl_examples/linear/zeno-travel-linear/instances',0,1)]
     problems1 = [('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
-     r'pddl_examples/linear/zeno-travel-linear/instances',0,3),
-     ('farmland_ln', r'pddl_examples\linear\farmland_ln\domain.pddl',
-     r'pddl_examples\linear\farmland_ln\instances',0,0), # Problem in domain definition. 
-     ('fo_counters', r'pddl_examples\linear\fo_counters\domain.pddl',
-     r'pddl_examples\linear\fo_counters\instances',0,15),
-     #('fo_counters_seq', r'pddl_examples\linear\fo_counters_seq\domain.pddl',
-     #r'pddl_examples\linear\fo_counters_seq\instances',0,7),
-     #('fo_counters_inv', r'pddl_examples\linear\fo_counters_inv\domain.pddl',
-     #r'pddl_examples\linear\fo_counters_inv\instances',0,10),
-     ('fo_counters_rnd', r'pddl_examples\linear\fo_counters_rnd\domain.pddl',
-     r'pddl_examples\linear\fo_counters_rnd\instances',0,10),
-     #('sailing_ln', r'pddl_examples\linear\sailing_ln\domain.pddl',
-     #r'pddl_examples\linear\sailing_ln\instances',0,0), # Does not seem to be solvable in reasonable time at horizon 24
-     ('tpp', r'pddl_examples\linear\tpp\domain.pddl',
-     r'pddl_examples\linear\tpp\instances',0,2),
-     ('depots_numeric', r'pddl_examples\simple\depots_numeric\domain.pddl',
-     r'pddl_examples\simple\depots_numeric\instances',0,2),
-     ('gardening', r'pddl_examples\simple\gardening\domain.pddl',
-     r'pddl_examples\simple\gardening\instances',0,3),
-     ('rover-numeric', r'pddl_examples\simple\rover-numeric\domain.pddl',
-     r'pddl_examples\simple\rover-numeric\instances',0,4)]
+     r'pddl_examples/linear/zeno-travel-linear/instances',0,1),
+     ('farmland_ln', r'pddl_examples/linear/farmland_ln/domain.pddl',
+     r'pddl_examples/linear/farmland_ln/instances',0,1), # Problem in domain definition. 
+     ('fo_counters', r'pddl_examples/linear/fo_counters/domain.pddl',
+     r'pddl_examples/linear/fo_counters/instances',0,1),
+     #('fo_counters_seq', r'pddl_examples/linear/fo_counters_seq/domain.pddl',
+     #r'pddl_examples/linear/fo_counters_seq/instances',0,7),
+     #('fo_counters_inv', r'pddl_examples/linear/fo_counters_inv/domain.pddl',
+     #r'pddl_examples/linear/fo_counters_inv/instances',0,10),
+     ('fo_counters_rnd', r'pddl_examples/linear/fo_counters_rnd/domain.pddl',
+     r'pddl_examples/linear/fo_counters_rnd/instances',0,1),
+     ('sailing_ln', r'pddl_examples/linear/sailing_ln/domain.pddl',
+     r'pddl_examples/linear/sailing_ln/instances',0,1), # Does not seem to be solvable in reasonable time at horizon 24
+     ('tpp', r'pddl_examples/linear/tpp/domain.pddl',
+     r'pddl_examples/linear/tpp/instances',0,1),
+     ('depots_numeric', r'pddl_examples/simple/depots_numeric/domain.pddl',
+     r'pddl_examples/simple/depots_numeric/instances',0,1),
+     ('gardening', r'pddl_examples/simple/gardening/domain.pddl',
+     r'pddl_examples/simple/gardening/instances',0,1),
+     ('rover-numeric', r'pddl_examples/simple/rover-numeric/domain.pddl',
+     r'pddl_examples/simple/rover-numeric/instances',0,1)]
 
-    problems = problems0
+    problems = problems1
 
     # Create Statistics
     manager = multiprocessing.Manager()
@@ -72,7 +72,7 @@ def run_comparison():
                 mySpringRoll = SpringrollWrapper()
                 mySpringRoll.run_springroll(abs_instance_dir, filename, domain, domain_name, myReport)
 
-                name = 'Timesteps-Current__UnsatCore-True__Seq-check-General'
+                '''name = 'Timesteps-Current__UnsatCore-True__Seq-check-General'
                 p = multiprocessing.Process(target=relaxed_search_wrapper,
                     args=(abs_instance_dir, filename, domain, domain_name, 2, 
                         {'Timesteps':0,'UnsatCore':True,'Seq-check':'General'},
@@ -85,7 +85,7 @@ def run_comparison():
                 p = multiprocessing.Process(target=linear_search,
                     args=(abs_instance_dir, filename, domain, domain_name, result)
                 )
-                timeout_wrapper(p, name, domain_name, filename, result, myReport)
+                timeout_wrapper(p, name, domain_name, filename, result, myReport)'''
 
     myReport.export()
 
@@ -193,7 +193,7 @@ class SpringrollWrapper:
                 cmd = ['java -classpath testsuit/dist/lib/antlr-3.4-complete.jar:testsuit/dist/lib/jgraph-5.13.0.0.jar:testsuit/dist/lib/jgrapht-core-0.9.0.jar:testsuit/dist/lib/PPMaJal2.jar:testsuit/dist/springroll.jar runner.SMTHybridPlanner -o '
                     + domain_path + ' -f ' + instance_path]
                 self.process = subprocess.Popen(
-                    cmd, shell=True, stdout=subprocess.PIPE)
+                    cmd, shell=True, stdout=subprocess.PIPE, preexec_fn=os.setsid)
                 self.output = self.process.communicate()[0]
 
         thread = threading.Thread(target=target)
@@ -209,7 +209,7 @@ class SpringrollWrapper:
                 subprocess.Popen("TASKKILL /F /PID {pid} /T".format(pid=self.process.pid))
             else:
                 # This does not necessarily work on any os
-                self.process.terminate()
+                os.killpg(os.getpgid(self.process.pid), signal.SIGTERM)
             thread.join()
             
             # Log a timeout: errorcode: time = -1
@@ -221,7 +221,7 @@ class SpringrollWrapper:
             if 'Solved: True' in self.output:
                 found = True
             elif not ('Solved: False' in self.output):
-                # Log a timeout: errorcode: time = -2
+                # Log a crash: errorcode: time = -2
                 duration = -2
             else:
                 print('*****************Parameters have to be changed!*****************')

@@ -111,4 +111,4 @@ testsuit/output/
 .vscode/
 
 # Springroll output
-.plan
+*.plan
