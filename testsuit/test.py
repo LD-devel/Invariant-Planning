@@ -69,8 +69,8 @@ def run_comparison():
 
                 print('Solving: '+ filename +' ********************')
 
-                '''mySpringRoll = SpringrollWrapper()
-                mySpringRoll.run_springroll(abs_instance_dir, filename, domain, domain_name, myReport)'''
+                mySpringRoll = SpringrollWrapper()
+                mySpringRoll.run_springroll(abs_instance_dir, filename, domain, domain_name, myReport)
 
                 name = 'Timesteps-Current__UnsatCore-True__Seq-check-General'
                 p = multiprocessing.Process(target=relaxed_search_wrapper,
@@ -114,7 +114,6 @@ def timeout_wrapper(process, mode, domain_name, instance_name, result, report):
     else:
         val_data, log_metadata = result.get()
         report.create_log(val_data, log_metadata)
-
 
 def linear_search(dir, filename, domain, domain_name, result):
 
@@ -200,14 +199,10 @@ class SpringrollWrapper:
         thread = threading.Thread(target=target)
         start = time.time()
         thread.start()
-        end = time.time() - start
-
-        # TODO actually check the output
-        log_metadata = {'mode': 'springrill', 'domain':domain_name, 'instance':filename,
-            'found':True, 'horizon':0, 'time': end, 'time_log': None}
-        report.create_log(None, domain_path, instance_path, log_metadata)
 
         thread.join(timeout)
+        duration = time.time() - start
+        found = False
         if thread.is_alive():
             if os.name == 'nt':
                 print 'Terminating process (in a sketchy way)'
@@ -216,11 +211,30 @@ class SpringrollWrapper:
                 # This does not necessarily work on any os
                 self.process.terminate()
             thread.join()
+            
+            # Log a timeout: errorcode: time = -1
+            duration = -1
+        else:
+            print('OUTPUT START')
+            print(self.output)
+            print('OUTPUT END')
+            if 'Solved: True' in self.output:
+                found = True
+            elif not ('Solved: False' in self.output):
+                # Log a timeout: errorcode: time = -2
+                duration = -2
+            else:
+                print('*****************Parameters have to be changed!*****************')
+                print('Finished within timeout, without solving.')
+                duration = -3
         
+        log_metadata = {'mode': 'springroll', 'domain':domain_name, 'instance':filename,
+            'found':found, 'horizon':0, 'time':duration, 'time_log': None}
+        val_data = (None, domain_path, instance_path)
+        report.create_log(val_data, log_metadata)
+
         print(self.process.returncode)
-        print('OUTPUT START')
-        print(self.output)
-        print('OUTPUT END')
+
 
 
 def run_controlled_test():
