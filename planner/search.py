@@ -227,6 +227,7 @@ class SearchSMT(Search):
         print('Start CEGAR search with options:')
         print('Seq-check:' + str(options['Seq-check']))
         print('Timesteps:' + str(options['Timesteps']))
+        print('UnsatCore:' + str(options['UnsatCore']))
 
         # Build formula until a plan is found or upper bound is reached
         while not self.found and self.horizon < self.ub:
@@ -256,8 +257,6 @@ class SearchSMT(Search):
                 seq, invariants, inv_step = False, None, None
 
                 if options['Seq-check'] == 'General':
-                    
-                    print('UnsatCore:' + str(options['UnsatCore']))
 
                     if not self.encoder.version == 2:
                         print('Encoder unsuitable for the selected options.')
@@ -266,8 +265,6 @@ class SearchSMT(Search):
                         u_core=options['UnsatCore'], log=log)
                 
                 elif options['Seq-check'] == 'FixedOrder':
-                    
-                    print('UnsatCore:' + str(options['UnsatCore']))
                     
                     if not self.encoder.version == 2:
                         print('Encoder unsuitable for the selected options.')
@@ -481,8 +478,7 @@ class SearchSMT(Search):
         return True, None, None
 
     def _seq_check_ordered(self, u_core = True, log = None):
-        #TODO add order as parameter
-
+        # The order is defined in the encoder
         model = self.solver.model()
 
         # Extract parallel plan steps from the model

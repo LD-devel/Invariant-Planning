@@ -47,6 +47,8 @@ class AgileEncoder():
         # Initialize action-encodings dict
         # Format = {step: {action: []}
         self.action_encodings = defaultdict(dict)
+        # Max number of actions in a parallel step
+        self.par_bound = len(self.actions)
 
         # Initialize sequentializability-ecoder depending on version
         self.version = version
@@ -59,6 +61,9 @@ class AgileEncoder():
             self.simulator = simulator.Simulator(self, self.boolean_fluents, self.numeric_fluents)
         elif version == 4:
             self.local_mutexes = set()
+
+        # Store actions in a certain order, if needed.
+        self.ordered_actions = None
 
         # For analysis - counting number of subformulas
         self.f_cnt = 0
@@ -743,14 +748,19 @@ class AgileEncoder():
 
         # Fill up the actions_encodings dict accordingly
         for step in steps_todo:
-            if not self.action_encodings.has_key(step):
-                self.action_encodings[step] = {}
-            for action in actions:
-                if not self.action_encodings[step].has_key(action):
-                    self.action_encodings[step][action] = self.encodeAction(action,step)
+            # Limit storing the encodings in the dict to a certain step
+            # as the number of actions in a parallel step is limited
+            if step <= self.par_bound:
+                if not self.action_encodings.has_key(step):
+                    self.action_encodings[step] = {}
+                for action in actions:
+                    if not self.action_encodings[step].has_key(action):
+                        self.action_encodings[step][action] = self.encodeAction(action,step)
 
-                # Append the encoding for return
-                encodings.append(self.action_encodings[step][action])
+                    # Append the encoding for return
+                    encodings.append(self.action_encodings[step][action])
+            else:
+                encodings.append(self.encodeAction(action, step))
         
         return encodings
  
@@ -885,8 +895,8 @@ class AgileEncoderSMT(AgileEncoder):
 
         if self.version == 1 or self.version == 3:
             actions = self.encodeActions(step, step)
-            for _,action_steps in actions.items():
-                for _,encoding in action_steps.items():
+            for _,action_steps in actions.iteritems():
+                for _,encoding in action_steps.iteritems():
                     formula.append(encoding)
 
         else:
@@ -1154,26 +1164,30 @@ class AgileEncoderSMT(AgileEncoder):
         f = Bool('f') 
         encoding = []
         trackers = []
+        action_set = set(actions)
 
         self.createVariables(len(actions))
 
+        # Order actions in some way, if not done yet
+        if self.ordered_actions is None:
+            self.ordered_actions = self.actions
 
         step = 0
-        for action in actions:
+        for action in self.ordered_actions:
+            if action in action_set:
+                # Add encoding to stored encodings if necessary
+                if not self.action_encodings.has_key(step):
+                    self.action_encodings[step] = {}
+                if not self.action_encodings[step].has_key(action):
+                    self.action_encodings[step][action] = self.encodeAction(action,step)
+                
+                #Frame
+                frame = And(self.encodeFrame(step,step,[action]).values()[0])
 
-            # Add encoding to stored encodings if necessary
-            if not self.action_encodings.has_key(step):
-                self.action_encodings[step] = {}
-            if not self.action_encodings[step].has_key(action):
-                self.action_encodings[step][action] = self.encodeAction(action,step)
-            
-            #Frame
-            frame = And(self.encodeFrame(step,step,[action]).values()[0])
+                encoding.append(self.action_encodings[step][action])
+                encoding.append(Implies(self.action_variables[step][action.name],frame))
+                trackers.append(self.action_variables[step][action.name])
 
-            encoding.append(self.action_encodings[step][action])
-            encoding.append(Implies(self.action_variables[step][action.name],frame))
-            trackers.append(self.action_variables[step][action.name])
-
-            step +=1
+                step +=1
 
         return encoding, trackers

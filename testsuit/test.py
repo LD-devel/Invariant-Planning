@@ -15,7 +15,7 @@ import utils
 from planner import encoder, agile_encoder, modifier, search
 
 # Timeout per instance in seconds
-timeout = 5
+timeout = 50
 
 # Set upper bound
 ub = 100
@@ -26,7 +26,7 @@ def main():
 
 def run_comparison():
     problems0 = [('fo_counters', r'pddl_examples/linear/fo_counters/domain.pddl',
-     r'pddl_examples/linear/fo_counters/instances',0,1),
+     r'pddl_examples/linear/fo_counters/instances',0,10),
      ('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
      r'pddl_examples/linear/zeno-travel-linear/instances',0,1)]
     problems1 = [('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
@@ -52,7 +52,7 @@ def run_comparison():
      ('rover-numeric', r'pddl_examples/simple/rover-numeric/domain.pddl',
      r'pddl_examples/simple/rover-numeric/instances',0,1)]
 
-    problems = problems1
+    problems = problems0
 
     # Create Statistics
     manager = multiprocessing.Manager()
@@ -72,10 +72,19 @@ def run_comparison():
                 mySpringRoll = SpringrollWrapper()
                 mySpringRoll.run_springroll(abs_instance_dir, filename, domain, domain_name, myReport)
 
-                '''name = 'Timesteps-Current__UnsatCore-True__Seq-check-General'
+                name = 'Timesteps-Current__UnsatCore-True__Seq-check-General'
                 p = multiprocessing.Process(target=relaxed_search_wrapper,
                     args=(abs_instance_dir, filename, domain, domain_name, 2, 
                         {'Timesteps':0,'UnsatCore':True,'Seq-check':'General'},
+                        name, result
+                    )
+                )
+                timeout_wrapper(p, name, domain_name, filename, result, myReport)
+
+                name = 'Timesteps-Dynamic__UnsatCore-True__Seq-check-FixedOrder'
+                p = multiprocessing.Process(target=relaxed_search_wrapper,
+                    args=(abs_instance_dir, filename, domain, domain_name, 2, 
+                        {'Timesteps':2,'UnsatCore':True,'Seq-check':'FixedOrder'},
                         name, result
                     )
                 )
@@ -85,7 +94,7 @@ def run_comparison():
                 p = multiprocessing.Process(target=linear_search,
                     args=(abs_instance_dir, filename, domain, domain_name, result)
                 )
-                timeout_wrapper(p, name, domain_name, filename, result, myReport)'''
+                timeout_wrapper(p, name, domain_name, filename, result, myReport)
 
     myReport.export()
 
@@ -113,7 +122,8 @@ def timeout_wrapper(process, mode, domain_name, instance_name, result, report):
                 'horizon':None, 'time':-1, 'time_log':None}
     else:
         val_data, log_metadata = result.get()
-        report.create_log(val_data, log_metadata)
+    
+    report.create_log(val_data, log_metadata)
 
 def linear_search(dir, filename, domain, domain_name, result):
 
@@ -418,6 +428,7 @@ class SparseReport():
 
     def __init__(self):
         self.logs = {}
+        self.time_logs = {}
     
     def create_log(self, val_data, log_metadata):
         # Unfold the input
@@ -452,19 +463,32 @@ class SparseReport():
                 print('CAUTION! Plan not valid.' + str(domain) + ' , ' + str(instance))
         except:
             print('Exception during plan valitation.' + str(domain) + ' , ' + str(instance))
+
+        # Create entry for time_log
+        # Format: {domain_instance: { mode: time_log}}}
+        key = str(domain) + '_' + str(instance)
+        if not self.time_logs.has_key(key):
+            self.time_logs[key] = {}
+        self.time_logs[key][mode] = log_metadata['time_log']
     
     def export(self):
         # Convert logs manager.dict into a normal dict
-        logs_dict = {key: val for key, val in self.logs.iteritems()}
-        print(logs_dict)
+        print(self.logs)
 
         # The logs of the report will be pickled and stored in a file
+        id = str(time.time())
         try:
-            path = os.path.join(BASE_DIR,'testsuit','output','analysis_' + str(time.time())+'.sparse')
+            path = os.path.join(BASE_DIR,'testsuit','output','analysis_' +id+'.sparse')
             with open(path, 'wb') as output_file:
-                pickle.dump((timeout, logs_dict), output_file)
+                pickle.dump((timeout, self.logs), output_file)
         except:
-            print('Export failed.')
+            print('Export of logs failed.')
+        try:
+            path = os.path.join(BASE_DIR,'testsuit','output','analysis_' +id+'.timelog')
+            with open(path, 'wb') as output_file:
+                pickle.dump((timeout, self.time_logs), output_file)
+        except:
+            print('Export of timelogs failed.')
 
 
 class Report():
