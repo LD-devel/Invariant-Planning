@@ -52,7 +52,7 @@ def run_comparison():
      ('rover-numeric', r'pddl_examples/simple/rover-numeric/domain.pddl',
      r'pddl_examples/simple/rover-numeric/instances',0,1)]
 
-    problems = problems1
+    problems = problems0
 
     # Create Statistics
     manager = multiprocessing.Manager()
