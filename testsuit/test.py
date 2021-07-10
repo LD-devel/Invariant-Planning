@@ -482,7 +482,7 @@ class SparseReport():
             with open(path, 'wb') as output_file:
                 pickle.dump((timeout, self.logs), output_file)
         except Exception, e:
-            print(e):
+            print(e)
             print('Export of logs failed.')
         try:
             path = os.path.join('testsuit','output','analysis_' +id+'.timelog')
