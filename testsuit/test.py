@@ -15,7 +15,7 @@ import utils
 from planner import encoder, agile_encoder, modifier, search
 
 # Timeout per instance in seconds
-timeout = 50
+timeout = 15
 
 # Set upper bound
 ub = 100
