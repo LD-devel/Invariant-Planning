@@ -26,7 +26,7 @@ def main():
 
 def run_comparison():
     problems0 = [('fo_counters', r'pddl_examples/linear/fo_counters/domain.pddl',
-     r'pddl_examples/linear/fo_counters/instances',0,10),
+     r'pddl_examples/linear/fo_counters/instances',0,1),
      ('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
      r'pddl_examples/linear/zeno-travel-linear/instances',0,1)]
     problems1 = [('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
@@ -528,16 +528,18 @@ class SparseReport():
         # The logs of the report will be pickled and stored in a file
         id = str(time.time())
         try:
-            path = os.path.join(BASE_DIR,'testsuit','output','analysis_' +id+'.sparse')
+            path = os.path.join('testsuit','output','analysis_' +id+'.sparse')
             with open(path, 'wb') as output_file:
                 pickle.dump((timeout, self.logs), output_file)
-        except:
+        except Exception, e:
+            print(e)
             print('Export of logs failed.')
         try:
-            path = os.path.join(BASE_DIR,'testsuit','output','analysis_' +id+'.timelog')
+            path = os.path.join('testsuit','output','analysis_' +id+'.timelog')
             with open(path, 'wb') as output_file:
                 pickle.dump((timeout, self.time_logs), output_file)
-        except:
+        except Exception, e:
+            print(e)
             print('Export of timelogs failed.')
 
 
