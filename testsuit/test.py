@@ -15,7 +15,7 @@ import utils
 from planner import encoder, agile_encoder, modifier, search
 
 # Timeout per instance in seconds
-timeout = 50
+timeout = 5
 
 # Set upper bound
 ub = 100
@@ -52,7 +52,7 @@ def run_comparison():
      ('rover-numeric', r'pddl_examples/simple/rover-numeric/domain.pddl',
      r'pddl_examples/simple/rover-numeric/instances',0,1)]
 
-    problems = problems0
+    problems = problems1
 
     # Create Statistics
     manager = multiprocessing.Manager()
@@ -72,7 +72,7 @@ def run_comparison():
                 mySpringRoll = SpringrollWrapper()
                 mySpringRoll.run_springroll(abs_instance_dir, filename, domain, domain_name, myReport)
 
-                name = 'Timesteps-Current__UnsatCore-True__Seq-check-General'
+                name = 'Timesteps-All__UnsatCore-True__Seq-check-General'
                 p = multiprocessing.Process(target=relaxed_search_wrapper,
                     args=(abs_instance_dir, filename, domain, domain_name, 2, 
                         {'Timesteps':0,'UnsatCore':True,'Seq-check':'General'},
@@ -81,10 +81,19 @@ def run_comparison():
                 )
                 timeout_wrapper(p, name, domain_name, filename, result, myReport)
 
-                name = 'Timesteps-Dynamic__UnsatCore-True__Seq-check-FixedOrder'
+                name = 'Timesteps-Current__UnsatCore-True__Seq-check-General'
                 p = multiprocessing.Process(target=relaxed_search_wrapper,
                     args=(abs_instance_dir, filename, domain, domain_name, 2, 
-                        {'Timesteps':2,'UnsatCore':True,'Seq-check':'FixedOrder'},
+                        {'Timesteps':1,'UnsatCore':True,'Seq-check':'General'},
+                        name, result
+                    )
+                )
+                timeout_wrapper(p, name, domain_name, filename, result, myReport)
+
+                name = 'Timesteps-Current__UnsatCore-True__Seq-check-Syntactical'
+                p = multiprocessing.Process(target=relaxed_search_wrapper,
+                    args=(abs_instance_dir, filename, domain, domain_name, 4, 
+                        {'Timesteps':1,'UnsatCore':True,'Seq-check':'Syntactical'},
                         name, result
                     )
                 )
@@ -95,6 +104,21 @@ def run_comparison():
                     args=(abs_instance_dir, filename, domain, domain_name, result)
                 )
                 timeout_wrapper(p, name, domain_name, filename, result, myReport)
+                
+                name = 'parallel not incremental'
+                p = multiprocessing.Process(target=linear_search_old,
+                    args=(abs_instance_dir, filename, domain, domain_name, result)
+                )
+                timeout_wrapper(p, name, domain_name, filename, result, myReport)
+
+                '''name = 'Timesteps-Dynamic__UnsatCore-True__Seq-check-FixedOrder'
+                p = multiprocessing.Process(target=relaxed_search_wrapper,
+                    args=(abs_instance_dir, filename, domain, domain_name, 2, 
+                        {'Timesteps':2,'UnsatCore':True,'Seq-check':'FixedOrder'},
+                        name, result
+                    )
+                )'''
+                #timeout_wrapper(p, name, domain_name, filename, result, myReport)
 
     myReport.export()
 
@@ -145,6 +169,32 @@ def linear_search(dir, filename, domain, domain_name, result):
     # Log the behaviour of the search.
     total_time = log.finish()
     log_metadata = {'mode': 'parallel incremental', 'domain':domain_name, 'instance':filename, 'found':found,
+        'horizon':horizon, 'time': total_time, 'time_log': log.export()}
+    val_data = (solution, domain_path, instance_path)
+
+    # Return the information
+    result.put((val_data, log_metadata))
+
+def linear_search_old(dir, filename, domain, domain_name, result):
+
+    instance_path = os.path.join(dir, filename)
+    domain_path = os.path.join(BASE_DIR, domain)
+
+    task = translate.pddl.open(instance_path, domain_path)
+
+    print('Now solving: ' + str(domain_name) + ' ' + str(filename))
+
+    # Log time consuption of subroutines
+    log = Log()
+
+    # Perform the search.
+    e = encoder.EncoderSMT(task, modifier.ParallelModifier())
+    s = search.SearchSMT(e,ub)
+    found, horizon, solution = s.do_linear_search(analysis=True, log=log)
+
+    # Log the behaviour of the search.
+    total_time = log.finish()
+    log_metadata = {'mode': 'parallel not incremental', 'domain':domain_name, 'instance':filename, 'found':found,
         'horizon':horizon, 'time': total_time, 'time_log': log.export()}
     val_data = (solution, domain_path, instance_path)
 
