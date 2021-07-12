@@ -30,11 +30,11 @@ def run_comparison():
      ('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
      r'pddl_examples/linear/zeno-travel-linear/instances',0,1)]
     problems1 = [('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
-     r'pddl_examples/linear/zeno-travel-linear/instances',0,0),
+     r'pddl_examples/linear/zeno-travel-linear/instances',0,10),
      ('farmland_ln', r'pddl_examples/linear/farmland_ln/domain.pddl',
      r'pddl_examples/linear/farmland_ln/instances',0,0), # Problem in domain definition. 
      ('fo_counters', r'pddl_examples/linear/fo_counters/domain.pddl',
-     r'pddl_examples/linear/fo_counters/instances',0,20),
+     r'pddl_examples/linear/fo_counters/instances',0,0),
      #('fo_counters_seq', r'pddl_examples/linear/fo_counters_seq/domain.pddl',
      #r'pddl_examples/linear/fo_counters_seq/instances',0,7),
      #('fo_counters_inv', r'pddl_examples/linear/fo_counters_inv/domain.pddl',
