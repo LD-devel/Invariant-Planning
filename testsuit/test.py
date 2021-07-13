@@ -44,13 +44,13 @@ def run_comparison():
      ('sailing_ln', r'pddl_examples/linear/sailing_ln/domain.pddl',
      r'pddl_examples/linear/sailing_ln/instances',0,0), # Does not seem to be solvable in reasonable time at horizon 24
      ('tpp', r'pddl_examples/linear/tpp/domain.pddl',
-     r'pddl_examples/linear/tpp/instances',0,10),
+     r'pddl_examples/linear/tpp/instances',0,0),
      ('depots_numeric', r'pddl_examples/simple/depots_numeric/domain.pddl',
      r'pddl_examples/simple/depots_numeric/instances',0,0),
      ('gardening', r'pddl_examples/simple/gardening/domain.pddl',
      r'pddl_examples/simple/gardening/instances',0,0),
      ('rover-numeric', r'pddl_examples/simple/rover-numeric/domain.pddl',
-     r'pddl_examples/simple/rover-numeric/instances',0,0)]
+     r'pddl_examples/simple/rover-numeric/instances',0,10)]
 
     problems = problems1
 
