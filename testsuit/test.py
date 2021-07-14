@@ -30,13 +30,13 @@ def run_comparison():
      ('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
      r'pddl_examples/linear/zeno-travel-linear/instances',0,1)]
     problems1 = [('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
-     r'pddl_examples/linear/zeno-travel-linear/instances',0,0),
+     r'pddl_examples/linear/zeno-travel-linear/instances',0,0),#tested
      ('farmland_ln', r'pddl_examples/linear/farmland_ln/domain.pddl',
      r'pddl_examples/linear/farmland_ln/instances',0,0), # Problem in domain definition. 
      ('fo_counters', r'pddl_examples/linear/fo_counters/domain.pddl',
-     r'pddl_examples/linear/fo_counters/instances',0,0),
-     #('fo_counters_seq', r'pddl_examples/linear/fo_counters_seq/domain.pddl',
-     #r'pddl_examples/linear/fo_counters_seq/instances',0,7),
+     r'pddl_examples/linear/fo_counters/instances',0,0),#tested
+     ('fo_counters_seq', r'pddl_examples/linear/fo_counters_seq/domain.pddl',
+     r'pddl_examples/linear/fo_counters_seq/instances',0,10),
      #('fo_counters_inv', r'pddl_examples/linear/fo_counters_inv/domain.pddl',
      #r'pddl_examples/linear/fo_counters_inv/instances',0,10),
      ('fo_counters_rnd', r'pddl_examples/linear/fo_counters_rnd/domain.pddl',
@@ -44,13 +44,13 @@ def run_comparison():
      ('sailing_ln', r'pddl_examples/linear/sailing_ln/domain.pddl',
      r'pddl_examples/linear/sailing_ln/instances',0,0), # Does not seem to be solvable in reasonable time at horizon 24
      ('tpp', r'pddl_examples/linear/tpp/domain.pddl',
-     r'pddl_examples/linear/tpp/instances',0,0),
+     r'pddl_examples/linear/tpp/instances',0,0),#tested
      ('depots_numeric', r'pddl_examples/simple/depots_numeric/domain.pddl',
-     r'pddl_examples/simple/depots_numeric/instances',0,0),
+     r'pddl_examples/simple/depots_numeric/instances',0,10),
      ('gardening', r'pddl_examples/simple/gardening/domain.pddl',
-     r'pddl_examples/simple/gardening/instances',0,0),
+     r'pddl_examples/simple/gardening/instances',0,10),
      ('rover-numeric', r'pddl_examples/simple/rover-numeric/domain.pddl',
-     r'pddl_examples/simple/rover-numeric/instances',0,10)]
+     r'pddl_examples/simple/rover-numeric/instances',0,0)]#tested
 
     problems = problems1
 
@@ -81,23 +81,23 @@ def run_comparison():
                 )
                 timeout_wrapper(p, name, domain_name, filename, result, myReport)
 
-                name = 'Timesteps-Current__UnsatCore-True__Seq-check-General'
+                '''name = 'Timesteps-Current__UnsatCore-True__Seq-check-General'
                 p = multiprocessing.Process(target=relaxed_search_wrapper,
                     args=(abs_instance_dir, filename, domain, domain_name, 2, 
                         {'Timesteps':1,'UnsatCore':True,'Seq-check':'General'},
                         name, result
                     )
                 )
-                timeout_wrapper(p, name, domain_name, filename, result, myReport)
+                timeout_wrapper(p, name, domain_name, filename, result, myReport)'''
 
-                name = 'Timesteps-Current__UnsatCore-True__Seq-check-Syntactical'
+                '''name = 'Timesteps-Current__UnsatCore-True__Seq-check-Syntactical'
                 p = multiprocessing.Process(target=relaxed_search_wrapper,
                     args=(abs_instance_dir, filename, domain, domain_name, 4, 
                         {'Timesteps':1,'UnsatCore':True,'Seq-check':'Syntactical'},
                         name, result
                     )
                 )
-                timeout_wrapper(p, name, domain_name, filename, result, myReport)
+                timeout_wrapper(p, name, domain_name, filename, result, myReport)'''
             
                 name = 'parallel incremental'
                 p = multiprocessing.Process(target=linear_search,
@@ -105,11 +105,11 @@ def run_comparison():
                 )
                 timeout_wrapper(p, name, domain_name, filename, result, myReport)
                 
-                name = 'parallel not incremental'
+                '''name = 'parallel not incremental'
                 p = multiprocessing.Process(target=linear_search_old,
                     args=(abs_instance_dir, filename, domain, domain_name, result)
                 )
-                timeout_wrapper(p, name, domain_name, filename, result, myReport)
+                timeout_wrapper(p, name, domain_name, filename, result, myReport)'''
 
                 '''name = 'Timesteps-Dynamic__UnsatCore-True__Seq-check-FixedOrder'
                 p = multiprocessing.Process(target=relaxed_search_wrapper,
