@@ -15,7 +15,7 @@ import utils
 from planner import encoder, agile_encoder, modifier, search
 
 # Timeout per instance in seconds
-timeout = 1200
+timeout = 3600
 
 # Set upper bound
 ub = 100
@@ -32,7 +32,7 @@ def run_comparison():
     problems1 = [('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
      r'pddl_examples/linear/zeno-travel-linear/instances',0,0),#tested
      ('farmland_ln', r'pddl_examples/linear/farmland_ln/domain.pddl',
-     r'pddl_examples/linear/farmland_ln/instances',0,10), # Problem in domain definition. 
+     r'pddl_examples/linear/farmland_ln/instances',0,6), # Problem in domain definition. 
      ('fo_counters', r'pddl_examples/linear/fo_counters/domain.pddl',
      r'pddl_examples/linear/fo_counters/instances',0,0),#tested
      ('fo_counters_seq', r'pddl_examples/linear/fo_counters_seq/domain.pddl',
@@ -42,7 +42,7 @@ def run_comparison():
      ('fo_counters_rnd', r'pddl_examples/linear/fo_counters_rnd/domain.pddl',
      r'pddl_examples/linear/fo_counters_rnd/instances',0,0),
      ('sailing_ln', r'pddl_examples/linear/sailing_ln/domain.pddl',
-     r'pddl_examples/linear/sailing_ln/instances',0,0), # Does not seem to be solvable in reasonable time at horizon 24
+     r'pddl_examples/linear/sailing_ln/instances',0,1), # Does not seem to be solvable in reasonable time at horizon 24
      ('tpp', r'pddl_examples/linear/tpp/domain.pddl',
      r'pddl_examples/linear/tpp/instances',0,0),#tested
      ('depots_numeric', r'pddl_examples/simple/depots_numeric/domain.pddl',
