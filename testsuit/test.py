@@ -15,7 +15,7 @@ import utils
 from planner import encoder, agile_encoder, modifier, search
 
 # Timeout per instance in seconds
-timeout = 3600
+timeout = 10
 
 # Set upper bound
 ub = 100
@@ -26,9 +26,9 @@ def main():
 
 def run_comparison():
     problems0 = [('fo_counters', r'pddl_examples/linear/fo_counters/domain.pddl',
-     r'pddl_examples/linear/fo_counters/instances',0,1),
+     r'pddl_examples/linear/fo_counters/instances',0,3),
      ('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
-     r'pddl_examples/linear/zeno-travel-linear/instances',0,1)]
+     r'pddl_examples/linear/zeno-travel-linear/instances',0,10)]
     problems1 = [('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
      r'pddl_examples/linear/zeno-travel-linear/instances',0,0),#tested
      ('farmland_ln', r'pddl_examples/linear/farmland_ln/domain.pddl',
@@ -52,12 +52,12 @@ def run_comparison():
      ('rover-numeric', r'pddl_examples/simple/rover-numeric/domain.pddl',
      r'pddl_examples/simple/rover-numeric/instances',0,0)]#tested
 
-    problems = problems1
+    problems = problems0
 
     # Create Statistics
     manager = multiprocessing.Manager()
     result = manager.Queue()
-    myReport = SparseReport()
+    myReport = SimpleReport()
 
     for domain_name, domain, instance_dir, lowerbound, upperbound in problems:
         abs_instance_dir = os.path.join(BASE_DIR, instance_dir)
@@ -120,7 +120,8 @@ def run_comparison():
                 )'''
                 #timeout_wrapper(p, name, domain_name, filename, result, myReport)
 
-    myReport.export()
+    # Not explicit export call needed for simple logs.
+    #myReport.export()
 
 def timeout_wrapper(process, mode, domain_name, instance_name, result, report):
     logged = False
@@ -473,6 +474,60 @@ def run_controlled_test():
                 myReport.create_log(solution, domain_path, instance_path, log_metadata)
     
     myReport.export()
+
+class SimpleReport():
+
+    def __init__(self):
+        self.file_id = str(time.time())
+        self.path = os.path.join(BASE_DIR,'testsuit','output','analysis_' + self.file_id +'.rwal')
+
+        # Save initially empty list.
+        print(self.path)
+        try:
+            with open(self.path, 'wb') as output_file:
+                    pickle.dump([], output_file)
+        except:
+            print('Could not create file for export. Aborting...')
+            sys.exit()
+
+    def create_log(self, val_data, log_metadata):
+        # Load file containing prev log entries, if existing.]
+        logs = []
+        loaded = True
+        try:
+            with open(self.path, 'rb') as file:
+                logs = pickle.load(file)
+        except:
+            print('Previous log not found.')
+            print('Latest result could not be saved.')
+            loaded = False
+        
+        if(loaded):
+            # Validate the plan
+            solution, domain_path, instance_path = val_data
+            val = BASE_DIR + val_path
+            valid = -1
+            # Validate
+            try:
+                if solution.validate(val, domain_path, instance_path):
+                    print('Valid plan found! in time: ' + str(log_metadata['time']))
+                    valid = 1
+                else:
+                    print('CAUTION! Plan not valid.' + log_metadata['domain'] + ' , ' + log_metadata['instance'])
+                    valid = 0
+            except:
+                print('Exception during plan valitation.' + log_metadata['domain'] + ' , ' + log_metadata['instance'])
+
+            log_metadata['valid'] = valid
+            logs.append(log_metadata)
+
+            # Save file
+            try:
+                with open(self.path, 'wb') as output_file:
+                    pickle.dump(logs, output_file)
+            except:
+                print('Export failed.')
+
 
 class SparseReport():
 
