@@ -760,7 +760,8 @@ class AgileEncoder():
                     # Append the encoding for return
                     encodings.append(self.action_encodings[step][action])
             else:
-                encodings.append(self.encodeAction(action, step))
+                for action in actions:
+                    encodings.append(self.encodeAction(action, step))
         
         return encodings
  

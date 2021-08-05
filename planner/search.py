@@ -47,7 +47,7 @@ class SearchSMT(Search):
     Search class for SMT-based encodings.
     """
 
-    def do_linear_search(self, analysis = False):
+    def do_linear_search(self, analysis = False, log = None):
         """
         Linear search scheme for SMT encodings with unit action costs.
         Optimal plan is obtained by simple ramp-up strategy
@@ -75,8 +75,8 @@ class SearchSMT(Search):
             formula =  self.encoder.encode(self.horizon)
 
             # Analysis
-            self.time_log.append(('Formula encoding at horizon: '+ str(self.horizon),time.time()-self.last_time))
-            self.last_time = time.time()
+            if(analysis):
+                log.register('Formula encoding at horizon: '+ str(self.horizon))
 
             # Assert subformulas in solver
             for k,v in formula.items():
@@ -87,8 +87,8 @@ class SearchSMT(Search):
             res = self.solver.check()
 
             # Analysis
-            self.time_log.append(('Sat-check at horizon: '+ str(self.horizon),time.time()-self.last_time))
-            self.last_time = time.time()
+            if(analysis):
+                log.register('Sat-check at horizon: '+ str(self.horizon))
 
             if res == sat:
                 print(self.horizon)
@@ -104,7 +104,7 @@ class SearchSMT(Search):
                 model = self.solver.model()
                 self.solution = plan.Plan(model, self.encoder)
 
-            return (self.found, self.horizon, self.solution, self.time_log)
+            return (self.found, self.horizon, self.solution)
 
         # Extract plan from model
         model = self.solver.model()

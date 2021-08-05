@@ -15,7 +15,7 @@ import utils
 from planner import encoder, agile_encoder, modifier, search
 
 # Timeout per instance in seconds
-timeout = 50
+timeout = 3600
 
 # Set upper bound
 ub = 100
@@ -26,33 +26,33 @@ def main():
 
 def run_comparison():
     problems0 = [('fo_counters', r'pddl_examples/linear/fo_counters/domain.pddl',
-     r'pddl_examples/linear/fo_counters/instances',0,10),
+     r'pddl_examples/linear/fo_counters/instances',0,1),
      ('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
      r'pddl_examples/linear/zeno-travel-linear/instances',0,1)]
     problems1 = [('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
-     r'pddl_examples/linear/zeno-travel-linear/instances',0,1),
+     r'pddl_examples/linear/zeno-travel-linear/instances',0,0),#tested
      ('farmland_ln', r'pddl_examples/linear/farmland_ln/domain.pddl',
-     r'pddl_examples/linear/farmland_ln/instances',0,1), # Problem in domain definition. 
+     r'pddl_examples/linear/farmland_ln/instances',0,6), # Problem in domain definition. 
      ('fo_counters', r'pddl_examples/linear/fo_counters/domain.pddl',
-     r'pddl_examples/linear/fo_counters/instances',0,1),
-     #('fo_counters_seq', r'pddl_examples/linear/fo_counters_seq/domain.pddl',
-     #r'pddl_examples/linear/fo_counters_seq/instances',0,7),
+     r'pddl_examples/linear/fo_counters/instances',0,0),#tested
+     ('fo_counters_seq', r'pddl_examples/linear/fo_counters_seq/domain.pddl',
+     r'pddl_examples/linear/fo_counters_seq/instances',0,0),#tested
      #('fo_counters_inv', r'pddl_examples/linear/fo_counters_inv/domain.pddl',
      #r'pddl_examples/linear/fo_counters_inv/instances',0,10),
      ('fo_counters_rnd', r'pddl_examples/linear/fo_counters_rnd/domain.pddl',
-     r'pddl_examples/linear/fo_counters_rnd/instances',0,1),
+     r'pddl_examples/linear/fo_counters_rnd/instances',0,0),
      ('sailing_ln', r'pddl_examples/linear/sailing_ln/domain.pddl',
      r'pddl_examples/linear/sailing_ln/instances',0,1), # Does not seem to be solvable in reasonable time at horizon 24
      ('tpp', r'pddl_examples/linear/tpp/domain.pddl',
-     r'pddl_examples/linear/tpp/instances',0,1),
+     r'pddl_examples/linear/tpp/instances',0,0),#tested
      ('depots_numeric', r'pddl_examples/simple/depots_numeric/domain.pddl',
-     r'pddl_examples/simple/depots_numeric/instances',0,1),
+     r'pddl_examples/simple/depots_numeric/instances',0,0),#tested
      ('gardening', r'pddl_examples/simple/gardening/domain.pddl',
-     r'pddl_examples/simple/gardening/instances',0,1),
+     r'pddl_examples/simple/gardening/instances',0,0),#tested
      ('rover-numeric', r'pddl_examples/simple/rover-numeric/domain.pddl',
-     r'pddl_examples/simple/rover-numeric/instances',0,1)]
+     r'pddl_examples/simple/rover-numeric/instances',0,0)]#tested
 
-    problems = problems0
+    problems = problems1
 
     # Create Statistics
     manager = multiprocessing.Manager()
@@ -72,7 +72,7 @@ def run_comparison():
                 mySpringRoll = SpringrollWrapper()
                 mySpringRoll.run_springroll(abs_instance_dir, filename, domain, domain_name, myReport)
 
-                name = 'Timesteps-Current__UnsatCore-True__Seq-check-General'
+                name = 'Timesteps-All__UnsatCore-True__Seq-check-General'
                 p = multiprocessing.Process(target=relaxed_search_wrapper,
                     args=(abs_instance_dir, filename, domain, domain_name, 2, 
                         {'Timesteps':0,'UnsatCore':True,'Seq-check':'General'},
@@ -81,20 +81,44 @@ def run_comparison():
                 )
                 timeout_wrapper(p, name, domain_name, filename, result, myReport)
 
-                name = 'Timesteps-Dynamic__UnsatCore-True__Seq-check-FixedOrder'
+                '''name = 'Timesteps-Current__UnsatCore-True__Seq-check-General'
                 p = multiprocessing.Process(target=relaxed_search_wrapper,
                     args=(abs_instance_dir, filename, domain, domain_name, 2, 
-                        {'Timesteps':2,'UnsatCore':True,'Seq-check':'FixedOrder'},
+                        {'Timesteps':1,'UnsatCore':True,'Seq-check':'General'},
                         name, result
                     )
                 )
-                timeout_wrapper(p, name, domain_name, filename, result, myReport)
+                timeout_wrapper(p, name, domain_name, filename, result, myReport)'''
+
+                '''name = 'Timesteps-Current__UnsatCore-True__Seq-check-Syntactical'
+                p = multiprocessing.Process(target=relaxed_search_wrapper,
+                    args=(abs_instance_dir, filename, domain, domain_name, 4, 
+                        {'Timesteps':1,'UnsatCore':True,'Seq-check':'Syntactical'},
+                        name, result
+                    )
+                )
+                timeout_wrapper(p, name, domain_name, filename, result, myReport)'''
             
                 name = 'parallel incremental'
                 p = multiprocessing.Process(target=linear_search,
                     args=(abs_instance_dir, filename, domain, domain_name, result)
                 )
                 timeout_wrapper(p, name, domain_name, filename, result, myReport)
+                
+                '''name = 'parallel not incremental'
+                p = multiprocessing.Process(target=linear_search_old,
+                    args=(abs_instance_dir, filename, domain, domain_name, result)
+                )
+                timeout_wrapper(p, name, domain_name, filename, result, myReport)'''
+
+                '''name = 'Timesteps-Dynamic__UnsatCore-True__Seq-check-FixedOrder'
+                p = multiprocessing.Process(target=relaxed_search_wrapper,
+                    args=(abs_instance_dir, filename, domain, domain_name, 2, 
+                        {'Timesteps':2,'UnsatCore':True,'Seq-check':'FixedOrder'},
+                        name, result
+                    )
+                )'''
+                #timeout_wrapper(p, name, domain_name, filename, result, myReport)
 
     myReport.export()
 
@@ -145,6 +169,32 @@ def linear_search(dir, filename, domain, domain_name, result):
     # Log the behaviour of the search.
     total_time = log.finish()
     log_metadata = {'mode': 'parallel incremental', 'domain':domain_name, 'instance':filename, 'found':found,
+        'horizon':horizon, 'time': total_time, 'time_log': log.export()}
+    val_data = (solution, domain_path, instance_path)
+
+    # Return the information
+    result.put((val_data, log_metadata))
+
+def linear_search_old(dir, filename, domain, domain_name, result):
+
+    instance_path = os.path.join(dir, filename)
+    domain_path = os.path.join(BASE_DIR, domain)
+
+    task = translate.pddl.open(instance_path, domain_path)
+
+    print('Now solving: ' + str(domain_name) + ' ' + str(filename))
+
+    # Log time consuption of subroutines
+    log = Log()
+
+    # Perform the search.
+    e = encoder.EncoderSMT(task, modifier.ParallelModifier())
+    s = search.SearchSMT(e,ub)
+    found, horizon, solution = s.do_linear_search(analysis=True, log=log)
+
+    # Log the behaviour of the search.
+    total_time = log.finish()
+    log_metadata = {'mode': 'parallel not incremental', 'domain':domain_name, 'instance':filename, 'found':found,
         'horizon':horizon, 'time': total_time, 'time_log': log.export()}
     val_data = (solution, domain_path, instance_path)
 
@@ -478,16 +528,18 @@ class SparseReport():
         # The logs of the report will be pickled and stored in a file
         id = str(time.time())
         try:
-            path = os.path.join(BASE_DIR,'testsuit','output','analysis_' +id+'.sparse')
+            path = os.path.join('testsuit','output','analysis_' +id+'.sparse')
             with open(path, 'wb') as output_file:
                 pickle.dump((timeout, self.logs), output_file)
-        except:
+        except Exception, e:
+            print(e)
             print('Export of logs failed.')
         try:
-            path = os.path.join(BASE_DIR,'testsuit','output','analysis_' +id+'.timelog')
+            path = os.path.join('testsuit','output','analysis_' +id+'.timelog')
             with open(path, 'wb') as output_file:
                 pickle.dump((timeout, self.time_logs), output_file)
-        except:
+        except Exception, e:
+            print(e)
             print('Export of timelogs failed.')
 
 
