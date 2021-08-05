@@ -112,3 +112,7 @@ testsuit/output/
 
 # Springroll output
 *.plan
+
+# Ignore all .pddl files, which are not in the pddl_examples folder.
+*.pddl
+!pddl_expamles/**/*.pddl
