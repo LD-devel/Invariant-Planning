@@ -91,6 +91,10 @@ class ParallelModifier(Modifier):
     Parallel modifier, contains method to implement parallel execution semantics.
     """
 
+    def __init__(self):
+        # For analysis purposes - Keep track of number of exclusion-encodings =
+        self.ex_enc_cnt = 0
+
     def do_encode(self, variables, mutexes, bound):
         """!
         Encodes parallel execution semantics (i.e., multiple, mutex, actions per step).
@@ -106,6 +110,9 @@ class ParallelModifier(Modifier):
         for step in range(bound):
             for pair in mutexes:
                 c.append(Or(Not(variables[step][pair[0].name]),Not(variables[step][pair[1].name])))
+
+        # Not incrementing, because this method is only used for the not-incremental encoding
+        self.ex_enc_cnt = bound * len(mutexes)
 
         return c
 
@@ -127,12 +134,19 @@ class ParallelModifier(Modifier):
             for pair in mutexes:
                 c[step].append(Or(Not(variables[step][pair[0].name]),Not(variables[step][pair[1].name])))
 
+        self.ex_enc_cnt += len(steps) * len(mutexes)
+
         return c
 
 class RelaxedModifier(Modifier):
     """
     Relaxed modifier, contains method to implement relaxed parallel execution semantics.
     """
+
+    def __init__(self):
+        # For analysis purposes - Keep track of number of exclusion-encodings =
+        self.ex_enc_cnt = 0
+
     # To be used initially at each new horizon
     # and for refinement during sequentialziability check
     def do_encode(self, a_vars, b_vars, n_vars, mutexes, bound):
@@ -154,6 +168,7 @@ class RelaxedModifier(Modifier):
                 if (invar.has_key('actions')):
                     for a in invar['actions']:
                         lits.append(Not(a_vars[step][a.name]))
+                    self.ex_enc_cnt += 1
                 if (invar.has_key('b_vars_0')):
                     for b, val in invar['b_vars_0']:
                         if is_true(val):
@@ -197,6 +212,7 @@ class RelaxedModifier(Modifier):
                 if (invar.has_key('actions')):
                     for a in invar['actions']:
                         lits.append(Not(a_vars[step][a.name]))
+                    self.ex_enc_cnt += 1
                 if (invar.has_key('b_vars_0')):
                     for b, val in invar['b_vars_0']:
                         if is_true(val):

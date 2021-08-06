@@ -28,7 +28,7 @@ def run_comparison():
     problems0 = [('fo_counters', r'pddl_examples/linear/fo_counters/domain.pddl',
      r'pddl_examples/linear/fo_counters/instances',0,3),
      ('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
-     r'pddl_examples/linear/zeno-travel-linear/instances',0,10)]
+     r'pddl_examples/linear/zeno-travel-linear/instances',0,1)]
     problems1 = [('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
      r'pddl_examples/linear/zeno-travel-linear/instances',0,0),#tested
      ('farmland_ln', r'pddl_examples/linear/farmland_ln/domain.pddl',
@@ -105,11 +105,11 @@ def run_comparison():
                 )
                 timeout_wrapper(p, name, domain_name, filename, result, myReport)
                 
-                '''name = 'parallel not incremental'
+                name = 'parallel not incremental'
                 p = multiprocessing.Process(target=linear_search_old,
                     args=(abs_instance_dir, filename, domain, domain_name, result)
                 )
-                timeout_wrapper(p, name, domain_name, filename, result, myReport)'''
+                timeout_wrapper(p, name, domain_name, filename, result, myReport)
 
                 '''name = 'Timesteps-Dynamic__UnsatCore-True__Seq-check-FixedOrder'
                 p = multiprocessing.Process(target=relaxed_search_wrapper,
@@ -163,14 +163,15 @@ def linear_search(dir, filename, domain, domain_name, result):
     log = Log()
 
     # Perform the search.
-    e = agile_encoder.AgileEncoderSMT(task, modifier.ParallelModifier())
+    m = modifier.ParallelModifier()
+    e = agile_encoder.AgileEncoderSMT(task, m)
     s = search.SearchSMT(e,ub)
     found, horizon, solution = s.do_linear_incremental_search(analysis=True, log=log)
 
     # Log the behaviour of the search.
     total_time = log.finish()
     log_metadata = {'mode': 'parallel incremental', 'domain':domain_name, 'instance':filename, 'found':found,
-        'horizon':horizon, 'time': total_time, 'time_log': log.export()}
+        'horizon':horizon, 'time': total_time, 'time_log': log.export(), 'exclusion_cnt': m.ex_enc_cnt}
     val_data = (solution, domain_path, instance_path)
 
     # Return the information
@@ -189,14 +190,15 @@ def linear_search_old(dir, filename, domain, domain_name, result):
     log = Log()
 
     # Perform the search.
-    e = encoder.EncoderSMT(task, modifier.ParallelModifier())
+    m = modifier.ParallelModifier()
+    e = encoder.EncoderSMT(task, m)
     s = search.SearchSMT(e,ub)
     found, horizon, solution = s.do_linear_search(analysis=True, log=log)
 
     # Log the behaviour of the search.
     total_time = log.finish()
     log_metadata = {'mode': 'parallel not incremental', 'domain':domain_name, 'instance':filename, 'found':found,
-        'horizon':horizon, 'time': total_time, 'time_log': log.export()}
+        'horizon':horizon, 'time': total_time, 'time_log': log.export(), 'exclusion_cnt': m.ex_enc_cnt}
     val_data = (solution, domain_path, instance_path)
 
     # Return the information
@@ -215,7 +217,8 @@ def relaxed_search_wrapper(dir, filename, domain, domain_name, encoder_version, 
     log = Log()
 
     # Perform the search.
-    e = agile_encoder.AgileEncoderSMT(task, modifier.RelaxedModifier(), version=encoder_version)
+    m = modifier.RelaxedModifier()
+    e = agile_encoder.AgileEncoderSMT(task, m, version=encoder_version)
     s = search.SearchSMT(e,ub)
     log.register('Initializing encoder.')
 
@@ -225,7 +228,7 @@ def relaxed_search_wrapper(dir, filename, domain, domain_name, encoder_version, 
     total_time = log.finish()
     log_metadata = {'mode': name, 'domain':domain_name, 'instance':filename, 'found':found,
         'horizon':horizon, 'time': total_time, 'time_log': log.export(), 'f_count': e.f_cnt,
-        'semantics_f_count': e.semantics_f_cnt}
+        'semantics_f_count': e.semantics_f_cnt, 'exclusion_cnt': m.ex_enc_cnt}
     val_data = (solution, domain_path, instance_path)
 
     # Return the information
@@ -482,7 +485,6 @@ class SimpleReport():
         self.path = os.path.join(BASE_DIR,'testsuit','output','analysis_' + self.file_id +'.rwal')
 
         # Save initially empty list.
-        print(self.path)
         try:
             with open(self.path, 'wb') as output_file:
                     pickle.dump([], output_file)
