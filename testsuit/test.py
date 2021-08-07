@@ -488,7 +488,8 @@ class SimpleReport():
         try:
             with open(self.path, 'wb') as output_file:
                     pickle.dump([{'timeout': timeout}], output_file)
-        except:
+        except Exception as e:
+            print(e)
             print('Could not create file for export. Aborting...')
             sys.exit()
 
