@@ -484,10 +484,10 @@ class SimpleReport():
         self.file_id = str(time.time())
         self.path = os.path.join(BASE_DIR,'testsuit','output','analysis_' + self.file_id +'.rwal')
 
-        # Save initially empty list.
+        # Save initiall list, only conaining the timeout for the entire benchmark
         try:
             with open(self.path, 'wb') as output_file:
-                    pickle.dump([], output_file)
+                    pickle.dump([{'timeout': timeout}], output_file)
         except:
             print('Could not create file for export. Aborting...')
             sys.exit()
