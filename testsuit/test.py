@@ -15,7 +15,7 @@ import utils
 from planner import encoder, agile_encoder, modifier, search
 
 # Timeout per instance in seconds
-timeout = 10
+timeout = 1800
 
 # Set upper bound
 ub = 100
@@ -30,29 +30,29 @@ def run_comparison():
      ('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
      r'pddl_examples/linear/zeno-travel-linear/instances',0,1)]
     problems1 = [('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
-     r'pddl_examples/linear/zeno-travel-linear/instances',0,0),#tested
+     r'pddl_examples/linear/zeno-travel-linear/instances',0,0),
      ('farmland_ln', r'pddl_examples/linear/farmland_ln/domain.pddl',
-     r'pddl_examples/linear/farmland_ln/instances',0,6), # Problem in domain definition. 
+     r'pddl_examples/linear/farmland_ln/instances',0,0),
      ('fo_counters', r'pddl_examples/linear/fo_counters/domain.pddl',
-     r'pddl_examples/linear/fo_counters/instances',0,0),#tested
+     r'pddl_examples/linear/fo_counters/instances',0,20),#1st run
      ('fo_counters_seq', r'pddl_examples/linear/fo_counters_seq/domain.pddl',
-     r'pddl_examples/linear/fo_counters_seq/instances',0,0),#tested
+     r'pddl_examples/linear/fo_counters_seq/instances',0,0),
      #('fo_counters_inv', r'pddl_examples/linear/fo_counters_inv/domain.pddl',
      #r'pddl_examples/linear/fo_counters_inv/instances',0,10),
      ('fo_counters_rnd', r'pddl_examples/linear/fo_counters_rnd/domain.pddl',
-     r'pddl_examples/linear/fo_counters_rnd/instances',0,0),
+     r'pddl_examples/linear/fo_counters_rnd/instances',0,20),#1st run
      ('sailing_ln', r'pddl_examples/linear/sailing_ln/domain.pddl',
-     r'pddl_examples/linear/sailing_ln/instances',0,1), # Does not seem to be solvable in reasonable time at horizon 24
+     r'pddl_examples/linear/sailing_ln/instances',0,0), # Does not seem to be solvable in reasonable time at horizon 24
      ('tpp', r'pddl_examples/linear/tpp/domain.pddl',
-     r'pddl_examples/linear/tpp/instances',0,0),#tested
+     r'pddl_examples/linear/tpp/instances',0,0),
      ('depots_numeric', r'pddl_examples/simple/depots_numeric/domain.pddl',
-     r'pddl_examples/simple/depots_numeric/instances',0,0),#tested
+     r'pddl_examples/simple/depots_numeric/instances',0,0),
      ('gardening', r'pddl_examples/simple/gardening/domain.pddl',
-     r'pddl_examples/simple/gardening/instances',0,0),#tested
+     r'pddl_examples/simple/gardening/instances',0,0),
      ('rover-numeric', r'pddl_examples/simple/rover-numeric/domain.pddl',
-     r'pddl_examples/simple/rover-numeric/instances',0,0)]#tested
+     r'pddl_examples/simple/rover-numeric/instances',0,0)]
 
-    problems = problems0
+    problems = problems1
 
     # Create Statistics
     manager = multiprocessing.Manager()
