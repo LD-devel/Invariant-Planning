@@ -30,7 +30,7 @@ def run_comparison():
      ('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
      r'pddl_examples/linear/zeno-travel-linear/instances',0,1)]
     problems1 = [('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
-     r'pddl_examples/linear/zeno-travel-linear/instances',0,0),
+     r'pddl_examples/linear/zeno-travel-linear/instances',0,20),#2nd run
      ('farmland_ln', r'pddl_examples/linear/farmland_ln/domain.pddl',
      r'pddl_examples/linear/farmland_ln/instances',0,0),
      ('fo_counters', r'pddl_examples/linear/fo_counters/domain.pddl',
@@ -44,7 +44,7 @@ def run_comparison():
      ('sailing_ln', r'pddl_examples/linear/sailing_ln/domain.pddl',
      r'pddl_examples/linear/sailing_ln/instances',0,0), # Does not seem to be solvable in reasonable time at horizon 24
      ('tpp', r'pddl_examples/linear/tpp/domain.pddl',
-     r'pddl_examples/linear/tpp/instances',0,0),
+     r'pddl_examples/linear/tpp/instances',0,20),#2nd run
      ('depots_numeric', r'pddl_examples/simple/depots_numeric/domain.pddl',
      r'pddl_examples/simple/depots_numeric/instances',0,0),
      ('gardening', r'pddl_examples/simple/gardening/domain.pddl',
