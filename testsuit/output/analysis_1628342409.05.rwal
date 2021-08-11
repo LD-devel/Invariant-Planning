@@ -1,0 +1,12414 @@
+(lp0
+(dp1
+S'timeout'
+p2
+I1800
+sa(dp3
+S'domain'
+p4
+S'fo_counters'
+p5
+sS'time_log'
+p6
+NsS'instance'
+p7
+S'instance_2.pddl'
+p8
+sS'valid'
+p9
+I-1
+sS'mode'
+p10
+S'springroll'
+p11
+sS'horizon'
+p12
+I0
+sS'time'
+p13
+F0.8281710147857666
+sS'found'
+p14
+I01
+sa(dp15
+S'domain'
+p16
+S'fo_counters'
+p17
+sS'instance'
+p18
+S'instance_2.pddl'
+p19
+sS'semantics_f_count'
+p20
+I2
+sS'time_log'
+p21
+(lp22
+(S'Initializing encoder.'
+p23
+F0.05147290229797363
+tp24
+a(S'Initial formula encoding at horizon: 1'
+p25
+F0.04699993133544922
+tp26
+a(S'Initial formula encoding at horizon: 2'
+p27
+F0.014672040939331055
+tp28
+a(S'Extract model at horizon 2'
+p29
+F0.0053560733795166016
+tp30
+a(S'Encode seq-form of one step 0'
+p31
+F0.026501893997192383
+tp32
+a(S'Encode seq-prefix of one step 0'
+p33
+F0.0017979145050048828
+tp34
+a(S'Check sat of seq-formula 0'
+p35
+F0.001196146011352539
+tp36
+a(S'Encode seq-form of one step 1'
+p37
+F0.01709604263305664
+tp38
+a(S'Encode seq-prefix of one step 1'
+p39
+F0.0018270015716552734
+tp40
+a(S'Check sat of seq-formula 1'
+p41
+F0.0017330646514892578
+tp42
+a(S'Exiting search'
+p43
+F0.0019152164459228516
+tp44
+a(S'Finishing'
+p45
+F-1.0967254638671875e-05
+tp46
+asS'exclusion_cnt'
+p47
+I0
+sS'valid'
+p48
+I1
+sS'mode'
+p49
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p50
+sS'horizon'
+p51
+I2
+sS'time'
+p52
+F0.1705939769744873
+sS'found'
+p53
+I01
+sS'f_count'
+p54
+I18
+sa(dp55
+S'domain'
+p56
+S'fo_counters'
+p57
+sS'exclusion_cnt'
+p58
+I24
+sS'time_log'
+p59
+(lp60
+(S'Formula encoding at horizon: 1'
+p61
+F0.09809088706970215
+tp62
+a(S'Sat-check at horizon: 1'
+p63
+F0.0005931854248046875
+tp64
+a(S'Formula encoding at horizon: 2'
+p65
+F0.018426895141601562
+tp66
+a(S'Sat-check at horizon: 2'
+p67
+F0.002258777618408203
+tp68
+a(S'Exiting search'
+p69
+F0.002579927444458008
+tp70
+a(S'Finishing'
+p71
+F-6.699562072753906e-05
+tp72
+asS'instance'
+p73
+S'instance_2.pddl'
+p74
+sS'valid'
+p75
+I1
+sS'mode'
+p76
+S'parallel incremental'
+p77
+sS'horizon'
+p78
+I2
+sS'time'
+p79
+F0.1220250129699707
+sS'found'
+p80
+I01
+sa(dp81
+S'domain'
+p82
+S'fo_counters'
+p83
+sS'instance'
+p84
+S'instance_2.pddl'
+p85
+sS'time_log'
+p86
+(lp87
+(S'Formula encoding at horizon: 1'
+p88
+F0.07802486419677734
+tp89
+a(S'Sat-check at horizon: 1'
+p90
+F0.03042888641357422
+tp91
+a(S'Formula encoding at horizon: 2'
+p92
+F0.03184986114501953
+tp93
+a(S'Sat-check at horizon: 2'
+p94
+F0.030868053436279297
+tp95
+a(S'Finishing'
+p96
+F-0.0027360916137695312
+tp97
+asS'exclusion_cnt'
+p98
+I24
+sS'valid'
+p99
+I1
+sS'mode'
+p100
+S'parallel not incremental'
+p101
+sS'horizon'
+p102
+I2
+sS'time'
+p103
+F0.17391490936279297
+sS'found'
+p104
+I01
+sa(dp105
+S'domain'
+p106
+S'fo_counters'
+p107
+sS'time_log'
+p108
+NsS'instance'
+p109
+S'instance_3.pddl'
+p110
+sS'valid'
+p111
+I-1
+sS'mode'
+p112
+S'springroll'
+p113
+sS'horizon'
+p114
+I0
+sS'time'
+p115
+F0.8696939945220947
+sS'found'
+p116
+I01
+sa(dp117
+S'domain'
+p118
+S'fo_counters'
+p119
+sS'instance'
+p120
+S'instance_3.pddl'
+p121
+sS'semantics_f_count'
+p122
+I3
+sS'time_log'
+p123
+(lp124
+(S'Initializing encoder.'
+p125
+F0.05034208297729492
+tp126
+a(S'Initial formula encoding at horizon: 1'
+p127
+F0.05366802215576172
+tp128
+a(S'Initial formula encoding at horizon: 2'
+p129
+F0.02255702018737793
+tp130
+a(S'Initial formula encoding at horizon: 3'
+p131
+F0.024741172790527344
+tp132
+a(S'Extract model at horizon 3'
+p133
+F0.011131048202514648
+tp134
+a(S'Encode seq-form of one step 0'
+p135
+F0.02940201759338379
+tp136
+a(S'Encode seq-prefix of one step 0'
+p137
+F0.0026628971099853516
+tp138
+a(S'Check sat of seq-formula 0'
+p139
+F0.0013501644134521484
+tp140
+a(S'Encode seq-form of one step 2'
+p141
+F0.01108098030090332
+tp142
+a(S'Encode seq-prefix of one step 2'
+p143
+F0.002685070037841797
+tp144
+a(S'Check sat of seq-formula 2'
+p145
+F0.0013170242309570312
+tp146
+a(S'Exiting search'
+p147
+F0.0013670921325683594
+tp148
+a(S'Finishing'
+p149
+F-1.2159347534179688e-05
+tp150
+asS'exclusion_cnt'
+p151
+I0
+sS'valid'
+p152
+I1
+sS'mode'
+p153
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p154
+sS'horizon'
+p155
+I3
+sS'time'
+p156
+F0.21233010292053223
+sS'found'
+p157
+I01
+sS'f_count'
+p158
+I39
+sa(dp159
+S'domain'
+p160
+S'fo_counters'
+p161
+sS'exclusion_cnt'
+p162
+I54
+sS'time_log'
+p163
+(lp164
+(S'Formula encoding at horizon: 1'
+p165
+F0.11822700500488281
+tp166
+a(S'Sat-check at horizon: 1'
+p167
+F0.0007088184356689453
+tp168
+a(S'Formula encoding at horizon: 2'
+p169
+F0.028764009475708008
+tp170
+a(S'Sat-check at horizon: 2'
+p171
+F0.003342866897583008
+tp172
+a(S'Formula encoding at horizon: 3'
+p173
+F0.02849888801574707
+tp174
+a(S'Sat-check at horizon: 3'
+p175
+F0.0032072067260742188
+tp176
+a(S'Exiting search'
+p177
+F0.00516200065612793
+tp178
+a(S'Finishing'
+p179
+F-9.298324584960938e-05
+tp180
+asS'instance'
+p181
+S'instance_3.pddl'
+p182
+sS'valid'
+p183
+I1
+sS'mode'
+p184
+S'parallel incremental'
+p185
+sS'horizon'
+p186
+I3
+sS'time'
+p187
+F0.18801188468933105
+sS'found'
+p188
+I01
+sa(dp189
+S'domain'
+p190
+S'fo_counters'
+p191
+sS'instance'
+p192
+S'instance_3.pddl'
+p193
+sS'time_log'
+p194
+(lp195
+(S'Formula encoding at horizon: 1'
+p196
+F0.09722709655761719
+tp197
+a(S'Sat-check at horizon: 1'
+p198
+F0.031216144561767578
+tp199
+a(S'Formula encoding at horizon: 2'
+p200
+F0.04979991912841797
+tp201
+a(S'Sat-check at horizon: 2'
+p202
+F0.033349037170410156
+tp203
+a(S'Formula encoding at horizon: 3'
+p204
+F0.07166600227355957
+tp205
+a(S'Sat-check at horizon: 3'
+p206
+F0.03957200050354004
+tp207
+a(S'Finishing'
+p208
+F-0.005532026290893555
+tp209
+asS'exclusion_cnt'
+p210
+I54
+sS'valid'
+p211
+I1
+sS'mode'
+p212
+S'parallel not incremental'
+p213
+sS'horizon'
+p214
+I3
+sS'time'
+p215
+F0.3283720016479492
+sS'found'
+p216
+I01
+sa(dp217
+S'domain'
+p218
+S'fo_counters'
+p219
+sS'time_log'
+p220
+NsS'instance'
+p221
+S'instance_4.pddl'
+p222
+sS'valid'
+p223
+I-1
+sS'mode'
+p224
+S'springroll'
+p225
+sS'horizon'
+p226
+I0
+sS'time'
+p227
+F0.9207239151000977
+sS'found'
+p228
+I01
+sa(dp229
+S'domain'
+p230
+S'fo_counters'
+p231
+sS'instance'
+p232
+S'instance_4.pddl'
+p233
+sS'semantics_f_count'
+p234
+I3
+sS'time_log'
+p235
+(lp236
+(S'Initializing encoder.'
+p237
+F0.059265851974487305
+tp238
+a(S'Initial formula encoding at horizon: 1'
+p239
+F0.06289792060852051
+tp240
+a(S'Initial formula encoding at horizon: 2'
+p241
+F0.03219413757324219
+tp242
+a(S'Initial formula encoding at horizon: 3'
+p243
+F0.035468101501464844
+tp244
+a(S'Extract model at horizon 3'
+p245
+F0.01659393310546875
+tp246
+a(S'Encode seq-form of one step 0'
+p247
+F0.03194594383239746
+tp248
+a(S'Encode seq-prefix of one step 0'
+p249
+F0.0035638809204101562
+tp250
+a(S'Check sat of seq-formula 0'
+p251
+F0.0014400482177734375
+tp252
+a(S'Encode seq-form of one step 1'
+p253
+F0.056936025619506836
+tp254
+a(S'Encode seq-prefix of one step 1'
+p255
+F0.0036301612854003906
+tp256
+a(S'Check sat of seq-formula 1'
+p257
+F0.006702899932861328
+tp258
+a(S'Encode seq-form of one step 2'
+p259
+F0.02908802032470703
+tp260
+a(S'Encode seq-prefix of one step 2'
+p261
+F0.0035920143127441406
+tp262
+a(S'Check sat of seq-formula 2'
+p263
+F0.0038530826568603516
+tp264
+a(S'Exiting search'
+p265
+F0.0035080909729003906
+tp266
+a(S'Finishing'
+p267
+F-1.1920928955078125e-05
+tp268
+asS'exclusion_cnt'
+p269
+I0
+sS'valid'
+p270
+I1
+sS'mode'
+p271
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p272
+sS'horizon'
+p273
+I3
+sS'time'
+p274
+F0.3507068157196045
+sS'found'
+p275
+I01
+sS'f_count'
+p276
+I51
+sa(dp277
+S'domain'
+p278
+S'fo_counters'
+p279
+sS'exclusion_cnt'
+p280
+I96
+sS'time_log'
+p281
+(lp282
+(S'Formula encoding at horizon: 1'
+p283
+F0.14769601821899414
+tp284
+a(S'Sat-check at horizon: 1'
+p285
+F0.000720977783203125
+tp286
+a(S'Formula encoding at horizon: 2'
+p287
+F0.04062795639038086
+tp288
+a(S'Sat-check at horizon: 2'
+p289
+F0.004494905471801758
+tp290
+a(S'Formula encoding at horizon: 3'
+p291
+F0.040168046951293945
+tp292
+a(S'Sat-check at horizon: 3'
+p293
+F0.011224031448364258
+tp294
+a(S'Formula encoding at horizon: 4'
+p295
+F0.040160179138183594
+tp296
+a(S'Sat-check at horizon: 4'
+p297
+F0.009382963180541992
+tp298
+a(S'Exiting search'
+p299
+F0.008903026580810547
+tp300
+a(S'Finishing'
+p301
+F-0.00012302398681640625
+tp302
+asS'instance'
+p303
+S'instance_4.pddl'
+p304
+sS'valid'
+p305
+I1
+sS'mode'
+p306
+S'parallel incremental'
+p307
+sS'horizon'
+p308
+I4
+sS'time'
+p309
+F0.3035140037536621
+sS'found'
+p310
+I01
+sa(dp311
+S'domain'
+p312
+S'fo_counters'
+p313
+sS'instance'
+p314
+S'instance_4.pddl'
+p315
+sS'time_log'
+p316
+(lp317
+(S'Formula encoding at horizon: 1'
+p318
+F0.12589406967163086
+tp319
+a(S'Sat-check at horizon: 1'
+p320
+F0.03399395942687988
+tp321
+a(S'Formula encoding at horizon: 2'
+p322
+F0.06990385055541992
+tp323
+a(S'Sat-check at horizon: 2'
+p324
+F0.036341190338134766
+tp325
+a(S'Formula encoding at horizon: 3'
+p326
+F0.10115599632263184
+tp327
+a(S'Sat-check at horizon: 3'
+p328
+F0.048599958419799805
+tp329
+a(S'Formula encoding at horizon: 4'
+p330
+F0.13301992416381836
+tp331
+a(S'Sat-check at horizon: 4'
+p332
+F0.0628201961517334
+tp333
+a(S'Finishing'
+p334
+F-0.00955510139465332
+tp335
+asS'exclusion_cnt'
+p336
+I96
+sS'valid'
+p337
+I1
+sS'mode'
+p338
+S'parallel not incremental'
+p339
+sS'horizon'
+p340
+I4
+sS'time'
+p341
+F0.6212971210479736
+sS'found'
+p342
+I01
+sa(dp343
+S'domain'
+p344
+S'fo_counters'
+p345
+sS'time_log'
+p346
+NsS'instance'
+p347
+S'instance_5.pddl'
+p348
+sS'valid'
+p349
+I-1
+sS'mode'
+p350
+S'springroll'
+p351
+sS'horizon'
+p352
+I0
+sS'time'
+p353
+F0.9699878692626953
+sS'found'
+p354
+I01
+sa(dp355
+S'domain'
+p356
+S'fo_counters'
+p357
+sS'instance'
+p358
+S'instance_5.pddl'
+p359
+sS'semantics_f_count'
+p360
+I4
+sS'time_log'
+p361
+(lp362
+(S'Initializing encoder.'
+p363
+F0.06712698936462402
+tp364
+a(S'Initial formula encoding at horizon: 1'
+p365
+F0.07389307022094727
+tp366
+a(S'Initial formula encoding at horizon: 2'
+p367
+F0.04341292381286621
+tp368
+a(S'Initial formula encoding at horizon: 3'
+p369
+F0.04618978500366211
+tp370
+a(S'Initial formula encoding at horizon: 4'
+p371
+F0.046835899353027344
+tp372
+a(S'Extract model at horizon 4'
+p373
+F0.05320096015930176
+tp374
+a(S'Encode seq-form of one step 0'
+p375
+F0.03592801094055176
+tp376
+a(S'Encode seq-prefix of one step 0'
+p377
+F0.004477024078369141
+tp378
+a(S'Check sat of seq-formula 0'
+p379
+F0.0015590190887451172
+tp380
+a(S'Encode seq-form of one step 1'
+p381
+F0.05822300910949707
+tp382
+a(S'Encode seq-prefix of one step 1'
+p383
+F0.004546165466308594
+tp384
+a(S'Check sat of seq-formula 1'
+p385
+F0.0067179203033447266
+tp386
+a(S'Encode seq-form of one step 2'
+p387
+F0.13664698600769043
+tp388
+a(S'Encode seq-prefix of one step 2'
+p389
+F0.004541873931884766
+tp390
+a(S'Check sat of seq-formula 2'
+p391
+F0.015828847885131836
+tp392
+a(S'Encode seq-form of one step 3'
+p393
+F0.12649798393249512
+tp394
+a(S'Encode seq-prefix of one step 3'
+p395
+F0.004522800445556641
+tp396
+a(S'Check sat of seq-formula 3'
+p397
+F0.07368183135986328
+tp398
+a(S'Exiting search'
+p399
+F0.013020992279052734
+tp400
+a(S'Finishing'
+p401
+F-1.1920928955078125e-05
+tp402
+asS'exclusion_cnt'
+p403
+I0
+sS'valid'
+p404
+I1
+sS'mode'
+p405
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p406
+sS'horizon'
+p407
+I4
+sS'time'
+p408
+F0.8168859481811523
+sS'found'
+p409
+I01
+sS'f_count'
+p410
+I84
+sa(dp411
+S'domain'
+p412
+S'fo_counters'
+p413
+sS'exclusion_cnt'
+p414
+I120
+sS'time_log'
+p415
+(lp416
+(S'Formula encoding at horizon: 1'
+p417
+F0.18646621704101562
+tp418
+a(S'Sat-check at horizon: 1'
+p419
+F0.0007300376892089844
+tp420
+a(S'Formula encoding at horizon: 2'
+p421
+F0.053125858306884766
+tp422
+a(S'Sat-check at horizon: 2'
+p423
+F0.003215789794921875
+tp424
+a(S'Formula encoding at horizon: 3'
+p425
+F0.05314779281616211
+tp426
+a(S'Sat-check at horizon: 3'
+p427
+F0.008157014846801758
+tp428
+a(S'Formula encoding at horizon: 4'
+p429
+F0.053520917892456055
+tp430
+a(S'Sat-check at horizon: 4'
+p431
+F0.0407869815826416
+tp432
+a(S'Exiting search'
+p433
+F0.010885000228881836
+tp434
+a(S'Finishing'
+p435
+F-0.0001480579376220703
+tp436
+asS'instance'
+p437
+S'instance_5.pddl'
+p438
+sS'valid'
+p439
+I1
+sS'mode'
+p440
+S'parallel incremental'
+p441
+sS'horizon'
+p442
+I4
+sS'time'
+p443
+F0.41019511222839355
+sS'found'
+p444
+I01
+sa(dp445
+S'domain'
+p446
+S'fo_counters'
+p447
+sS'instance'
+p448
+S'instance_5.pddl'
+p449
+sS'time_log'
+p450
+(lp451
+(S'Formula encoding at horizon: 1'
+p452
+F0.16255402565002441
+tp453
+a(S'Sat-check at horizon: 1'
+p454
+F0.03449201583862305
+tp455
+a(S'Formula encoding at horizon: 2'
+p456
+F0.09117794036865234
+tp457
+a(S'Sat-check at horizon: 2'
+p458
+F0.03985595703125
+tp459
+a(S'Formula encoding at horizon: 3'
+p460
+F0.1333768367767334
+tp461
+a(S'Sat-check at horizon: 3'
+p462
+F0.05427193641662598
+tp463
+a(S'Formula encoding at horizon: 4'
+p464
+F0.1762220859527588
+tp465
+a(S'Sat-check at horizon: 4'
+p466
+F0.07259702682495117
+tp467
+a(S'Finishing'
+p468
+F-0.011615991592407227
+tp469
+asS'exclusion_cnt'
+p470
+I120
+sS'valid'
+p471
+I1
+sS'mode'
+p472
+S'parallel not incremental'
+p473
+sS'horizon'
+p474
+I4
+sS'time'
+p475
+F0.7761750221252441
+sS'found'
+p476
+I01
+sa(dp477
+S'domain'
+p478
+S'fo_counters'
+p479
+sS'time_log'
+p480
+NsS'instance'
+p481
+S'instance_6.pddl'
+p482
+sS'valid'
+p483
+I-1
+sS'mode'
+p484
+S'springroll'
+p485
+sS'horizon'
+p486
+I0
+sS'time'
+p487
+F1.0202770233154297
+sS'found'
+p488
+I01
+sa(dp489
+S'domain'
+p490
+S'fo_counters'
+p491
+sS'instance'
+p492
+S'instance_6.pddl'
+p493
+sS'semantics_f_count'
+p494
+I4
+sS'time_log'
+p495
+(lp496
+(S'Initializing encoder.'
+p497
+F0.07785606384277344
+tp498
+a(S'Initial formula encoding at horizon: 1'
+p499
+F0.08710598945617676
+tp500
+a(S'Initial formula encoding at horizon: 2'
+p501
+F0.05473184585571289
+tp502
+a(S'Initial formula encoding at horizon: 3'
+p503
+F0.06031918525695801
+tp504
+a(S'Initial formula encoding at horizon: 4'
+p505
+F0.10373306274414062
+tp506
+a(S'Extract model at horizon 4'
+p507
+F0.05100584030151367
+tp508
+a(S'Encode seq-form of one step 0'
+p509
+F0.0620269775390625
+tp510
+a(S'Encode seq-prefix of one step 0'
+p511
+F0.005277872085571289
+tp512
+a(S'Check sat of seq-formula 0'
+p513
+F0.003895998001098633
+tp514
+a(S'Encode seq-form of one step 1'
+p515
+F0.1130530834197998
+tp516
+a(S'Encode seq-prefix of one step 1'
+p517
+F0.00533294677734375
+tp518
+a(S'Check sat of seq-formula 1'
+p519
+F0.01823711395263672
+tp520
+a(S'Encode seq-form of one step 2'
+p521
+F0.06885504722595215
+tp522
+a(S'Encode seq-prefix of one step 2'
+p523
+F0.005347013473510742
+tp524
+a(S'Check sat of seq-formula 2'
+p525
+F0.012001991271972656
+tp526
+a(S'Encode seq-form of one step 3'
+p527
+F0.1041109561920166
+tp528
+a(S'Encode seq-prefix of one step 3'
+p529
+F0.0053288936614990234
+tp530
+a(S'Check sat of seq-formula 3'
+p531
+F0.08051919937133789
+tp532
+a(S'Exiting search'
+p533
+F0.011074066162109375
+tp534
+a(S'Finishing'
+p535
+F-1.1920928955078125e-05
+tp536
+asS'exclusion_cnt'
+p537
+I0
+sS'valid'
+p538
+I1
+sS'mode'
+p539
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p540
+sS'horizon'
+p541
+I4
+sS'time'
+p542
+F0.9298460483551025
+sS'found'
+p543
+I01
+sS'f_count'
+p544
+I100
+sa(dp545
+S'domain'
+p546
+S'fo_counters'
+p547
+sS'exclusion_cnt'
+p548
+I180
+sS'time_log'
+p549
+(lp550
+(S'Formula encoding at horizon: 1'
+p551
+F0.23870611190795898
+tp552
+a(S'Sat-check at horizon: 1'
+p553
+F0.0008990764617919922
+tp554
+a(S'Formula encoding at horizon: 2'
+p555
+F0.06689691543579102
+tp556
+a(S'Sat-check at horizon: 2'
+p557
+F0.007002830505371094
+tp558
+a(S'Formula encoding at horizon: 3'
+p559
+F0.06668901443481445
+tp560
+a(S'Sat-check at horizon: 3'
+p561
+F0.012953996658325195
+tp562
+a(S'Formula encoding at horizon: 4'
+p563
+F0.06754183769226074
+tp564
+a(S'Sat-check at horizon: 4'
+p565
+F0.043672800064086914
+tp566
+a(S'Formula encoding at horizon: 5'
+p567
+F0.11162900924682617
+tp568
+a(S'Sat-check at horizon: 5'
+p569
+F0.06122303009033203
+tp570
+a(S'Exiting search'
+p571
+F0.016089916229248047
+tp572
+a(S'Finishing'
+p573
+F-0.00017881393432617188
+tp574
+asS'instance'
+p575
+S'instance_6.pddl'
+p576
+sS'valid'
+p577
+I1
+sS'mode'
+p578
+S'parallel incremental'
+p579
+sS'horizon'
+p580
+I5
+sS'time'
+p581
+F0.6934959888458252
+sS'found'
+p582
+I01
+sa(dp583
+S'domain'
+p584
+S'fo_counters'
+p585
+sS'instance'
+p586
+S'instance_6.pddl'
+p587
+sS'time_log'
+p588
+(lp589
+(S'Formula encoding at horizon: 1'
+p590
+F0.21671319007873535
+tp591
+a(S'Sat-check at horizon: 1'
+p592
+F0.03594803810119629
+tp593
+a(S'Formula encoding at horizon: 2'
+p594
+F0.15747714042663574
+tp595
+a(S'Sat-check at horizon: 2'
+p596
+F0.043276071548461914
+tp597
+a(S'Formula encoding at horizon: 3'
+p598
+F0.17179107666015625
+tp599
+a(S'Sat-check at horizon: 3'
+p600
+F0.05575704574584961
+tp601
+a(S'Formula encoding at horizon: 4'
+p602
+F0.22754812240600586
+tp603
+a(S'Sat-check at horizon: 4'
+p604
+F0.09504294395446777
+tp605
+a(S'Formula encoding at horizon: 5'
+p606
+F0.2812168598175049
+tp607
+a(S'Sat-check at horizon: 5'
+p608
+F0.12120485305786133
+tp609
+a(S'Finishing'
+p610
+F-0.01738595962524414
+tp611
+asS'exclusion_cnt'
+p612
+I180
+sS'valid'
+p613
+I1
+sS'mode'
+p614
+S'parallel not incremental'
+p615
+sS'horizon'
+p616
+I5
+sS'time'
+p617
+F1.4233911037445068
+sS'found'
+p618
+I01
+sa(dp619
+S'domain'
+p620
+S'fo_counters'
+p621
+sS'time_log'
+p622
+NsS'instance'
+p623
+S'instance_7.pddl'
+p624
+sS'valid'
+p625
+I-1
+sS'mode'
+p626
+S'springroll'
+p627
+sS'horizon'
+p628
+I0
+sS'time'
+p629
+F1.0704598426818848
+sS'found'
+p630
+I01
+sa(dp631
+S'domain'
+p632
+S'fo_counters'
+p633
+sS'instance'
+p634
+S'instance_7.pddl'
+p635
+sS'semantics_f_count'
+p636
+I4
+sS'time_log'
+p637
+(lp638
+(S'Initializing encoder.'
+p639
+F0.13797283172607422
+tp640
+a(S'Initial formula encoding at horizon: 1'
+p641
+F0.10139322280883789
+tp642
+a(S'Initial formula encoding at horizon: 2'
+p643
+F0.06928491592407227
+tp644
+a(S'Initial formula encoding at horizon: 3'
+p645
+F0.07515311241149902
+tp646
+a(S'Initial formula encoding at horizon: 4'
+p647
+F0.07758402824401855
+tp648
+a(S'Extract model at horizon 4'
+p649
+F0.08275508880615234
+tp650
+a(S'Encode seq-form of one step 0'
+p651
+F0.16082406044006348
+tp652
+a(S'Encode seq-prefix of one step 0'
+p653
+F0.00610804557800293
+tp654
+a(S'Check sat of seq-formula 0'
+p655
+F0.014026165008544922
+tp656
+a(S'Encode seq-form of one step 1'
+p657
+F0.15758204460144043
+tp658
+a(S'Encode seq-prefix of one step 1'
+p659
+F0.006166934967041016
+tp660
+a(S'Check sat of seq-formula 1'
+p661
+F0.05156898498535156
+tp662
+a(S'Encode seq-form of one step 2'
+p663
+F0.20800995826721191
+tp664
+a(S'Encode seq-prefix of one step 2'
+p665
+F0.006190061569213867
+tp666
+a(S'Check sat of seq-formula 2'
+p667
+F0.3451559543609619
+tp668
+a(S'Encode seq-form of one step 3'
+p669
+F0.17853689193725586
+tp670
+a(S'Encode seq-prefix of one step 3'
+p671
+F0.006256103515625
+tp672
+a(S'Check sat of seq-formula 3'
+p673
+F0.13759708404541016
+tp674
+a(S'Exiting search'
+p675
+F0.019668102264404297
+tp676
+a(S'Finishing'
+p677
+F-1.3113021850585938e-05
+tp678
+asS'exclusion_cnt'
+p679
+I0
+sS'valid'
+p680
+I1
+sS'mode'
+p681
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p682
+sS'horizon'
+p683
+I4
+sS'time'
+p684
+F1.841871976852417
+sS'found'
+p685
+I01
+sS'f_count'
+p686
+I116
+sa(dp687
+S'domain'
+p688
+S'fo_counters'
+p689
+sS'exclusion_cnt'
+p690
+I210
+sS'time_log'
+p691
+(lp692
+(S'Formula encoding at horizon: 1'
+p693
+F0.35434913635253906
+tp694
+a(S'Sat-check at horizon: 1'
+p695
+F0.0009131431579589844
+tp696
+a(S'Formula encoding at horizon: 2'
+p697
+F0.08315205574035645
+tp698
+a(S'Sat-check at horizon: 2'
+p699
+F0.003907918930053711
+tp700
+a(S'Formula encoding at horizon: 3'
+p701
+F0.08367609977722168
+tp702
+a(S'Sat-check at horizon: 3'
+p703
+F0.016525983810424805
+tp704
+a(S'Formula encoding at horizon: 4'
+p705
+F0.08330488204956055
+tp706
+a(S'Sat-check at horizon: 4'
+p707
+F0.05242800712585449
+tp708
+a(S'Formula encoding at horizon: 5'
+p709
+F0.08378887176513672
+tp710
+a(S'Sat-check at horizon: 5'
+p711
+F0.07955694198608398
+tp712
+a(S'Exiting search'
+p713
+F0.018438100814819336
+tp714
+a(S'Finishing'
+p715
+F-0.00020194053649902344
+tp716
+asS'instance'
+p717
+S'instance_7.pddl'
+p718
+sS'valid'
+p719
+I1
+sS'mode'
+p720
+S'parallel incremental'
+p721
+sS'horizon'
+p722
+I5
+sS'time'
+p723
+F0.8602590560913086
+sS'found'
+p724
+I01
+sa(dp725
+S'domain'
+p726
+S'fo_counters'
+p727
+sS'instance'
+p728
+S'instance_7.pddl'
+p729
+sS'time_log'
+p730
+(lp731
+(S'Formula encoding at horizon: 1'
+p732
+F0.3298990726470947
+tp733
+a(S'Sat-check at horizon: 1'
+p734
+F0.036711931228637695
+tp735
+a(S'Formula encoding at horizon: 2'
+p736
+F0.14606094360351562
+tp737
+a(S'Sat-check at horizon: 2'
+p738
+F0.04455208778381348
+tp739
+a(S'Formula encoding at horizon: 3'
+p740
+F0.21310710906982422
+tp741
+a(S'Sat-check at horizon: 3'
+p742
+F0.06092691421508789
+tp743
+a(S'Formula encoding at horizon: 4'
+p744
+F0.28212904930114746
+tp745
+a(S'Sat-check at horizon: 4'
+p746
+F0.08723282814025879
+tp747
+a(S'Formula encoding at horizon: 5'
+p748
+F0.34783005714416504
+tp749
+a(S'Sat-check at horizon: 5'
+p750
+F0.1482100486755371
+tp751
+a(S'Finishing'
+p752
+F-0.020036935806274414
+tp753
+asS'exclusion_cnt'
+p754
+I210
+sS'valid'
+p755
+I1
+sS'mode'
+p756
+S'parallel not incremental'
+p757
+sS'horizon'
+p758
+I5
+sS'time'
+p759
+F1.7167129516601562
+sS'found'
+p760
+I01
+sa(dp761
+S'domain'
+p762
+S'fo_counters'
+p763
+sS'time_log'
+p764
+NsS'instance'
+p765
+S'instance_8.pddl'
+p766
+sS'valid'
+p767
+I-1
+sS'mode'
+p768
+S'springroll'
+p769
+sS'horizon'
+p770
+I0
+sS'time'
+p771
+F1.1204819679260254
+sS'found'
+p772
+I01
+sa(dp773
+S'domain'
+p774
+S'fo_counters'
+p775
+sS'instance'
+p776
+S'instance_8.pddl'
+p777
+sS'semantics_f_count'
+p778
+I5
+sS'time_log'
+p779
+(lp780
+(S'Initializing encoder.'
+p781
+F0.15167498588562012
+tp782
+a(S'Initial formula encoding at horizon: 1'
+p783
+F0.1205439567565918
+tp784
+a(S'Initial formula encoding at horizon: 2'
+p785
+F0.08819293975830078
+tp786
+a(S'Initial formula encoding at horizon: 3'
+p787
+F0.09354114532470703
+tp788
+a(S'Initial formula encoding at horizon: 4'
+p789
+F0.1188969612121582
+tp790
+a(S'Initial formula encoding at horizon: 5'
+p791
+F0.1387028694152832
+tp792
+a(S'Extract model at horizon 5'
+p793
+F0.1325521469116211
+tp794
+a(S'Encode seq-form of one step 0'
+p795
+F0.1611490249633789
+tp796
+a(S'Encode seq-prefix of one step 0'
+p797
+F0.007039070129394531
+tp798
+a(S'Check sat of seq-formula 0'
+p799
+F0.0152740478515625
+tp800
+a(S'Encode seq-form of one step 1'
+p801
+F0.3474438190460205
+tp802
+a(S'Encode seq-prefix of one step 1'
+p803
+F0.00721287727355957
+tp804
+a(S'Check sat of seq-formula 1'
+p805
+F0.2261979579925537
+tp806
+a(S'Encode seq-form of one step 2'
+p807
+F0.17613005638122559
+tp808
+a(S'Encode seq-prefix of one step 2'
+p809
+F0.00712895393371582
+tp810
+a(S'Check sat of seq-formula 2'
+p811
+F0.07717013359069824
+tp812
+a(S'Encode seq-form of one step 3'
+p813
+F0.24785399436950684
+tp814
+a(S'Encode seq-prefix of one step 3'
+p815
+F0.007128000259399414
+tp816
+a(S'Check sat of seq-formula 3'
+p817
+F0.49254608154296875
+tp818
+a(S'Encode seq-form of one step 4'
+p819
+F0.09378409385681152
+tp820
+a(S'Encode seq-prefix of one step 4'
+p821
+F0.00717616081237793
+tp822
+a(S'Check sat of seq-formula 4'
+p823
+F0.06609201431274414
+tp824
+a(S'Exiting search'
+p825
+F0.011428117752075195
+tp826
+a(S'Finishing'
+p827
+F-1.1920928955078125e-05
+tp828
+asS'exclusion_cnt'
+p829
+I0
+sS'valid'
+p830
+I1
+sS'mode'
+p831
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p832
+sS'horizon'
+p833
+I5
+sS'time'
+p834
+F2.7949020862579346
+sS'found'
+p835
+I01
+sS'f_count'
+p836
+I165
+sa(dp837
+S'domain'
+p838
+S'fo_counters'
+p839
+sS'exclusion_cnt'
+p840
+I288
+sS'time_log'
+p841
+(lp842
+(S'Formula encoding at horizon: 1'
+p843
+F0.45499610900878906
+tp844
+a(S'Sat-check at horizon: 1'
+p845
+F0.0010259151458740234
+tp846
+a(S'Formula encoding at horizon: 2'
+p847
+F0.10491490364074707
+tp848
+a(S'Sat-check at horizon: 2'
+p849
+F0.008142948150634766
+tp850
+a(S'Formula encoding at horizon: 3'
+p851
+F0.10438990592956543
+tp852
+a(S'Sat-check at horizon: 3'
+p853
+F0.015436172485351562
+tp854
+a(S'Formula encoding at horizon: 4'
+p855
+F0.10586094856262207
+tp856
+a(S'Sat-check at horizon: 4'
+p857
+F0.057642221450805664
+tp858
+a(S'Formula encoding at horizon: 5'
+p859
+F0.10502791404724121
+tp860
+a(S'Sat-check at horizon: 5'
+p861
+F0.14395499229431152
+tp862
+a(S'Formula encoding at horizon: 6'
+p863
+F0.1051170825958252
+tp864
+a(S'Sat-check at horizon: 6'
+p865
+F0.352802038192749
+tp866
+a(S'Exiting search'
+p867
+F0.025686979293823242
+tp868
+a(S'Finishing'
+p869
+F-0.00024819374084472656
+tp870
+asS'instance'
+p871
+S'instance_8.pddl'
+p872
+sS'valid'
+p873
+I1
+sS'mode'
+p874
+S'parallel incremental'
+p875
+sS'horizon'
+p876
+I6
+sS'time'
+p877
+F1.5852651596069336
+sS'found'
+p878
+I01
+sa(dp879
+S'domain'
+p880
+S'fo_counters'
+p881
+sS'instance'
+p882
+S'instance_8.pddl'
+p883
+sS'time_log'
+p884
+(lp885
+(S'Formula encoding at horizon: 1'
+p886
+F0.4225599765777588
+tp887
+a(S'Sat-check at horizon: 1'
+p888
+F0.03795504570007324
+tp889
+a(S'Formula encoding at horizon: 2'
+p890
+F0.18430781364440918
+tp891
+a(S'Sat-check at horizon: 2'
+p892
+F0.04644489288330078
+tp893
+a(S'Formula encoding at horizon: 3'
+p894
+F0.26866602897644043
+tp895
+a(S'Sat-check at horizon: 3'
+p896
+F0.06997108459472656
+tp897
+a(S'Formula encoding at horizon: 4'
+p898
+F0.3521840572357178
+tp899
+a(S'Sat-check at horizon: 4'
+p900
+F0.09838414192199707
+tp901
+a(S'Formula encoding at horizon: 5'
+p902
+F0.43740391731262207
+tp903
+a(S'Sat-check at horizon: 5'
+p904
+F0.13063693046569824
+tp905
+a(S'Formula encoding at horizon: 6'
+p906
+F0.5216171741485596
+tp907
+a(S'Sat-check at horizon: 6'
+p908
+F0.19652104377746582
+tp909
+a(S'Finishing'
+p910
+F-0.027398109436035156
+tp911
+asS'exclusion_cnt'
+p912
+I288
+sS'valid'
+p913
+I1
+sS'mode'
+p914
+S'parallel not incremental'
+p915
+sS'horizon'
+p916
+I6
+sS'time'
+p917
+F2.7940680980682373
+sS'found'
+p918
+I01
+sa(dp919
+S'domain'
+p920
+S'fo_counters'
+p921
+sS'time_log'
+p922
+NsS'instance'
+p923
+S'instance_9.pddl'
+p924
+sS'valid'
+p925
+I-1
+sS'mode'
+p926
+S'springroll'
+p927
+sS'horizon'
+p928
+I0
+sS'time'
+p929
+F1.1213741302490234
+sS'found'
+p930
+I01
+sa(dp931
+S'domain'
+p932
+S'fo_counters'
+p933
+sS'instance'
+p934
+S'instance_9.pddl'
+p935
+sS'semantics_f_count'
+p936
+I5
+sS'time_log'
+p937
+(lp938
+(S'Initializing encoder.'
+p939
+F0.16515302658081055
+tp940
+a(S'Initial formula encoding at horizon: 1'
+p941
+F0.1415860652923584
+tp942
+a(S'Initial formula encoding at horizon: 2'
+p943
+F0.10856008529663086
+tp944
+a(S'Initial formula encoding at horizon: 3'
+p945
+F0.1174628734588623
+tp946
+a(S'Initial formula encoding at horizon: 4'
+p947
+F0.12342286109924316
+tp948
+a(S'Initial formula encoding at horizon: 5'
+p949
+F0.16265296936035156
+tp950
+a(S'Extract model at horizon 5'
+p951
+F0.20727896690368652
+tp952
+a(S'Encode seq-form of one step 0'
+p953
+F0.17532706260681152
+tp954
+a(S'Encode seq-prefix of one step 0'
+p955
+F0.008394002914428711
+tp956
+a(S'Check sat of seq-formula 0'
+p957
+F0.018249988555908203
+tp958
+a(S'Encode seq-form of one step 1'
+p959
+F0.3847520351409912
+tp960
+a(S'Encode seq-prefix of one step 1'
+p961
+F0.008271932601928711
+tp962
+a(S'Check sat of seq-formula 1'
+p963
+F0.1329789161682129
+tp964
+a(S'Encode seq-form of one step 2'
+p965
+F0.514052152633667
+tp966
+a(S'Encode seq-prefix of one step 2'
+p967
+F0.008239984512329102
+tp968
+a(S'Check sat of seq-formula 2'
+p969
+F1.0867290496826172
+tp970
+a(S'Encode seq-form of one step 3'
+p971
+F0.23296403884887695
+tp972
+a(S'Encode seq-prefix of one step 3'
+p973
+F0.008209943771362305
+tp974
+a(S'Check sat of seq-formula 3'
+p975
+F0.5121409893035889
+tp976
+a(S'Encode seq-form of one step 4'
+p977
+F0.23476600646972656
+tp978
+a(S'Encode seq-prefix of one step 4'
+p979
+F0.008220911026000977
+tp980
+a(S'Check sat of seq-formula 4'
+p981
+F0.5696299076080322
+tp982
+a(S'Exiting search'
+p983
+F0.02654290199279785
+tp984
+a(S'Finishing'
+p985
+F-1.3113021850585938e-05
+tp986
+asS'exclusion_cnt'
+p987
+I0
+sS'valid'
+p988
+I1
+sS'mode'
+p989
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p990
+sS'horizon'
+p991
+I5
+sS'time'
+p992
+F4.955636024475098
+sS'found'
+p993
+I01
+sS'f_count'
+p994
+I185
+sa(dp995
+S'domain'
+p996
+S'fo_counters'
+p997
+sS'exclusion_cnt'
+p998
+I324
+sS'time_log'
+p999
+(lp1000
+(S'Formula encoding at horizon: 1'
+p1001
+F0.5807638168334961
+tp1002
+a(S'Sat-check at horizon: 1'
+p1003
+F0.0011289119720458984
+tp1004
+a(S'Formula encoding at horizon: 2'
+p1005
+F0.1258540153503418
+tp1006
+a(S'Sat-check at horizon: 2'
+p1007
+F0.008491992950439453
+tp1008
+a(S'Formula encoding at horizon: 3'
+p1009
+F0.12657713890075684
+tp1010
+a(S'Sat-check at horizon: 3'
+p1011
+F0.01566910743713379
+tp1012
+a(S'Formula encoding at horizon: 4'
+p1013
+F0.12616705894470215
+tp1014
+a(S'Sat-check at horizon: 4'
+p1015
+F0.04584503173828125
+tp1016
+a(S'Formula encoding at horizon: 5'
+p1017
+F0.12850689888000488
+tp1018
+a(S'Sat-check at horizon: 5'
+p1019
+F0.20061993598937988
+tp1020
+a(S'Formula encoding at horizon: 6'
+p1021
+F0.12646698951721191
+tp1022
+a(S'Sat-check at horizon: 6'
+p1023
+F0.45823097229003906
+tp1024
+a(S'Exiting search'
+p1025
+F0.028515100479125977
+tp1026
+a(S'Finishing'
+p1027
+F-0.0002601146697998047
+tp1028
+asS'instance'
+p1029
+S'instance_9.pddl'
+p1030
+sS'valid'
+p1031
+I1
+sS'mode'
+p1032
+S'parallel incremental'
+p1033
+sS'horizon'
+p1034
+I6
+sS'time'
+p1035
+F1.973114013671875
+sS'found'
+p1036
+I01
+sa(dp1037
+S'domain'
+p1038
+S'fo_counters'
+p1039
+sS'instance'
+p1040
+S'instance_9.pddl'
+p1041
+sS'time_log'
+p1042
+(lp1043
+(S'Formula encoding at horizon: 1'
+p1044
+F0.5548899173736572
+tp1045
+a(S'Sat-check at horizon: 1'
+p1046
+F0.0393519401550293
+tp1047
+a(S'Formula encoding at horizon: 2'
+p1048
+F0.22482585906982422
+tp1049
+a(S'Sat-check at horizon: 2'
+p1050
+F0.051393985748291016
+tp1051
+a(S'Formula encoding at horizon: 3'
+p1052
+F0.33026599884033203
+tp1053
+a(S'Sat-check at horizon: 3'
+p1054
+F0.06954216957092285
+tp1055
+a(S'Formula encoding at horizon: 4'
+p1056
+F0.4330599308013916
+tp1057
+a(S'Sat-check at horizon: 4'
+p1058
+F0.10378003120422363
+tp1059
+a(S'Formula encoding at horizon: 5'
+p1060
+F0.5363059043884277
+tp1061
+a(S'Sat-check at horizon: 5'
+p1062
+F0.17972612380981445
+tp1063
+a(S'Formula encoding at horizon: 6'
+p1064
+F0.6395599842071533
+tp1065
+a(S'Sat-check at horizon: 6'
+p1066
+F0.23224401473999023
+tp1067
+a(S'Finishing'
+p1068
+F-0.03142905235290527
+tp1069
+asS'exclusion_cnt'
+p1070
+I324
+sS'valid'
+p1071
+I1
+sS'mode'
+p1072
+S'parallel not incremental'
+p1073
+sS'horizon'
+p1074
+I6
+sS'time'
+p1075
+F3.426395893096924
+sS'found'
+p1076
+I01
+sa(dp1077
+S'domain'
+p1078
+S'fo_counters'
+p1079
+sS'time_log'
+p1080
+NsS'instance'
+p1081
+S'instance_10.pddl'
+p1082
+sS'valid'
+p1083
+I-1
+sS'mode'
+p1084
+S'springroll'
+p1085
+sS'horizon'
+p1086
+I0
+sS'time'
+p1087
+F1.2205848693847656
+sS'found'
+p1088
+I01
+sa(dp1089
+S'domain'
+p1090
+S'fo_counters'
+p1091
+sS'instance'
+p1092
+S'instance_10.pddl'
+p1093
+sS'semantics_f_count'
+p1094
+I5
+sS'time_log'
+p1095
+(lp1096
+(S'Initializing encoder.'
+p1097
+F0.18315410614013672
+tp1098
+a(S'Initial formula encoding at horizon: 1'
+p1099
+F0.16508007049560547
+tp1100
+a(S'Initial formula encoding at horizon: 2'
+p1101
+F0.13194489479064941
+tp1102
+a(S'Initial formula encoding at horizon: 3'
+p1103
+F0.14083600044250488
+tp1104
+a(S'Initial formula encoding at horizon: 4'
+p1105
+F0.1383969783782959
+tp1106
+a(S'Initial formula encoding at horizon: 5'
+p1107
+F0.1680619716644287
+tp1108
+a(S'Extract model at horizon 5'
+p1109
+F0.31656885147094727
+tp1110
+a(S'Encode seq-form of one step 0'
+p1111
+F0.14152121543884277
+tp1112
+a(S'Encode seq-prefix of one step 0'
+p1113
+F0.008867979049682617
+tp1114
+a(S'Check sat of seq-formula 0'
+p1115
+F0.011347055435180664
+tp1116
+a(S'Encode seq-form of one step 1'
+p1117
+F0.6279449462890625
+tp1118
+a(S'Encode seq-prefix of one step 1'
+p1119
+F0.008957862854003906
+tp1120
+a(S'Check sat of seq-formula 1'
+p1121
+F0.2747528553009033
+tp1122
+a(S'Encode seq-form of one step 2'
+p1123
+F0.33730387687683105
+tp1124
+a(S'Encode seq-prefix of one step 2'
+p1125
+F0.008911848068237305
+tp1126
+a(S'Check sat of seq-formula 2'
+p1127
+F0.6838219165802002
+tp1128
+a(S'Encode seq-form of one step 3'
+p1129
+F0.31758809089660645
+tp1130
+a(S'Encode seq-prefix of one step 3'
+p1131
+F0.008892059326171875
+tp1132
+a(S'Check sat of seq-formula 3'
+p1133
+F0.8386352062225342
+tp1134
+a(S'Encode seq-form of one step 4'
+p1135
+F0.23879694938659668
+tp1136
+a(S'Encode seq-prefix of one step 4'
+p1137
+F0.00899505615234375
+tp1138
+a(S'Check sat of seq-formula 4'
+p1139
+F0.608119010925293
+tp1140
+a(S'Exiting search'
+p1141
+F0.029880046844482422
+tp1142
+a(S'Finishing'
+p1143
+F-1.3113021850585938e-05
+tp1144
+asS'exclusion_cnt'
+p1145
+I0
+sS'valid'
+p1146
+I1
+sS'mode'
+p1147
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p1148
+sS'horizon'
+p1149
+I5
+sS'time'
+p1150
+F5.398431062698364
+sS'found'
+p1151
+I01
+sS'f_count'
+p1152
+I205
+sa(dp1153
+S'domain'
+p1154
+S'fo_counters'
+p1155
+sS'exclusion_cnt'
+p1156
+I360
+sS'time_log'
+p1157
+(lp1158
+(S'Formula encoding at horizon: 1'
+p1159
+F0.7435269355773926
+tp1160
+a(S'Sat-check at horizon: 1'
+p1161
+F0.001058816909790039
+tp1162
+a(S'Formula encoding at horizon: 2'
+p1163
+F0.15373992919921875
+tp1164
+a(S'Sat-check at horizon: 2'
+p1165
+F0.0064868927001953125
+tp1166
+a(S'Formula encoding at horizon: 3'
+p1167
+F0.15343689918518066
+tp1168
+a(S'Sat-check at horizon: 3'
+p1169
+F0.008645057678222656
+tp1170
+a(S'Formula encoding at horizon: 4'
+p1171
+F0.15282011032104492
+tp1172
+a(S'Sat-check at horizon: 4'
+p1173
+F0.028792142868041992
+tp1174
+a(S'Formula encoding at horizon: 5'
+p1175
+F0.15247297286987305
+tp1176
+a(S'Sat-check at horizon: 5'
+p1177
+F0.06948494911193848
+tp1178
+a(S'Formula encoding at horizon: 6'
+p1179
+F0.15288686752319336
+tp1180
+a(S'Sat-check at horizon: 6'
+p1181
+F0.38900303840637207
+tp1182
+a(S'Exiting search'
+p1183
+F0.03199601173400879
+tp1184
+a(S'Finishing'
+p1185
+F-0.0002949237823486328
+tp1186
+asS'instance'
+p1187
+S'instance_10.pddl'
+p1188
+sS'valid'
+p1189
+I1
+sS'mode'
+p1190
+S'parallel incremental'
+p1191
+sS'horizon'
+p1192
+I6
+sS'time'
+p1193
+F2.0446629524230957
+sS'found'
+p1194
+I01
+sa(dp1195
+S'domain'
+p1196
+S'fo_counters'
+p1197
+sS'instance'
+p1198
+S'instance_10.pddl'
+p1199
+sS'time_log'
+p1200
+(lp1201
+(S'Formula encoding at horizon: 1'
+p1202
+F0.7103269100189209
+tp1203
+a(S'Sat-check at horizon: 1'
+p1204
+F0.04052019119262695
+tp1205
+a(S'Formula encoding at horizon: 2'
+p1206
+F0.2692859172821045
+tp1207
+a(S'Sat-check at horizon: 2'
+p1208
+F0.052945852279663086
+tp1209
+a(S'Formula encoding at horizon: 3'
+p1210
+F0.39301109313964844
+tp1211
+a(S'Sat-check at horizon: 3'
+p1212
+F0.07794594764709473
+tp1213
+a(S'Formula encoding at horizon: 4'
+p1214
+F0.5170459747314453
+tp1215
+a(S'Sat-check at horizon: 4'
+p1216
+F0.11631894111633301
+tp1217
+a(S'Formula encoding at horizon: 5'
+p1218
+F0.6369650363922119
+tp1219
+a(S'Sat-check at horizon: 5'
+p1220
+F0.21214509010314941
+tp1221
+a(S'Formula encoding at horizon: 6'
+p1222
+F0.7662489414215088
+tp1223
+a(S'Sat-check at horizon: 6'
+p1224
+F0.27457594871520996
+tp1225
+a(S'Finishing'
+p1226
+F-0.03441810607910156
+tp1227
+asS'exclusion_cnt'
+p1228
+I360
+sS'valid'
+p1229
+I1
+sS'mode'
+p1230
+S'parallel not incremental'
+p1231
+sS'horizon'
+p1232
+I6
+sS'time'
+p1233
+F4.101773023605347
+sS'found'
+p1234
+I01
+sa(dp1235
+S'domain'
+p1236
+S'fo_counters'
+p1237
+sS'time_log'
+p1238
+NsS'instance'
+p1239
+S'instance_11.pddl'
+p1240
+sS'valid'
+p1241
+I-1
+sS'mode'
+p1242
+S'springroll'
+p1243
+sS'horizon'
+p1244
+I0
+sS'time'
+p1245
+F1.5224928855895996
+sS'found'
+p1246
+I01
+sa(dp1247
+S'domain'
+p1248
+S'fo_counters'
+p1249
+sS'instance'
+p1250
+S'instance_11.pddl'
+p1251
+sS'semantics_f_count'
+p1252
+I5
+sS'time_log'
+p1253
+(lp1254
+(S'Initializing encoder.'
+p1255
+F0.20088815689086914
+tp1256
+a(S'Initial formula encoding at horizon: 1'
+p1257
+F0.19524598121643066
+tp1258
+a(S'Initial formula encoding at horizon: 2'
+p1259
+F0.1605379581451416
+tp1260
+a(S'Initial formula encoding at horizon: 3'
+p1261
+F0.16536521911621094
+tp1262
+a(S'Initial formula encoding at horizon: 4'
+p1263
+F0.16891002655029297
+tp1264
+a(S'Initial formula encoding at horizon: 5'
+p1265
+F0.23468303680419922
+tp1266
+a(S'Extract model at horizon 5'
+p1267
+F0.3246278762817383
+tp1268
+a(S'Encode seq-form of one step 0'
+p1269
+F0.15655183792114258
+tp1270
+a(S'Encode seq-prefix of one step 0'
+p1271
+F0.00976705551147461
+tp1272
+a(S'Check sat of seq-formula 0'
+p1273
+F0.008643865585327148
+tp1274
+a(S'Encode seq-form of one step 1'
+p1275
+F0.5895259380340576
+tp1276
+a(S'Encode seq-prefix of one step 1'
+p1277
+F0.010020017623901367
+tp1278
+a(S'Check sat of seq-formula 1'
+p1279
+F0.23490214347839355
+tp1280
+a(S'Encode seq-form of one step 2'
+p1281
+F0.6256818771362305
+tp1282
+a(S'Encode seq-prefix of one step 2'
+p1283
+F0.00999593734741211
+tp1284
+a(S'Check sat of seq-formula 2'
+p1285
+F1.1648831367492676
+tp1286
+a(S'Encode seq-form of one step 3'
+p1287
+F0.43327808380126953
+tp1288
+a(S'Encode seq-prefix of one step 3'
+p1289
+F0.010018110275268555
+tp1290
+a(S'Check sat of seq-formula 3'
+p1291
+F1.1106889247894287
+tp1292
+a(S'Encode seq-form of one step 4'
+p1293
+F0.31661105155944824
+tp1294
+a(S'Encode seq-prefix of one step 4'
+p1295
+F0.009990930557250977
+tp1296
+a(S'Check sat of seq-formula 4'
+p1297
+F1.2420241832733154
+tp1298
+a(S'Exiting search'
+p1299
+F0.03827714920043945
+tp1300
+a(S'Finishing'
+p1301
+F-1.3113021850585938e-05
+tp1302
+asS'exclusion_cnt'
+p1303
+I0
+sS'valid'
+p1304
+I1
+sS'mode'
+p1305
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p1306
+sS'horizon'
+p1307
+I5
+sS'time'
+p1308
+F7.421166181564331
+sS'found'
+p1309
+I01
+sS'f_count'
+p1310
+I225
+sa(dp1311
+S'domain'
+p1312
+S'fo_counters'
+p1313
+sS'exclusion_cnt'
+p1314
+I462
+sS'time_log'
+p1315
+(lp1316
+(S'Formula encoding at horizon: 1'
+p1317
+F0.9566481113433838
+tp1318
+a(S'Sat-check at horizon: 1'
+p1319
+F0.0011229515075683594
+tp1320
+a(S'Formula encoding at horizon: 2'
+p1321
+F0.18427610397338867
+tp1322
+a(S'Sat-check at horizon: 2'
+p1323
+F0.005969047546386719
+tp1324
+a(S'Formula encoding at horizon: 3'
+p1325
+F0.18278193473815918
+tp1326
+a(S'Sat-check at horizon: 3'
+p1327
+F0.012169837951660156
+tp1328
+a(S'Formula encoding at horizon: 4'
+p1329
+F0.18230891227722168
+tp1330
+a(S'Sat-check at horizon: 4'
+p1331
+F0.08427906036376953
+tp1332
+a(S'Formula encoding at horizon: 5'
+p1333
+F0.18242192268371582
+tp1334
+a(S'Sat-check at horizon: 5'
+p1335
+F0.3700258731842041
+tp1336
+a(S'Formula encoding at horizon: 6'
+p1337
+F0.18458890914916992
+tp1338
+a(S'Sat-check at horizon: 6'
+p1339
+F0.39637207984924316
+tp1340
+a(S'Formula encoding at horizon: 7'
+p1341
+F0.18303298950195312
+tp1342
+a(S'Sat-check at horizon: 7'
+p1343
+F0.42114710807800293
+tp1344
+a(S'Exiting search'
+p1345
+F0.04044294357299805
+tp1346
+a(S'Finishing'
+p1347
+F-0.0003249645233154297
+tp1348
+asS'instance'
+p1349
+S'instance_11.pddl'
+p1350
+sS'valid'
+p1351
+I1
+sS'mode'
+p1352
+S'parallel incremental'
+p1353
+sS'horizon'
+p1354
+I7
+sS'time'
+p1355
+F3.3879311084747314
+sS'found'
+p1356
+I01
+sa(dp1357
+S'domain'
+p1358
+S'fo_counters'
+p1359
+sS'instance'
+p1360
+S'instance_11.pddl'
+p1361
+sS'time_log'
+p1362
+(lp1363
+(S'Formula encoding at horizon: 1'
+p1364
+F0.9241459369659424
+tp1365
+a(S'Sat-check at horizon: 1'
+p1366
+F0.04302382469177246
+tp1367
+a(S'Formula encoding at horizon: 2'
+p1368
+F0.3232860565185547
+tp1369
+a(S'Sat-check at horizon: 2'
+p1370
+F0.05837202072143555
+tp1371
+a(S'Formula encoding at horizon: 3'
+p1372
+F0.48089599609375
+tp1373
+a(S'Sat-check at horizon: 3'
+p1374
+F0.07940292358398438
+tp1375
+a(S'Formula encoding at horizon: 4'
+p1376
+F0.6198639869689941
+tp1377
+a(S'Sat-check at horizon: 4'
+p1378
+F0.1148080825805664
+tp1379
+a(S'Formula encoding at horizon: 5'
+p1380
+F0.7662968635559082
+tp1381
+a(S'Sat-check at horizon: 5'
+p1382
+F0.1825871467590332
+tp1383
+a(S'Formula encoding at horizon: 6'
+p1384
+F0.922778844833374
+tp1385
+a(S'Sat-check at horizon: 6'
+p1386
+F0.3697631359100342
+tp1387
+a(S'Formula encoding at horizon: 7'
+p1388
+F1.0659630298614502
+tp1389
+a(S'Sat-check at horizon: 7'
+p1390
+F0.5920829772949219
+tp1391
+a(S'Finishing'
+p1392
+F-0.04442882537841797
+tp1393
+asS'exclusion_cnt'
+p1394
+I462
+sS'valid'
+p1395
+I1
+sS'mode'
+p1396
+S'parallel not incremental'
+p1397
+sS'horizon'
+p1398
+I7
+sS'time'
+p1399
+F6.587734937667847
+sS'found'
+p1400
+I01
+sa(dp1401
+S'domain'
+p1402
+S'fo_counters'
+p1403
+sS'time_log'
+p1404
+NsS'instance'
+p1405
+S'instance_12.pddl'
+p1406
+sS'valid'
+p1407
+I-1
+sS'mode'
+p1408
+S'springroll'
+p1409
+sS'horizon'
+p1410
+I0
+sS'time'
+p1411
+F1.3721110820770264
+sS'found'
+p1412
+I01
+sa(dp1413
+S'domain'
+p1414
+S'fo_counters'
+p1415
+sS'instance'
+p1416
+S'instance_12.pddl'
+p1417
+sS'semantics_f_count'
+p1418
+I6
+sS'time_log'
+p1419
+(lp1420
+(S'Initializing encoder.'
+p1421
+F0.21897101402282715
+tp1422
+a(S'Initial formula encoding at horizon: 1'
+p1423
+F0.2273099422454834
+tp1424
+a(S'Initial formula encoding at horizon: 2'
+p1425
+F0.19018006324768066
+tp1426
+a(S'Initial formula encoding at horizon: 3'
+p1427
+F0.20517897605895996
+tp1428
+a(S'Initial formula encoding at horizon: 4'
+p1429
+F0.20386195182800293
+tp1430
+a(S'Initial formula encoding at horizon: 5'
+p1431
+F0.23964381217956543
+tp1432
+a(S'Initial formula encoding at horizon: 6'
+p1433
+F0.3116030693054199
+tp1434
+a(S'Extract model at horizon 6'
+p1435
+F1.1217939853668213
+tp1436
+a(S'Encode seq-form of one step 0'
+p1437
+F0.4113180637359619
+tp1438
+a(S'Encode seq-prefix of one step 0'
+p1439
+F0.010587930679321289
+tp1440
+a(S'Check sat of seq-formula 0'
+p1441
+F0.0672910213470459
+tp1442
+a(S'Encode seq-form of one step 1'
+p1443
+F1.336611032485962
+tp1444
+a(S'Encode seq-prefix of one step 1'
+p1445
+F0.0107879638671875
+tp1446
+a(S'Check sat of seq-formula 1'
+p1447
+F2.146155834197998
+tp1448
+a(S'Encode seq-form of one step 2'
+p1449
+F0.5552608966827393
+tp1450
+a(S'Encode seq-prefix of one step 2'
+p1451
+F0.010632991790771484
+tp1452
+a(S'Check sat of seq-formula 2'
+p1453
+F3.624109983444214
+tp1454
+a(S'Encode seq-form of one step 3'
+p1455
+F0.6648168563842773
+tp1456
+a(S'Encode seq-prefix of one step 3'
+p1457
+F0.010684013366699219
+tp1458
+a(S'Check sat of seq-formula 3'
+p1459
+F5.6822898387908936
+tp1460
+a(S'Encode seq-form of one step 4'
+p1461
+F0.4544808864593506
+tp1462
+a(S'Encode seq-prefix of one step 4'
+p1463
+F0.010776996612548828
+tp1464
+a(S'Check sat of seq-formula 4'
+p1465
+F4.8198769092559814
+tp1466
+a(S'Encode seq-form of one step 5'
+p1467
+F0.2497999668121338
+tp1468
+a(S'Encode seq-prefix of one step 5'
+p1469
+F0.010721921920776367
+tp1470
+a(S'Check sat of seq-formula 5'
+p1471
+F0.7488269805908203
+tp1472
+a(S'Exiting search'
+p1473
+F0.04119396209716797
+tp1474
+a(S'Finishing'
+p1475
+F-1.2874603271484375e-05
+tp1476
+asS'exclusion_cnt'
+p1477
+I0
+sS'valid'
+p1478
+I1
+sS'mode'
+p1479
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p1480
+sS'horizon'
+p1481
+I6
+sS'time'
+p1482
+F23.58482789993286
+sS'found'
+p1483
+I01
+sS'f_count'
+p1484
+I294
+sa(dp1485
+S'domain'
+p1486
+S'fo_counters'
+p1487
+sS'exclusion_cnt'
+p1488
+I504
+sS'time_log'
+p1489
+(lp1490
+(S'Formula encoding at horizon: 1'
+p1491
+F1.219886064529419
+tp1492
+a(S'Sat-check at horizon: 1'
+p1493
+F0.0011301040649414062
+tp1494
+a(S'Formula encoding at horizon: 2'
+p1495
+F0.21799206733703613
+tp1496
+a(S'Sat-check at horizon: 2'
+p1497
+F0.00585484504699707
+tp1498
+a(S'Formula encoding at horizon: 3'
+p1499
+F0.21757102012634277
+tp1500
+a(S'Sat-check at horizon: 3'
+p1501
+F0.013742923736572266
+tp1502
+a(S'Formula encoding at horizon: 4'
+p1503
+F0.21811389923095703
+tp1504
+a(S'Sat-check at horizon: 4'
+p1505
+F0.05656003952026367
+tp1506
+a(S'Formula encoding at horizon: 5'
+p1507
+F0.21814203262329102
+tp1508
+a(S'Sat-check at horizon: 5'
+p1509
+F0.0789799690246582
+tp1510
+a(S'Formula encoding at horizon: 6'
+p1511
+F0.21890687942504883
+tp1512
+a(S'Sat-check at horizon: 6'
+p1513
+F0.7722787857055664
+tp1514
+a(S'Formula encoding at horizon: 7'
+p1515
+F0.21954703330993652
+tp1516
+a(S'Sat-check at horizon: 7'
+p1517
+F1.676081895828247
+tp1518
+a(S'Exiting search'
+p1519
+F0.043931007385253906
+tp1520
+a(S'Finishing'
+p1521
+F-0.00035190582275390625
+tp1522
+asS'instance'
+p1523
+S'instance_12.pddl'
+p1524
+sS'valid'
+p1525
+I1
+sS'mode'
+p1526
+S'parallel incremental'
+p1527
+sS'horizon'
+p1528
+I7
+sS'time'
+p1529
+F5.179092884063721
+sS'found'
+p1530
+I01
+sa(dp1531
+S'domain'
+p1532
+S'fo_counters'
+p1533
+sS'instance'
+p1534
+S'instance_12.pddl'
+p1535
+sS'time_log'
+p1536
+(lp1537
+(S'Formula encoding at horizon: 1'
+p1538
+F1.2022709846496582
+tp1539
+a(S'Sat-check at horizon: 1'
+p1540
+F0.043682098388671875
+tp1541
+a(S'Formula encoding at horizon: 2'
+p1542
+F0.38706493377685547
+tp1543
+a(S'Sat-check at horizon: 2'
+p1544
+F0.059378862380981445
+tp1545
+a(S'Formula encoding at horizon: 3'
+p1546
+F0.5656740665435791
+tp1547
+a(S'Sat-check at horizon: 3'
+p1548
+F0.08247780799865723
+tp1549
+a(S'Formula encoding at horizon: 4'
+p1550
+F0.7454829216003418
+tp1551
+a(S'Sat-check at horizon: 4'
+p1552
+F0.1129310131072998
+tp1553
+a(S'Formula encoding at horizon: 5'
+p1554
+F0.9144248962402344
+tp1555
+a(S'Sat-check at horizon: 5'
+p1556
+F0.15986895561218262
+tp1557
+a(S'Formula encoding at horizon: 6'
+p1558
+F1.100818157196045
+tp1559
+a(S'Sat-check at horizon: 6'
+p1560
+F0.4048190116882324
+tp1561
+a(S'Formula encoding at horizon: 7'
+p1562
+F1.274245023727417
+tp1563
+a(S'Sat-check at horizon: 7'
+p1564
+F0.6317191123962402
+tp1565
+a(S'Finishing'
+p1566
+F-0.04760003089904785
+tp1567
+asS'exclusion_cnt'
+p1568
+I504
+sS'valid'
+p1569
+I1
+sS'mode'
+p1570
+S'parallel not incremental'
+p1571
+sS'horizon'
+p1572
+I7
+sS'time'
+p1573
+F7.732481002807617
+sS'found'
+p1574
+I01
+sa(dp1575
+S'domain'
+p1576
+S'fo_counters'
+p1577
+sS'time_log'
+p1578
+NsS'instance'
+p1579
+S'instance_13.pddl'
+p1580
+sS'valid'
+p1581
+I-1
+sS'mode'
+p1582
+S'springroll'
+p1583
+sS'horizon'
+p1584
+I0
+sS'time'
+p1585
+F1.2718501091003418
+sS'found'
+p1586
+I01
+sa(dp1587
+S'domain'
+p1588
+S'fo_counters'
+p1589
+sS'instance'
+p1590
+S'instance_13.pddl'
+p1591
+sS'semantics_f_count'
+p1592
+I6
+sS'time_log'
+p1593
+(lp1594
+(S'Initializing encoder.'
+p1595
+F0.24585509300231934
+tp1596
+a(S'Initial formula encoding at horizon: 1'
+p1597
+F0.2621040344238281
+tp1598
+a(S'Initial formula encoding at horizon: 2'
+p1599
+F0.22793102264404297
+tp1600
+a(S'Initial formula encoding at horizon: 3'
+p1601
+F0.23944520950317383
+tp1602
+a(S'Initial formula encoding at horizon: 4'
+p1603
+F0.25449490547180176
+tp1604
+a(S'Initial formula encoding at horizon: 5'
+p1605
+F0.2672238349914551
+tp1606
+a(S'Initial formula encoding at horizon: 6'
+p1607
+F0.5214672088623047
+tp1608
+a(S'Extract model at horizon 6'
+p1609
+F0.8822789192199707
+tp1610
+a(S'Encode seq-form of one step 0'
+p1611
+F0.3614671230316162
+tp1612
+a(S'Encode seq-prefix of one step 0'
+p1613
+F0.011394023895263672
+tp1614
+a(S'Check sat of seq-formula 0'
+p1615
+F0.03513813018798828
+tp1616
+a(S'Encode seq-form of one step 1'
+p1617
+F1.0750131607055664
+tp1618
+a(S'Encode seq-prefix of one step 1'
+p1619
+F0.01151585578918457
+tp1620
+a(S'Check sat of seq-formula 1'
+p1621
+F1.1310949325561523
+tp1622
+a(S'Encode seq-form of one step 2'
+p1623
+F0.9764139652252197
+tp1624
+a(S'Encode seq-prefix of one step 2'
+p1625
+F0.011679887771606445
+tp1626
+a(S'Check sat of seq-formula 2'
+p1627
+F1.4235930442810059
+tp1628
+a(S'Encode seq-form of one step 3'
+p1629
+F0.33741092681884766
+tp1630
+a(S'Encode seq-prefix of one step 3'
+p1631
+F0.011999845504760742
+tp1632
+a(S'Check sat of seq-formula 3'
+p1633
+F1.1641571521759033
+tp1634
+a(S'Encode seq-form of one step 4'
+p1635
+F0.7877891063690186
+tp1636
+a(S'Encode seq-prefix of one step 4'
+p1637
+F0.011584997177124023
+tp1638
+a(S'Check sat of seq-formula 4'
+p1639
+F4.049081087112427
+tp1640
+a(S'Encode seq-form of one step 5'
+p1641
+F0.5899810791015625
+tp1642
+a(S'Encode seq-prefix of one step 5'
+p1643
+F0.011662960052490234
+tp1644
+a(S'Check sat of seq-formula 5'
+p1645
+F2.9176108837127686
+tp1646
+a(S'Exiting search'
+p1647
+F0.06675100326538086
+tp1648
+a(S'Finishing'
+p1649
+F-1.4066696166992188e-05
+tp1650
+asS'exclusion_cnt'
+p1651
+I0
+sS'valid'
+p1652
+I1
+sS'mode'
+p1653
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p1654
+sS'horizon'
+p1655
+I6
+sS'time'
+p1656
+F17.886197090148926
+sS'found'
+p1657
+I01
+sS'f_count'
+p1658
+I318
+sa(dp1659
+S'domain'
+p1660
+S'fo_counters'
+p1661
+sS'exclusion_cnt'
+p1662
+I546
+sS'time_log'
+p1663
+(lp1664
+(S'Formula encoding at horizon: 1'
+p1665
+F1.5485219955444336
+tp1666
+a(S'Sat-check at horizon: 1'
+p1667
+F0.0012857913970947266
+tp1668
+a(S'Formula encoding at horizon: 2'
+p1669
+F0.2546060085296631
+tp1670
+a(S'Sat-check at horizon: 2'
+p1671
+F0.010486841201782227
+tp1672
+a(S'Formula encoding at horizon: 3'
+p1673
+F0.25487685203552246
+tp1674
+a(S'Sat-check at horizon: 3'
+p1675
+F0.013408899307250977
+tp1676
+a(S'Formula encoding at horizon: 4'
+p1677
+F0.2551851272583008
+tp1678
+a(S'Sat-check at horizon: 4'
+p1679
+F0.03118896484375
+tp1680
+a(S'Formula encoding at horizon: 5'
+p1681
+F0.2551229000091553
+tp1682
+a(S'Sat-check at horizon: 5'
+p1683
+F0.14715313911437988
+tp1684
+a(S'Formula encoding at horizon: 6'
+p1685
+F0.2572441101074219
+tp1686
+a(S'Sat-check at horizon: 6'
+p1687
+F0.2004549503326416
+tp1688
+a(S'Formula encoding at horizon: 7'
+p1689
+F0.25641798973083496
+tp1690
+a(S'Sat-check at horizon: 7'
+p1691
+F1.9603009223937988
+tp1692
+a(S'Exiting search'
+p1693
+F0.04835009574890137
+tp1694
+a(S'Finishing'
+p1695
+F-0.0003750324249267578
+tp1696
+asS'instance'
+p1697
+S'instance_13.pddl'
+p1698
+sS'valid'
+p1699
+I1
+sS'mode'
+p1700
+S'parallel incremental'
+p1701
+sS'horizon'
+p1702
+I7
+sS'time'
+p1703
+F5.495005130767822
+sS'found'
+p1704
+I01
+sa(dp1705
+S'domain'
+p1706
+S'fo_counters'
+p1707
+sS'instance'
+p1708
+S'instance_13.pddl'
+p1709
+sS'time_log'
+p1710
+(lp1711
+(S'Formula encoding at horizon: 1'
+p1712
+F1.5053441524505615
+tp1713
+a(S'Sat-check at horizon: 1'
+p1714
+F0.044757843017578125
+tp1715
+a(S'Formula encoding at horizon: 2'
+p1716
+F0.4568328857421875
+tp1717
+a(S'Sat-check at horizon: 2'
+p1718
+F0.06132793426513672
+tp1719
+a(S'Formula encoding at horizon: 3'
+p1720
+F0.6673409938812256
+tp1721
+a(S'Sat-check at horizon: 3'
+p1722
+F0.08967018127441406
+tp1723
+a(S'Formula encoding at horizon: 4'
+p1724
+F0.8741869926452637
+tp1725
+a(S'Sat-check at horizon: 4'
+p1726
+F0.12321305274963379
+tp1727
+a(S'Formula encoding at horizon: 5'
+p1728
+F1.0860331058502197
+tp1729
+a(S'Sat-check at horizon: 5'
+p1730
+F0.1637270450592041
+tp1731
+a(S'Formula encoding at horizon: 6'
+p1732
+F1.2997498512268066
+tp1733
+a(S'Sat-check at horizon: 6'
+p1734
+F0.28008508682250977
+tp1735
+a(S'Formula encoding at horizon: 7'
+p1736
+F1.4972279071807861
+tp1737
+a(S'Sat-check at horizon: 7'
+p1738
+F0.722527027130127
+tp1739
+a(S'Finishing'
+p1740
+F-0.05188298225402832
+tp1741
+asS'exclusion_cnt'
+p1742
+I546
+sS'valid'
+p1743
+I1
+sS'mode'
+p1744
+S'parallel not incremental'
+p1745
+sS'horizon'
+p1746
+I7
+sS'time'
+p1747
+F8.923931121826172
+sS'found'
+p1748
+I01
+sa(dp1749
+S'domain'
+p1750
+S'fo_counters'
+p1751
+sS'time_log'
+p1752
+NsS'instance'
+p1753
+S'instance_14.pddl'
+p1754
+sS'valid'
+p1755
+I-1
+sS'mode'
+p1756
+S'springroll'
+p1757
+sS'horizon'
+p1758
+I0
+sS'time'
+p1759
+F1.471747875213623
+sS'found'
+p1760
+I01
+sa(dp1761
+S'domain'
+p1762
+S'fo_counters'
+p1763
+sS'instance'
+p1764
+S'instance_14.pddl'
+p1765
+sS'semantics_f_count'
+p1766
+I6
+sS'time_log'
+p1767
+(lp1768
+(S'Initializing encoder.'
+p1769
+F0.26621007919311523
+tp1770
+a(S'Initial formula encoding at horizon: 1'
+p1771
+F0.306290864944458
+tp1772
+a(S'Initial formula encoding at horizon: 2'
+p1773
+F0.2727029323577881
+tp1774
+a(S'Initial formula encoding at horizon: 3'
+p1775
+F0.2792079448699951
+tp1776
+a(S'Initial formula encoding at horizon: 4'
+p1777
+F0.28603291511535645
+tp1778
+a(S'Initial formula encoding at horizon: 5'
+p1779
+F0.29407215118408203
+tp1780
+a(S'Initial formula encoding at horizon: 6'
+p1781
+F0.7417340278625488
+tp1782
+a(S'Extract model at horizon 6'
+p1783
+F1.0029199123382568
+tp1784
+a(S'Encode seq-form of one step 0'
+p1785
+F0.5942041873931885
+tp1786
+a(S'Encode seq-prefix of one step 0'
+p1787
+F0.012427091598510742
+tp1788
+a(S'Check sat of seq-formula 0'
+p1789
+F0.08104991912841797
+tp1790
+a(S'Encode seq-form of one step 1'
+p1791
+F1.5707218647003174
+tp1792
+a(S'Encode seq-prefix of one step 1'
+p1793
+F0.012547969818115234
+tp1794
+a(S'Check sat of seq-formula 1'
+p1795
+F3.5217080116271973
+tp1796
+a(S'Encode seq-form of one step 2'
+p1797
+F0.8410141468048096
+tp1798
+a(S'Encode seq-prefix of one step 2'
+p1799
+F0.01258707046508789
+tp1800
+a(S'Check sat of seq-formula 2'
+p1801
+F1.490670919418335
+tp1802
+a(S'Encode seq-form of one step 3'
+p1803
+F0.5904750823974609
+tp1804
+a(S'Encode seq-prefix of one step 3'
+p1805
+F0.012418985366821289
+tp1806
+a(S'Check sat of seq-formula 3'
+p1807
+F2.0888500213623047
+tp1808
+a(S'Encode seq-form of one step 4'
+p1809
+F0.8795380592346191
+tp1810
+a(S'Encode seq-prefix of one step 4'
+p1811
+F0.01253199577331543
+tp1812
+a(S'Check sat of seq-formula 4'
+p1813
+F6.398370027542114
+tp1814
+a(S'Encode seq-form of one step 5'
+p1815
+F0.47306299209594727
+tp1816
+a(S'Encode seq-prefix of one step 5'
+p1817
+F0.012532949447631836
+tp1818
+a(S'Check sat of seq-formula 5'
+p1819
+F2.7921202182769775
+tp1820
+a(S'Exiting search'
+p1821
+F0.06300497055053711
+tp1822
+a(S'Finishing'
+p1823
+F-1.3113021850585938e-05
+tp1824
+asS'exclusion_cnt'
+p1825
+I0
+sS'valid'
+p1826
+I1
+sS'mode'
+p1827
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p1828
+sS'horizon'
+p1829
+I6
+sS'time'
+p1830
+F24.909069061279297
+sS'found'
+p1831
+I01
+sS'f_count'
+p1832
+I342
+sa(dp1833
+S'domain'
+p1834
+S'fo_counters'
+p1835
+sS'exclusion_cnt'
+p1836
+I672
+sS'time_log'
+p1837
+(lp1838
+(S'Formula encoding at horizon: 1'
+p1839
+F1.9498929977416992
+tp1840
+a(S'Sat-check at horizon: 1'
+p1841
+F0.001300811767578125
+tp1842
+a(S'Formula encoding at horizon: 2'
+p1843
+F0.2998800277709961
+tp1844
+a(S'Sat-check at horizon: 2'
+p1845
+F0.006321907043457031
+tp1846
+a(S'Formula encoding at horizon: 3'
+p1847
+F0.3020319938659668
+tp1848
+a(S'Sat-check at horizon: 3'
+p1849
+F0.018985986709594727
+tp1850
+a(S'Formula encoding at horizon: 4'
+p1851
+F0.3018670082092285
+tp1852
+a(S'Sat-check at horizon: 4'
+p1853
+F0.0396730899810791
+tp1854
+a(S'Formula encoding at horizon: 5'
+p1855
+F0.29939794540405273
+tp1856
+a(S'Sat-check at horizon: 5'
+p1857
+F0.2896728515625
+tp1858
+a(S'Formula encoding at horizon: 6'
+p1859
+F0.2999551296234131
+tp1860
+a(S'Sat-check at horizon: 6'
+p1861
+F0.3191800117492676
+tp1862
+a(S'Formula encoding at horizon: 7'
+p1863
+F0.30086207389831543
+tp1864
+a(S'Sat-check at horizon: 7'
+p1865
+F1.937986135482788
+tp1866
+a(S'Formula encoding at horizon: 8'
+p1867
+F0.3045811653137207
+tp1868
+a(S'Sat-check at horizon: 8'
+p1869
+F2.0447709560394287
+tp1870
+a(S'Exiting search'
+p1871
+F0.059259891510009766
+tp1872
+a(S'Finishing'
+p1873
+F-0.0004107952117919922
+tp1874
+asS'instance'
+p1875
+S'instance_14.pddl'
+p1876
+sS'valid'
+p1877
+I1
+sS'mode'
+p1878
+S'parallel incremental'
+p1879
+sS'horizon'
+p1880
+I8
+sS'time'
+p1881
+F8.776058912277222
+sS'found'
+p1882
+I01
+sa(dp1883
+S'domain'
+p1884
+S'fo_counters'
+p1885
+sS'instance'
+p1886
+S'instance_14.pddl'
+p1887
+sS'time_log'
+p1888
+(lp1889
+(S'Formula encoding at horizon: 1'
+p1890
+F1.913558006286621
+tp1891
+a(S'Sat-check at horizon: 1'
+p1892
+F0.046183109283447266
+tp1893
+a(S'Formula encoding at horizon: 2'
+p1894
+F0.5329630374908447
+tp1895
+a(S'Sat-check at horizon: 2'
+p1896
+F0.06346416473388672
+tp1897
+a(S'Formula encoding at horizon: 3'
+p1898
+F0.7860109806060791
+tp1899
+a(S'Sat-check at horizon: 3'
+p1900
+F0.09331321716308594
+tp1901
+a(S'Formula encoding at horizon: 4'
+p1902
+F1.0348670482635498
+tp1903
+a(S'Sat-check at horizon: 4'
+p1904
+F0.12647414207458496
+tp1905
+a(S'Formula encoding at horizon: 5'
+p1906
+F1.2856440544128418
+tp1907
+a(S'Sat-check at horizon: 5'
+p1908
+F0.19296693801879883
+tp1909
+a(S'Formula encoding at horizon: 6'
+p1910
+F1.51395583152771
+tp1911
+a(S'Sat-check at horizon: 6'
+p1912
+F0.42490601539611816
+tp1913
+a(S'Formula encoding at horizon: 7'
+p1914
+F1.7500090599060059
+tp1915
+a(S'Sat-check at horizon: 7'
+p1916
+F1.2730340957641602
+tp1917
+a(S'Formula encoding at horizon: 8'
+p1918
+F2.034358024597168
+tp1919
+a(S'Sat-check at horizon: 8'
+p1920
+F1.1466419696807861
+tp1921
+a(S'Finishing'
+p1922
+F-0.06413507461547852
+tp1923
+asS'exclusion_cnt'
+p1924
+I672
+sS'valid'
+p1925
+I1
+sS'mode'
+p1926
+S'parallel not incremental'
+p1927
+sS'horizon'
+p1928
+I8
+sS'time'
+p1929
+F14.282515048980713
+sS'found'
+p1930
+I01
+sa(dp1931
+S'domain'
+p1932
+S'fo_counters'
+p1933
+sS'time_log'
+p1934
+NsS'instance'
+p1935
+S'instance_15.pddl'
+p1936
+sS'valid'
+p1937
+I-1
+sS'mode'
+p1938
+S'springroll'
+p1939
+sS'horizon'
+p1940
+I0
+sS'time'
+p1941
+F1.4217970371246338
+sS'found'
+p1942
+I01
+sa(dp1943
+S'domain'
+p1944
+S'fo_counters'
+p1945
+sS'instance'
+p1946
+S'instance_15.pddl'
+p1947
+sS'semantics_f_count'
+p1948
+I6
+sS'time_log'
+p1949
+(lp1950
+(S'Initializing encoder.'
+p1951
+F0.2924180030822754
+tp1952
+a(S'Initial formula encoding at horizon: 1'
+p1953
+F0.358536958694458
+tp1954
+a(S'Initial formula encoding at horizon: 2'
+p1955
+F0.3209528923034668
+tp1956
+a(S'Initial formula encoding at horizon: 3'
+p1957
+F0.3355860710144043
+tp1958
+a(S'Initial formula encoding at horizon: 4'
+p1959
+F0.3520700931549072
+tp1960
+a(S'Initial formula encoding at horizon: 5'
+p1961
+F0.3609011173248291
+tp1962
+a(S'Initial formula encoding at horizon: 6'
+p1963
+F0.48264384269714355
+tp1964
+a(S'Extract model at horizon 6'
+p1965
+F2.1566529273986816
+tp1966
+a(S'Encode seq-form of one step 0'
+p1967
+F0.9492640495300293
+tp1968
+a(S'Encode seq-prefix of one step 0'
+p1969
+F0.013411998748779297
+tp1970
+a(S'Check sat of seq-formula 0'
+p1971
+F0.17292308807373047
+tp1972
+a(S'Encode seq-form of one step 1'
+p1973
+F2.174320936203003
+tp1974
+a(S'Encode seq-prefix of one step 1'
+p1975
+F0.013667821884155273
+tp1976
+a(S'Check sat of seq-formula 1'
+p1977
+F3.997562885284424
+tp1978
+a(S'Encode seq-form of one step 2'
+p1979
+F1.8419859409332275
+tp1980
+a(S'Encode seq-prefix of one step 2'
+p1981
+F0.01373910903930664
+tp1982
+a(S'Check sat of seq-formula 2'
+p1983
+F19.729859113693237
+tp1984
+a(S'Encode seq-form of one step 3'
+p1985
+F0.6539080142974854
+tp1986
+a(S'Encode seq-prefix of one step 3'
+p1987
+F0.01355290412902832
+tp1988
+a(S'Check sat of seq-formula 3'
+p1989
+F1.3741369247436523
+tp1990
+a(S'Encode seq-form of one step 4'
+p1991
+F0.8506619930267334
+tp1992
+a(S'Encode seq-prefix of one step 4'
+p1993
+F0.013388872146606445
+tp1994
+a(S'Check sat of seq-formula 4'
+p1995
+F4.771450996398926
+tp1996
+a(S'Encode seq-form of one step 5'
+p1997
+F0.6462831497192383
+tp1998
+a(S'Encode seq-prefix of one step 5'
+p1999
+F0.013306856155395508
+tp2000
+a(S'Check sat of seq-formula 5'
+p2001
+F8.442948818206787
+tp2002
+a(S'Exiting search'
+p2003
+F0.09437203407287598
+tp2004
+a(S'Finishing'
+p2005
+F-1.3113021850585938e-05
+tp2006
+asS'exclusion_cnt'
+p2007
+I0
+sS'valid'
+p2008
+I1
+sS'mode'
+p2009
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p2010
+sS'horizon'
+p2011
+I6
+sS'time'
+p2012
+F50.44057297706604
+sS'found'
+p2013
+I01
+sS'f_count'
+p2014
+I366
+sa(dp2015
+S'domain'
+p2016
+S'fo_counters'
+p2017
+sS'exclusion_cnt'
+p2018
+I720
+sS'time_log'
+p2019
+(lp2020
+(S'Formula encoding at horizon: 1'
+p2021
+F2.4335598945617676
+tp2022
+a(S'Sat-check at horizon: 1'
+p2023
+F0.0012509822845458984
+tp2024
+a(S'Formula encoding at horizon: 2'
+p2025
+F0.3511369228363037
+tp2026
+a(S'Sat-check at horizon: 2'
+p2027
+F0.007478952407836914
+tp2028
+a(S'Formula encoding at horizon: 3'
+p2029
+F0.35465288162231445
+tp2030
+a(S'Sat-check at horizon: 3'
+p2031
+F0.016793012619018555
+tp2032
+a(S'Formula encoding at horizon: 4'
+p2033
+F0.35099101066589355
+tp2034
+a(S'Sat-check at horizon: 4'
+p2035
+F0.07057785987854004
+tp2036
+a(S'Formula encoding at horizon: 5'
+p2037
+F0.35076904296875
+tp2038
+a(S'Sat-check at horizon: 5'
+p2039
+F0.19196605682373047
+tp2040
+a(S'Formula encoding at horizon: 6'
+p2041
+F0.3500089645385742
+tp2042
+a(S'Sat-check at horizon: 6'
+p2043
+F0.5124399662017822
+tp2044
+a(S'Formula encoding at horizon: 7'
+p2045
+F0.35477685928344727
+tp2046
+a(S'Sat-check at horizon: 7'
+p2047
+F0.7607929706573486
+tp2048
+a(S'Formula encoding at horizon: 8'
+p2049
+F0.35106897354125977
+tp2050
+a(S'Sat-check at horizon: 8'
+p2051
+F2.826166868209839
+tp2052
+a(S'Exiting search'
+p2053
+F0.06272411346435547
+tp2054
+a(S'Finishing'
+p2055
+F-0.0004410743713378906
+tp2056
+asS'instance'
+p2057
+S'instance_15.pddl'
+p2058
+sS'valid'
+p2059
+I1
+sS'mode'
+p2060
+S'parallel incremental'
+p2061
+sS'horizon'
+p2062
+I8
+sS'time'
+p2063
+F9.347625017166138
+sS'found'
+p2064
+I01
+sa(dp2065
+S'domain'
+p2066
+S'fo_counters'
+p2067
+sS'instance'
+p2068
+S'instance_15.pddl'
+p2069
+sS'time_log'
+p2070
+(lp2071
+(S'Formula encoding at horizon: 1'
+p2072
+F2.4250741004943848
+tp2073
+a(S'Sat-check at horizon: 1'
+p2074
+F0.04753518104553223
+tp2075
+a(S'Formula encoding at horizon: 2'
+p2076
+F0.6274840831756592
+tp2077
+a(S'Sat-check at horizon: 2'
+p2078
+F0.06683707237243652
+tp2079
+a(S'Formula encoding at horizon: 3'
+p2080
+F0.9268801212310791
+tp2081
+a(S'Sat-check at horizon: 3'
+p2082
+F0.1005089282989502
+tp2083
+a(S'Formula encoding at horizon: 4'
+p2084
+F1.207136869430542
+tp2085
+a(S'Sat-check at horizon: 4'
+p2086
+F0.15863800048828125
+tp2087
+a(S'Formula encoding at horizon: 5'
+p2088
+F1.5051109790802002
+tp2089
+a(S'Sat-check at horizon: 5'
+p2090
+F0.2261638641357422
+tp2091
+a(S'Formula encoding at horizon: 6'
+p2092
+F1.7746329307556152
+tp2093
+a(S'Sat-check at horizon: 6'
+p2094
+F0.5283730030059814
+tp2095
+a(S'Formula encoding at horizon: 7'
+p2096
+F2.073850154876709
+tp2097
+a(S'Sat-check at horizon: 7'
+p2098
+F0.7925078868865967
+tp2099
+a(S'Formula encoding at horizon: 8'
+p2100
+F2.3727378845214844
+tp2101
+a(S'Sat-check at horizon: 8'
+p2102
+F1.5174598693847656
+tp2103
+a(S'Finishing'
+p2104
+F-0.06837987899780273
+tp2105
+asS'exclusion_cnt'
+p2106
+I720
+sS'valid'
+p2107
+I1
+sS'mode'
+p2108
+S'parallel not incremental'
+p2109
+sS'horizon'
+p2110
+I8
+sS'time'
+p2111
+F16.419342041015625
+sS'found'
+p2112
+I01
+sa(dp2113
+S'domain'
+p2114
+S'fo_counters'
+p2115
+sS'time_log'
+p2116
+NsS'instance'
+p2117
+S'instance_16.pddl'
+p2118
+sS'valid'
+p2119
+I-1
+sS'mode'
+p2120
+S'springroll'
+p2121
+sS'horizon'
+p2122
+I0
+sS'time'
+p2123
+F1.4725348949432373
+sS'found'
+p2124
+I01
+sa(dp2125
+S'domain'
+p2126
+S'fo_counters'
+p2127
+sS'instance'
+p2128
+S'instance_16.pddl'
+p2129
+sS'semantics_f_count'
+p2130
+I6
+sS'time_log'
+p2131
+(lp2132
+(S'Initializing encoder.'
+p2133
+F0.31563305854797363
+tp2134
+a(S'Initial formula encoding at horizon: 1'
+p2135
+F0.41100096702575684
+tp2136
+a(S'Initial formula encoding at horizon: 2'
+p2137
+F0.37023210525512695
+tp2138
+a(S'Initial formula encoding at horizon: 3'
+p2139
+F0.37764692306518555
+tp2140
+a(S'Initial formula encoding at horizon: 4'
+p2141
+F0.3786039352416992
+tp2142
+a(S'Initial formula encoding at horizon: 5'
+p2143
+F0.3950021266937256
+tp2144
+a(S'Initial formula encoding at horizon: 6'
+p2145
+F0.43097901344299316
+tp2146
+a(S'Extract model at horizon 6'
+p2147
+F2.3505780696868896
+tp2148
+a(S'Encode seq-form of one step 0'
+p2149
+F1.3847548961639404
+tp2150
+a(S'Encode seq-prefix of one step 0'
+p2151
+F0.013910055160522461
+tp2152
+a(S'Check sat of seq-formula 0'
+p2153
+F0.20070791244506836
+tp2154
+a(S'Encode seq-form of one step 1'
+p2155
+F2.1608150005340576
+tp2156
+a(S'Encode seq-prefix of one step 1'
+p2157
+F0.014369964599609375
+tp2158
+a(S'Check sat of seq-formula 1'
+p2159
+F3.5457851886749268
+tp2160
+a(S'Encode seq-form of one step 2'
+p2161
+F1.9005870819091797
+tp2162
+a(S'Encode seq-prefix of one step 2'
+p2163
+F0.014268159866333008
+tp2164
+a(S'Check sat of seq-formula 2'
+p2165
+F17.657495975494385
+tp2166
+a(S'Encode seq-form of one step 3'
+p2167
+F0.9857468605041504
+tp2168
+a(S'Encode seq-prefix of one step 3'
+p2169
+F0.014117002487182617
+tp2170
+a(S'Check sat of seq-formula 3'
+p2171
+F12.872084140777588
+tp2172
+a(S'Encode seq-form of one step 4'
+p2173
+F0.6067361831665039
+tp2174
+a(S'Encode seq-prefix of one step 4'
+p2175
+F0.01424407958984375
+tp2176
+a(S'Check sat of seq-formula 4'
+p2177
+F0.6385409832000732
+tp2178
+a(S'Encode seq-form of one step 5'
+p2179
+F0.9983570575714111
+tp2180
+a(S'Encode seq-prefix of one step 5'
+p2181
+F0.01417398452758789
+tp2182
+a(S'Check sat of seq-formula 5'
+p2183
+F13.013131141662598
+tp2184
+a(S'Exiting search'
+p2185
+F0.1215670108795166
+tp2186
+a(S'Finishing'
+p2187
+F-1.2874603271484375e-05
+tp2188
+asS'exclusion_cnt'
+p2189
+I0
+sS'valid'
+p2190
+I1
+sS'mode'
+p2191
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p2192
+sS'horizon'
+p2193
+I6
+sS'time'
+p2194
+F61.20112490653992
+sS'found'
+p2195
+I01
+sS'f_count'
+p2196
+I390
+sa(dp2197
+S'domain'
+p2198
+S'fo_counters'
+p2199
+sS'exclusion_cnt'
+p2200
+I768
+sS'time_log'
+p2201
+(lp2202
+(S'Formula encoding at horizon: 1'
+p2203
+F3.047046184539795
+tp2204
+a(S'Sat-check at horizon: 1'
+p2205
+F0.0014650821685791016
+tp2206
+a(S'Formula encoding at horizon: 2'
+p2207
+F0.40373992919921875
+tp2208
+a(S'Sat-check at horizon: 2'
+p2209
+F0.007879018783569336
+tp2210
+a(S'Formula encoding at horizon: 3'
+p2211
+F0.4111042022705078
+tp2212
+a(S'Sat-check at horizon: 3'
+p2213
+F0.01888298988342285
+tp2214
+a(S'Formula encoding at horizon: 4'
+p2215
+F0.40529608726501465
+tp2216
+a(S'Sat-check at horizon: 4'
+p2217
+F0.03440213203430176
+tp2218
+a(S'Formula encoding at horizon: 5'
+p2219
+F0.404649019241333
+tp2220
+a(S'Sat-check at horizon: 5'
+p2221
+F0.17253613471984863
+tp2222
+a(S'Formula encoding at horizon: 6'
+p2223
+F0.4214630126953125
+tp2224
+a(S'Sat-check at horizon: 6'
+p2225
+F0.4459679126739502
+tp2226
+a(S'Formula encoding at horizon: 7'
+p2227
+F0.40990614891052246
+tp2228
+a(S'Sat-check at horizon: 7'
+p2229
+F1.4826719760894775
+tp2230
+a(S'Formula encoding at horizon: 8'
+p2231
+F0.43274807929992676
+tp2232
+a(S'Sat-check at horizon: 8'
+p2233
+F4.069683074951172
+tp2234
+a(S'Exiting search'
+p2235
+F0.06725883483886719
+tp2236
+a(S'Finishing'
+p2237
+F-0.0004818439483642578
+tp2238
+asS'instance'
+p2239
+S'instance_16.pddl'
+p2240
+sS'valid'
+p2241
+I1
+sS'mode'
+p2242
+S'parallel incremental'
+p2243
+sS'horizon'
+p2244
+I8
+sS'time'
+p2245
+F12.237210988998413
+sS'found'
+p2246
+I01
+sa(dp2247
+S'domain'
+p2248
+S'fo_counters'
+p2249
+sS'instance'
+p2250
+S'instance_16.pddl'
+p2251
+sS'time_log'
+p2252
+(lp2253
+(S'Formula encoding at horizon: 1'
+p2254
+F3.0332791805267334
+tp2255
+a(S'Sat-check at horizon: 1'
+p2256
+F0.048503875732421875
+tp2257
+a(S'Formula encoding at horizon: 2'
+p2258
+F0.7297379970550537
+tp2259
+a(S'Sat-check at horizon: 2'
+p2260
+F0.07257509231567383
+tp2261
+a(S'Formula encoding at horizon: 3'
+p2262
+F1.0710701942443848
+tp2263
+a(S'Sat-check at horizon: 3'
+p2264
+F0.12079310417175293
+tp2265
+a(S'Formula encoding at horizon: 4'
+p2266
+F1.4062769412994385
+tp2267
+a(S'Sat-check at horizon: 4'
+p2268
+F0.1611769199371338
+tp2269
+a(S'Formula encoding at horizon: 5'
+p2270
+F1.7454628944396973
+tp2271
+a(S'Sat-check at horizon: 5'
+p2272
+F0.25487709045410156
+tp2273
+a(S'Formula encoding at horizon: 6'
+p2274
+F2.081914186477661
+tp2275
+a(S'Sat-check at horizon: 6'
+p2276
+F0.5419058799743652
+tp2277
+a(S'Formula encoding at horizon: 7'
+p2278
+F2.404468059539795
+tp2279
+a(S'Sat-check at horizon: 7'
+p2280
+F0.6133630275726318
+tp2281
+a(S'Formula encoding at horizon: 8'
+p2282
+F2.7183401584625244
+tp2283
+a(S'Sat-check at horizon: 8'
+p2284
+F2.320019006729126
+tp2285
+a(S'Finishing'
+p2286
+F-0.07435083389282227
+tp2287
+asS'exclusion_cnt'
+p2288
+I768
+sS'valid'
+p2289
+I1
+sS'mode'
+p2290
+S'parallel not incremental'
+p2291
+sS'horizon'
+p2292
+I8
+sS'time'
+p2293
+F19.398149013519287
+sS'found'
+p2294
+I01
+sa(dp2295
+S'domain'
+p2296
+S'fo_counters'
+p2297
+sS'time_log'
+p2298
+NsS'instance'
+p2299
+S'instance_17.pddl'
+p2300
+sS'valid'
+p2301
+I-1
+sS'mode'
+p2302
+S'springroll'
+p2303
+sS'horizon'
+p2304
+I0
+sS'time'
+p2305
+F1.5216188430786133
+sS'found'
+p2306
+I01
+sa(dp2307
+S'domain'
+p2308
+S'fo_counters'
+p2309
+sS'instance'
+p2310
+S'instance_17.pddl'
+p2311
+sS'semantics_f_count'
+p2312
+I7
+sS'time_log'
+p2313
+(lp2314
+(S'Initializing encoder.'
+p2315
+F0.3433048725128174
+tp2316
+a(S'Initial formula encoding at horizon: 1'
+p2317
+F0.47301506996154785
+tp2318
+a(S'Initial formula encoding at horizon: 2'
+p2319
+F0.4324831962585449
+tp2320
+a(S'Initial formula encoding at horizon: 3'
+p2321
+F0.4403879642486572
+tp2322
+a(S'Initial formula encoding at horizon: 4'
+p2323
+F0.44495511054992676
+tp2324
+a(S'Initial formula encoding at horizon: 5'
+p2325
+F0.5121951103210449
+tp2326
+a(S'Initial formula encoding at horizon: 6'
+p2327
+F0.7865369319915771
+tp2328
+a(S'Initial formula encoding at horizon: 7'
+p2329
+F1.5356049537658691
+tp2330
+a(S'Extract model at horizon 7'
+p2331
+F4.029651880264282
+tp2332
+a(S'Encode seq-form of one step 0'
+p2333
+F0.9956049919128418
+tp2334
+a(S'Encode seq-prefix of one step 0'
+p2335
+F0.015038013458251953
+tp2336
+a(S'Check sat of seq-formula 0'
+p2337
+F0.16660213470458984
+tp2338
+a(S'Encode seq-form of one step 1'
+p2339
+F3.451941967010498
+tp2340
+a(S'Encode seq-prefix of one step 1'
+p2341
+F0.015272855758666992
+tp2342
+a(S'Check sat of seq-formula 1'
+p2343
+F9.772815942764282
+tp2344
+a(S'Encode seq-form of one step 2'
+p2345
+F1.4402542114257812
+tp2346
+a(S'Encode seq-prefix of one step 2'
+p2347
+F0.015263080596923828
+tp2348
+a(S'Check sat of seq-formula 2'
+p2349
+F8.033241033554077
+tp2350
+a(S'Encode seq-form of one step 3'
+p2351
+F2.0489091873168945
+tp2352
+a(S'Encode seq-prefix of one step 3'
+p2353
+F0.015189886093139648
+tp2354
+a(S'Check sat of seq-formula 3'
+p2355
+F24.426698207855225
+tp2356
+a(S'Encode seq-form of one step 4'
+p2357
+F0.9545719623565674
+tp2358
+a(S'Encode seq-prefix of one step 4'
+p2359
+F0.014975786209106445
+tp2360
+a(S'Check sat of seq-formula 4'
+p2361
+F15.774394035339355
+tp2362
+a(S'Encode seq-form of one step 5'
+p2363
+F0.9206728935241699
+tp2364
+a(S'Encode seq-prefix of one step 5'
+p2365
+F0.01520991325378418
+tp2366
+a(S'Check sat of seq-formula 5'
+p2367
+F9.441228151321411
+tp2368
+a(S'Encode seq-form of one step 6'
+p2369
+F0.6467890739440918
+tp2370
+a(S'Encode seq-prefix of one step 6'
+p2371
+F0.014892101287841797
+tp2372
+a(S'Check sat of seq-formula 6'
+p2373
+F4.738692045211792
+tp2374
+a(S'Exiting search'
+p2375
+F0.0926201343536377
+tp2376
+a(S'Finishing'
+p2377
+F-1.3113021850585938e-05
+tp2378
+asS'exclusion_cnt'
+p2379
+I0
+sS'valid'
+p2380
+I1
+sS'mode'
+p2381
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p2382
+sS'horizon'
+p2383
+I7
+sS'time'
+p2384
+F92.00908088684082
+sS'found'
+p2385
+I01
+sS'f_count'
+p2386
+I483
+sa(dp2387
+S'domain'
+p2388
+S'fo_counters'
+p2389
+sS'exclusion_cnt'
+p2390
+I816
+sS'time_log'
+p2391
+(lp2392
+(S'Formula encoding at horizon: 1'
+p2393
+F3.6975560188293457
+tp2394
+a(S'Sat-check at horizon: 1'
+p2395
+F0.0012788772583007812
+tp2396
+a(S'Formula encoding at horizon: 2'
+p2397
+F0.46837782859802246
+tp2398
+a(S'Sat-check at horizon: 2'
+p2399
+F0.010538816452026367
+tp2400
+a(S'Formula encoding at horizon: 3'
+p2401
+F0.4729750156402588
+tp2402
+a(S'Sat-check at horizon: 3'
+p2403
+F0.020008087158203125
+tp2404
+a(S'Formula encoding at horizon: 4'
+p2405
+F0.4745950698852539
+tp2406
+a(S'Sat-check at horizon: 4'
+p2407
+F0.05425691604614258
+tp2408
+a(S'Formula encoding at horizon: 5'
+p2409
+F0.4713480472564697
+tp2410
+a(S'Sat-check at horizon: 5'
+p2411
+F0.12735986709594727
+tp2412
+a(S'Formula encoding at horizon: 6'
+p2413
+F0.4686892032623291
+tp2414
+a(S'Sat-check at horizon: 6'
+p2415
+F0.39162707328796387
+tp2416
+a(S'Formula encoding at horizon: 7'
+p2417
+F0.46831703186035156
+tp2418
+a(S'Sat-check at horizon: 7'
+p2419
+F1.4462599754333496
+tp2420
+a(S'Formula encoding at horizon: 8'
+p2421
+F0.47426319122314453
+tp2422
+a(S'Sat-check at horizon: 8'
+p2423
+F7.000468015670776
+tp2424
+a(S'Exiting search'
+p2425
+F0.0730600357055664
+tp2426
+a(S'Finishing'
+p2427
+F-0.0004990100860595703
+tp2428
+asS'instance'
+p2429
+S'instance_17.pddl'
+p2430
+sS'valid'
+p2431
+I1
+sS'mode'
+p2432
+S'parallel incremental'
+p2433
+sS'horizon'
+p2434
+I8
+sS'time'
+p2435
+F16.121505975723267
+sS'found'
+p2436
+I01
+sa(dp2437
+S'domain'
+p2438
+S'fo_counters'
+p2439
+sS'instance'
+p2440
+S'instance_17.pddl'
+p2441
+sS'time_log'
+p2442
+(lp2443
+(S'Formula encoding at horizon: 1'
+p2444
+F3.710205078125
+tp2445
+a(S'Sat-check at horizon: 1'
+p2446
+F0.05024313926696777
+tp2447
+a(S'Formula encoding at horizon: 2'
+p2448
+F0.8466780185699463
+tp2449
+a(S'Sat-check at horizon: 2'
+p2450
+F0.07372808456420898
+tp2451
+a(S'Formula encoding at horizon: 3'
+p2452
+F1.2479259967803955
+tp2453
+a(S'Sat-check at horizon: 3'
+p2454
+F0.11117005348205566
+tp2455
+a(S'Formula encoding at horizon: 4'
+p2456
+F1.6428279876708984
+tp2457
+a(S'Sat-check at horizon: 4'
+p2458
+F0.17015504837036133
+tp2459
+a(S'Formula encoding at horizon: 5'
+p2460
+F2.0342581272125244
+tp2461
+a(S'Sat-check at horizon: 5'
+p2462
+F0.219771146774292
+tp2463
+a(S'Formula encoding at horizon: 6'
+p2464
+F2.4327499866485596
+tp2465
+a(S'Sat-check at horizon: 6'
+p2466
+F0.37610483169555664
+tp2467
+a(S'Formula encoding at horizon: 7'
+p2468
+F2.8138668537139893
+tp2469
+a(S'Sat-check at horizon: 7'
+p2470
+F1.133565902709961
+tp2471
+a(S'Formula encoding at horizon: 8'
+p2472
+F3.1910741329193115
+tp2473
+a(S'Sat-check at horizon: 8'
+p2474
+F2.704521894454956
+tp2475
+a(S'Finishing'
+p2476
+F-0.07806205749511719
+tp2477
+asS'exclusion_cnt'
+p2478
+I816
+sS'valid'
+p2479
+I1
+sS'mode'
+p2480
+S'parallel not incremental'
+p2481
+sS'horizon'
+p2482
+I8
+sS'time'
+p2483
+F22.83693814277649
+sS'found'
+p2484
+I01
+sa(dp2485
+S'domain'
+p2486
+S'fo_counters'
+p2487
+sS'time_log'
+p2488
+NsS'instance'
+p2489
+S'instance_18.pddl'
+p2490
+sS'valid'
+p2491
+I-1
+sS'mode'
+p2492
+S'springroll'
+p2493
+sS'horizon'
+p2494
+I0
+sS'time'
+p2495
+F1.5219709873199463
+sS'found'
+p2496
+I01
+sa(dp2497
+S'domain'
+p2498
+S'fo_counters'
+p2499
+sS'instance'
+p2500
+S'instance_18.pddl'
+p2501
+sS'semantics_f_count'
+p2502
+I7
+sS'time_log'
+p2503
+(lp2504
+(S'Initializing encoder.'
+p2505
+F0.33471107482910156
+tp2506
+a(S'Initial formula encoding at horizon: 1'
+p2507
+F0.5375230312347412
+tp2508
+a(S'Initial formula encoding at horizon: 2'
+p2509
+F0.49431300163269043
+tp2510
+a(S'Initial formula encoding at horizon: 3'
+p2511
+F0.5143527984619141
+tp2512
+a(S'Initial formula encoding at horizon: 4'
+p2513
+F0.506619930267334
+tp2514
+a(S'Initial formula encoding at horizon: 5'
+p2515
+F0.5232741832733154
+tp2516
+a(S'Initial formula encoding at horizon: 6'
+p2517
+F0.5675759315490723
+tp2518
+a(S'Initial formula encoding at horizon: 7'
+p2519
+F0.678469181060791
+tp2520
+a(S'Extract model at horizon 7'
+p2521
+F3.016188859939575
+tp2522
+a(S'Encode seq-form of one step 0'
+p2523
+F1.740006923675537
+tp2524
+a(S'Encode seq-prefix of one step 0'
+p2525
+F0.016099929809570312
+tp2526
+a(S'Check sat of seq-formula 0'
+p2527
+F0.3468759059906006
+tp2528
+a(S'Encode seq-form of one step 1'
+p2529
+F3.3114049434661865
+tp2530
+a(S'Encode seq-prefix of one step 1'
+p2531
+F0.01624894142150879
+tp2532
+a(S'Check sat of seq-formula 1'
+p2533
+F9.371886014938354
+tp2534
+a(S'Encode seq-form of one step 2'
+p2535
+F1.8814940452575684
+tp2536
+a(S'Encode seq-prefix of one step 2'
+p2537
+F0.01646113395690918
+tp2538
+a(S'Check sat of seq-formula 2'
+p2539
+F33.668654918670654
+tp2540
+a(S'Encode seq-form of one step 3'
+p2541
+F1.5859320163726807
+tp2542
+a(S'Encode seq-prefix of one step 3'
+p2543
+F0.016122102737426758
+tp2544
+a(S'Check sat of seq-formula 3'
+p2545
+F16.73602604866028
+tp2546
+a(S'Encode seq-form of one step 4'
+p2547
+F1.2267670631408691
+tp2548
+a(S'Encode seq-prefix of one step 4'
+p2549
+F0.01621413230895996
+tp2550
+a(S'Check sat of seq-formula 4'
+p2551
+F15.204549074172974
+tp2552
+a(S'Encode seq-form of one step 5'
+p2553
+F0.9859681129455566
+tp2554
+a(S'Encode seq-prefix of one step 5'
+p2555
+F0.01633906364440918
+tp2556
+a(S'Check sat of seq-formula 5'
+p2557
+F18.675456047058105
+tp2558
+a(S'Encode seq-form of one step 6'
+p2559
+F1.0573828220367432
+tp2560
+a(S'Encode seq-prefix of one step 6'
+p2561
+F0.016310930252075195
+tp2562
+a(S'Check sat of seq-formula 6'
+p2563
+F12.293226957321167
+tp2564
+a(S'Exiting search'
+p2565
+F0.12325501441955566
+tp2566
+a(S'Finishing'
+p2567
+F-1.2874603271484375e-05
+tp2568
+asS'exclusion_cnt'
+p2569
+I0
+sS'valid'
+p2570
+I1
+sS'mode'
+p2571
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p2572
+sS'horizon'
+p2573
+I7
+sS'time'
+p2574
+F125.49577903747559
+sS'found'
+p2575
+I01
+sS'f_count'
+p2576
+I511
+sa(dp2577
+S'domain'
+p2578
+S'fo_counters'
+p2579
+sS'exclusion_cnt'
+p2580
+I972
+sS'time_log'
+p2581
+(lp2582
+(S'Formula encoding at horizon: 1'
+p2583
+F4.409846067428589
+tp2584
+a(S'Sat-check at horizon: 1'
+p2585
+F0.001463174819946289
+tp2586
+a(S'Formula encoding at horizon: 2'
+p2587
+F0.5304439067840576
+tp2588
+a(S'Sat-check at horizon: 2'
+p2589
+F0.011399030685424805
+tp2590
+a(S'Formula encoding at horizon: 3'
+p2591
+F0.5302200317382812
+tp2592
+a(S'Sat-check at horizon: 3'
+p2593
+F0.021977901458740234
+tp2594
+a(S'Formula encoding at horizon: 4'
+p2595
+F0.5315768718719482
+tp2596
+a(S'Sat-check at horizon: 4'
+p2597
+F0.041760921478271484
+tp2598
+a(S'Formula encoding at horizon: 5'
+p2599
+F0.5329749584197998
+tp2600
+a(S'Sat-check at horizon: 5'
+p2601
+F0.09685492515563965
+tp2602
+a(S'Formula encoding at horizon: 6'
+p2603
+F0.5350618362426758
+tp2604
+a(S'Sat-check at horizon: 6'
+p2605
+F0.1863548755645752
+tp2606
+a(S'Formula encoding at horizon: 7'
+p2607
+F0.5345289707183838
+tp2608
+a(S'Sat-check at horizon: 7'
+p2609
+F0.28673696517944336
+tp2610
+a(S'Formula encoding at horizon: 8'
+p2611
+F0.5343930721282959
+tp2612
+a(S'Sat-check at horizon: 8'
+p2613
+F6.6934990882873535
+tp2614
+a(S'Formula encoding at horizon: 9'
+p2615
+F0.5394392013549805
+tp2616
+a(S'Sat-check at horizon: 9'
+p2617
+F12.905270099639893
+tp2618
+a(S'Exiting search'
+p2619
+F0.08692216873168945
+tp2620
+a(S'Finishing'
+p2621
+F-0.0005259513854980469
+tp2622
+asS'instance'
+p2623
+S'instance_18.pddl'
+p2624
+sS'valid'
+p2625
+I1
+sS'mode'
+p2626
+S'parallel incremental'
+p2627
+sS'horizon'
+p2628
+I9
+sS'time'
+p2629
+F29.011285066604614
+sS'found'
+p2630
+I01
+sa(dp2631
+S'domain'
+p2632
+S'fo_counters'
+p2633
+sS'instance'
+p2634
+S'instance_18.pddl'
+p2635
+sS'time_log'
+p2636
+(lp2637
+(S'Formula encoding at horizon: 1'
+p2638
+F4.399677991867065
+tp2639
+a(S'Sat-check at horizon: 1'
+p2640
+F0.05221104621887207
+tp2641
+a(S'Formula encoding at horizon: 2'
+p2642
+F0.9753379821777344
+tp2643
+a(S'Sat-check at horizon: 2'
+p2644
+F0.07703590393066406
+tp2645
+a(S'Formula encoding at horizon: 3'
+p2646
+F1.3942630290985107
+tp2647
+a(S'Sat-check at horizon: 3'
+p2648
+F0.11350703239440918
+tp2649
+a(S'Formula encoding at horizon: 4'
+p2650
+F1.8379039764404297
+tp2651
+a(S'Sat-check at horizon: 4'
+p2652
+F0.1815640926361084
+tp2653
+a(S'Formula encoding at horizon: 5'
+p2654
+F2.2899010181427
+tp2655
+a(S'Sat-check at horizon: 5'
+p2656
+F0.25214481353759766
+tp2657
+a(S'Formula encoding at horizon: 6'
+p2658
+F2.7061450481414795
+tp2659
+a(S'Sat-check at horizon: 6'
+p2660
+F0.4592769145965576
+tp2661
+a(S'Formula encoding at horizon: 7'
+p2662
+F3.156332015991211
+tp2663
+a(S'Sat-check at horizon: 7'
+p2664
+F0.6422770023345947
+tp2665
+a(S'Formula encoding at horizon: 8'
+p2666
+F3.613726854324341
+tp2667
+a(S'Sat-check at horizon: 8'
+p2668
+F1.653087854385376
+tp2669
+a(S'Formula encoding at horizon: 9'
+p2670
+F4.088267087936401
+tp2671
+a(S'Sat-check at horizon: 9'
+p2672
+F3.4166390895843506
+tp2673
+a(S'Finishing'
+p2674
+F-0.09231400489807129
+tp2675
+asS'exclusion_cnt'
+p2676
+I972
+sS'valid'
+p2677
+I1
+sS'mode'
+p2678
+S'parallel not incremental'
+p2679
+sS'horizon'
+p2680
+I9
+sS'time'
+p2681
+F31.401652812957764
+sS'found'
+p2682
+I01
+sa(dp2683
+S'domain'
+p2684
+S'fo_counters'
+p2685
+sS'time_log'
+p2686
+NsS'instance'
+p2687
+S'instance_19.pddl'
+p2688
+sS'valid'
+p2689
+I-1
+sS'mode'
+p2690
+S'springroll'
+p2691
+sS'horizon'
+p2692
+I0
+sS'time'
+p2693
+F1.7718639373779297
+sS'found'
+p2694
+I01
+sa(dp2695
+S'domain'
+p2696
+S'fo_counters'
+p2697
+sS'instance'
+p2698
+S'instance_19.pddl'
+p2699
+sS'semantics_f_count'
+p2700
+I7
+sS'time_log'
+p2701
+(lp2702
+(S'Initializing encoder.'
+p2703
+F0.36908888816833496
+tp2704
+a(S'Initial formula encoding at horizon: 1'
+p2705
+F0.6056711673736572
+tp2706
+a(S'Initial formula encoding at horizon: 2'
+p2707
+F0.5612080097198486
+tp2708
+a(S'Initial formula encoding at horizon: 3'
+p2709
+F0.5784661769866943
+tp2710
+a(S'Initial formula encoding at horizon: 4'
+p2711
+F0.5780110359191895
+tp2712
+a(S'Initial formula encoding at horizon: 5'
+p2713
+F0.5894079208374023
+tp2714
+a(S'Initial formula encoding at horizon: 6'
+p2715
+F0.6376488208770752
+tp2716
+a(S'Initial formula encoding at horizon: 7'
+p2717
+F0.9788529872894287
+tp2718
+a(S'Extract model at horizon 7'
+p2719
+F3.3159379959106445
+tp2720
+a(S'Encode seq-form of one step 0'
+p2721
+F2.171718120574951
+tp2722
+a(S'Encode seq-prefix of one step 0'
+p2723
+F0.016628026962280273
+tp2724
+a(S'Check sat of seq-formula 0'
+p2725
+F0.7158100605010986
+tp2726
+a(S'Encode seq-form of one step 1'
+p2727
+F4.13202691078186
+tp2728
+a(S'Encode seq-prefix of one step 1'
+p2729
+F0.017019987106323242
+tp2730
+a(S'Check sat of seq-formula 1'
+p2731
+F13.903698921203613
+tp2732
+a(S'Encode seq-form of one step 2'
+p2733
+F2.2027981281280518
+tp2734
+a(S'Encode seq-prefix of one step 2'
+p2735
+F0.01676201820373535
+tp2736
+a(S'Check sat of seq-formula 2'
+p2737
+F22.520395040512085
+tp2738
+a(S'Encode seq-form of one step 3'
+p2739
+F1.5251319408416748
+tp2740
+a(S'Encode seq-prefix of one step 3'
+p2741
+F0.016730070114135742
+tp2742
+a(S'Check sat of seq-formula 3'
+p2743
+F14.032953977584839
+tp2744
+a(S'Encode seq-form of one step 4'
+p2745
+F1.7516140937805176
+tp2746
+a(S'Encode seq-prefix of one step 4'
+p2747
+F0.01704716682434082
+tp2748
+a(S'Check sat of seq-formula 4'
+p2749
+F19.888942003250122
+tp2750
+a(S'Encode seq-form of one step 5'
+p2751
+F1.3544621467590332
+tp2752
+a(S'Encode seq-prefix of one step 5'
+p2753
+F0.016859054565429688
+tp2754
+a(S'Check sat of seq-formula 5'
+p2755
+F19.898268938064575
+tp2756
+a(S'Encode seq-form of one step 6'
+p2757
+F0.7271690368652344
+tp2758
+a(S'Encode seq-prefix of one step 6'
+p2759
+F0.01695704460144043
+tp2760
+a(S'Check sat of seq-formula 6'
+p2761
+F13.387789011001587
+tp2762
+a(S'Exiting search'
+p2763
+F0.11099791526794434
+tp2764
+a(S'Finishing'
+p2765
+F-1.4066696166992188e-05
+tp2766
+asS'exclusion_cnt'
+p2767
+I0
+sS'valid'
+p2768
+I1
+sS'mode'
+p2769
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p2770
+sS'horizon'
+p2771
+I7
+sS'time'
+p2772
+F126.65614485740662
+sS'found'
+p2773
+I01
+sS'f_count'
+p2774
+I539
+sa(dp2775
+S'domain'
+p2776
+S'fo_counters'
+p2777
+sS'exclusion_cnt'
+p2778
+I1026
+sS'time_log'
+p2779
+(lp2780
+(S'Formula encoding at horizon: 1'
+p2781
+F5.3611719608306885
+tp2782
+a(S'Sat-check at horizon: 1'
+p2783
+F0.0015590190887451172
+tp2784
+a(S'Formula encoding at horizon: 2'
+p2785
+F0.6030809879302979
+tp2786
+a(S'Sat-check at horizon: 2'
+p2787
+F0.010931015014648438
+tp2788
+a(S'Formula encoding at horizon: 3'
+p2789
+F0.6029238700866699
+tp2790
+a(S'Sat-check at horizon: 3'
+p2791
+F0.02075791358947754
+tp2792
+a(S'Formula encoding at horizon: 4'
+p2793
+F0.6052751541137695
+tp2794
+a(S'Sat-check at horizon: 4'
+p2795
+F0.050813913345336914
+tp2796
+a(S'Formula encoding at horizon: 5'
+p2797
+F0.6015269756317139
+tp2798
+a(S'Sat-check at horizon: 5'
+p2799
+F0.07671689987182617
+tp2800
+a(S'Formula encoding at horizon: 6'
+p2801
+F0.6056649684906006
+tp2802
+a(S'Sat-check at horizon: 6'
+p2803
+F0.39432501792907715
+tp2804
+a(S'Formula encoding at horizon: 7'
+p2805
+F0.6095139980316162
+tp2806
+a(S'Sat-check at horizon: 7'
+p2807
+F1.7329440116882324
+tp2808
+a(S'Formula encoding at horizon: 8'
+p2809
+F0.6064419746398926
+tp2810
+a(S'Sat-check at horizon: 8'
+p2811
+F1.6665620803833008
+tp2812
+a(S'Formula encoding at horizon: 9'
+p2813
+F0.6059660911560059
+tp2814
+a(S'Sat-check at horizon: 9'
+p2815
+F10.902937889099121
+tp2816
+a(S'Exiting search'
+p2817
+F0.0915229320526123
+tp2818
+a(S'Finishing'
+p2819
+F-0.0005640983581542969
+tp2820
+asS'instance'
+p2821
+S'instance_19.pddl'
+p2822
+sS'valid'
+p2823
+I1
+sS'mode'
+p2824
+S'parallel incremental'
+p2825
+sS'horizon'
+p2826
+I9
+sS'time'
+p2827
+F25.151235103607178
+sS'found'
+p2828
+I01
+sa(dp2829
+S'domain'
+p2830
+S'fo_counters'
+p2831
+sS'instance'
+p2832
+S'instance_19.pddl'
+p2833
+sS'time_log'
+p2834
+(lp2835
+(S'Formula encoding at horizon: 1'
+p2836
+F5.495337009429932
+tp2837
+a(S'Sat-check at horizon: 1'
+p2838
+F0.05317497253417969
+tp2839
+a(S'Formula encoding at horizon: 2'
+p2840
+F1.099402904510498
+tp2841
+a(S'Sat-check at horizon: 2'
+p2842
+F0.07770395278930664
+tp2843
+a(S'Formula encoding at horizon: 3'
+p2844
+F1.5899441242218018
+tp2845
+a(S'Sat-check at horizon: 3'
+p2846
+F0.1200571060180664
+tp2847
+a(S'Formula encoding at horizon: 4'
+p2848
+F2.098876953125
+tp2849
+a(S'Sat-check at horizon: 4'
+p2850
+F0.16831398010253906
+tp2851
+a(S'Formula encoding at horizon: 5'
+p2852
+F2.5883209705352783
+tp2853
+a(S'Sat-check at horizon: 5'
+p2854
+F0.2911038398742676
+tp2855
+a(S'Formula encoding at horizon: 6'
+p2856
+F3.137099027633667
+tp2857
+a(S'Sat-check at horizon: 6'
+p2858
+F0.5511808395385742
+tp2859
+a(S'Formula encoding at horizon: 7'
+p2860
+F3.6448118686676025
+tp2861
+a(S'Sat-check at horizon: 7'
+p2862
+F0.7041559219360352
+tp2863
+a(S'Formula encoding at horizon: 8'
+p2864
+F4.102121114730835
+tp2865
+a(S'Sat-check at horizon: 8'
+p2866
+F3.789273977279663
+tp2867
+a(S'Formula encoding at horizon: 9'
+p2868
+F4.597023010253906
+tp2869
+a(S'Sat-check at horizon: 9'
+p2870
+F3.6094419956207275
+tp2871
+a(S'Finishing'
+p2872
+F-0.09731698036193848
+tp2873
+asS'exclusion_cnt'
+p2874
+I1026
+sS'valid'
+p2875
+I1
+sS'mode'
+p2876
+S'parallel not incremental'
+p2877
+sS'horizon'
+p2878
+I9
+sS'time'
+p2879
+F37.81469416618347
+sS'found'
+p2880
+I01
+sa(dp2881
+S'domain'
+p2882
+S'fo_counters'
+p2883
+sS'time_log'
+p2884
+NsS'instance'
+p2885
+S'instance_20.pddl'
+p2886
+sS'valid'
+p2887
+I-1
+sS'mode'
+p2888
+S'springroll'
+p2889
+sS'horizon'
+p2890
+I0
+sS'time'
+p2891
+F1.6720058917999268
+sS'found'
+p2892
+I01
+sa(dp2893
+S'domain'
+p2894
+S'fo_counters'
+p2895
+sS'instance'
+p2896
+S'instance_20.pddl'
+p2897
+sS'semantics_f_count'
+p2898
+I7
+sS'time_log'
+p2899
+(lp2900
+(S'Initializing encoder.'
+p2901
+F0.39825010299682617
+tp2902
+a(S'Initial formula encoding at horizon: 1'
+p2903
+F0.6872260570526123
+tp2904
+a(S'Initial formula encoding at horizon: 2'
+p2905
+F0.6401829719543457
+tp2906
+a(S'Initial formula encoding at horizon: 3'
+p2907
+F0.6688320636749268
+tp2908
+a(S'Initial formula encoding at horizon: 4'
+p2909
+F0.6553900241851807
+tp2910
+a(S'Initial formula encoding at horizon: 5'
+p2911
+F0.668860912322998
+tp2912
+a(S'Initial formula encoding at horizon: 6'
+p2913
+F0.8227019309997559
+tp2914
+a(S'Initial formula encoding at horizon: 7'
+p2915
+F0.8205640316009521
+tp2916
+a(S'Extract model at horizon 7'
+p2917
+F4.17473292350769
+tp2918
+a(S'Encode seq-form of one step 0'
+p2919
+F2.6454429626464844
+tp2920
+a(S'Encode seq-prefix of one step 0'
+p2921
+F0.017834901809692383
+tp2922
+a(S'Check sat of seq-formula 0'
+p2923
+F0.590195894241333
+tp2924
+a(S'Encode seq-form of one step 1'
+p2925
+F3.821877956390381
+tp2926
+a(S'Encode seq-prefix of one step 1'
+p2927
+F0.01812911033630371
+tp2928
+a(S'Check sat of seq-formula 1'
+p2929
+F8.812406063079834
+tp2930
+a(S'Encode seq-form of one step 2'
+p2931
+F2.4978411197662354
+tp2932
+a(S'Encode seq-prefix of one step 2'
+p2933
+F0.01818990707397461
+tp2934
+a(S'Check sat of seq-formula 2'
+p2935
+F19.29126787185669
+tp2936
+a(S'Encode seq-form of one step 3'
+p2937
+F2.927793025970459
+tp2938
+a(S'Encode seq-prefix of one step 3'
+p2939
+F0.018253087997436523
+tp2940
+a(S'Check sat of seq-formula 3'
+p2941
+F37.02116894721985
+tp2942
+a(S'Encode seq-form of one step 4'
+p2943
+F1.9570519924163818
+tp2944
+a(S'Encode seq-prefix of one step 4'
+p2945
+F0.01816105842590332
+tp2946
+a(S'Check sat of seq-formula 4'
+p2947
+F31.19949197769165
+tp2948
+a(S'Encode seq-form of one step 5'
+p2949
+F1.1908738613128662
+tp2950
+a(S'Encode seq-prefix of one step 5'
+p2951
+F0.01807999610900879
+tp2952
+a(S'Check sat of seq-formula 5'
+p2953
+F27.118161916732788
+tp2954
+a(S'Encode seq-form of one step 6'
+p2955
+F0.9602138996124268
+tp2956
+a(S'Encode seq-prefix of one step 6'
+p2957
+F0.018394947052001953
+tp2958
+a(S'Check sat of seq-formula 6'
+p2959
+F5.176191091537476
+tp2960
+a(S'Exiting search'
+p2961
+F0.10263800621032715
+tp2962
+a(S'Finishing'
+p2963
+F-1.2874603271484375e-05
+tp2964
+asS'exclusion_cnt'
+p2965
+I0
+sS'valid'
+p2966
+I1
+sS'mode'
+p2967
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p2968
+sS'horizon'
+p2969
+I7
+sS'time'
+p2970
+F154.97647094726562
+sS'found'
+p2971
+I01
+sS'f_count'
+p2972
+I567
+sa(dp2973
+S'domain'
+p2974
+S'fo_counters'
+p2975
+sS'exclusion_cnt'
+p2976
+I1080
+sS'time_log'
+p2977
+(lp2978
+(S'Formula encoding at horizon: 1'
+p2979
+F6.677572965621948
+tp2980
+a(S'Sat-check at horizon: 1'
+p2981
+F0.0015668869018554688
+tp2982
+a(S'Formula encoding at horizon: 2'
+p2983
+F0.6810221672058105
+tp2984
+a(S'Sat-check at horizon: 2'
+p2985
+F0.008523941040039062
+tp2986
+a(S'Formula encoding at horizon: 3'
+p2987
+F0.686492919921875
+tp2988
+a(S'Sat-check at horizon: 3'
+p2989
+F0.012809038162231445
+tp2990
+a(S'Formula encoding at horizon: 4'
+p2991
+F0.6823318004608154
+tp2992
+a(S'Sat-check at horizon: 4'
+p2993
+F0.036802053451538086
+tp2994
+a(S'Formula encoding at horizon: 5'
+p2995
+F0.6822888851165771
+tp2996
+a(S'Sat-check at horizon: 5'
+p2997
+F0.22913098335266113
+tp2998
+a(S'Formula encoding at horizon: 6'
+p2999
+F0.6841609477996826
+tp3000
+a(S'Sat-check at horizon: 6'
+p3001
+F0.515017032623291
+tp3002
+a(S'Formula encoding at horizon: 7'
+p3003
+F0.690126895904541
+tp3004
+a(S'Sat-check at horizon: 7'
+p3005
+F1.8348908424377441
+tp3006
+a(S'Formula encoding at horizon: 8'
+p3007
+F0.6933059692382812
+tp3008
+a(S'Sat-check at horizon: 8'
+p3009
+F4.889217853546143
+tp3010
+a(S'Formula encoding at horizon: 9'
+p3011
+F0.6913838386535645
+tp3012
+a(S'Sat-check at horizon: 9'
+p3013
+F15.797009944915771
+tp3014
+a(S'Exiting search'
+p3015
+F0.0978538990020752
+tp3016
+a(S'Finishing'
+p3017
+F-0.0005819797515869141
+tp3018
+asS'instance'
+p3019
+S'instance_20.pddl'
+p3020
+sS'valid'
+p3021
+I1
+sS'mode'
+p3022
+S'parallel incremental'
+p3023
+sS'horizon'
+p3024
+I9
+sS'time'
+p3025
+F35.5921311378479
+sS'found'
+p3026
+I01
+sa(dp3027
+S'domain'
+p3028
+S'fo_counters'
+p3029
+sS'instance'
+p3030
+S'instance_20.pddl'
+p3031
+sS'time_log'
+p3032
+(lp3033
+(S'Formula encoding at horizon: 1'
+p3034
+F6.605739116668701
+tp3035
+a(S'Sat-check at horizon: 1'
+p3036
+F0.05246090888977051
+tp3037
+a(S'Formula encoding at horizon: 2'
+p3038
+F1.2480950355529785
+tp3039
+a(S'Sat-check at horizon: 2'
+p3040
+F0.07990002632141113
+tp3041
+a(S'Formula encoding at horizon: 3'
+p3042
+F1.805967092514038
+tp3043
+a(S'Sat-check at horizon: 3'
+p3044
+F0.11956191062927246
+tp3045
+a(S'Formula encoding at horizon: 4'
+p3046
+F2.4055099487304688
+tp3047
+a(S'Sat-check at horizon: 4'
+p3048
+F0.17043113708496094
+tp3049
+a(S'Formula encoding at horizon: 5'
+p3050
+F2.961789131164551
+tp3051
+a(S'Sat-check at horizon: 5'
+p3052
+F0.28396010398864746
+tp3053
+a(S'Formula encoding at horizon: 6'
+p3054
+F3.5609359741210938
+tp3055
+a(S'Sat-check at horizon: 6'
+p3056
+F0.433107852935791
+tp3057
+a(S'Formula encoding at horizon: 7'
+p3058
+F4.098744869232178
+tp3059
+a(S'Sat-check at horizon: 7'
+p3060
+F0.6456282138824463
+tp3061
+a(S'Formula encoding at horizon: 8'
+p3062
+F4.690078020095825
+tp3063
+a(S'Sat-check at horizon: 8'
+p3064
+F2.2169480323791504
+tp3065
+a(S'Formula encoding at horizon: 9'
+p3066
+F5.264214038848877
+tp3067
+a(S'Sat-check at horizon: 9'
+p3068
+F4.215846061706543
+tp3069
+a(S'Finishing'
+p3070
+F-0.10300993919372559
+tp3071
+asS'exclusion_cnt'
+p3072
+I1080
+sS'valid'
+p3073
+I1
+sS'mode'
+p3074
+S'parallel not incremental'
+p3075
+sS'horizon'
+p3076
+I9
+sS'time'
+p3077
+F40.96196389198303
+sS'found'
+p3078
+I01
+sa(dp3079
+S'domain'
+p3080
+S'fo_counters'
+p3081
+sS'time_log'
+p3082
+NsS'instance'
+p3083
+S'instance_21.pddl'
+p3084
+sS'valid'
+p3085
+I-1
+sS'mode'
+p3086
+S'springroll'
+p3087
+sS'horizon'
+p3088
+I0
+sS'time'
+p3089
+F1.722074031829834
+sS'found'
+p3090
+I01
+sa(dp3091
+S'domain'
+p3092
+S'fo_counters'
+p3093
+sS'instance'
+p3094
+S'instance_21.pddl'
+p3095
+sS'semantics_f_count'
+p3096
+I7
+sS'time_log'
+p3097
+(lp3098
+(S'Initializing encoder.'
+p3099
+F0.4374232292175293
+tp3100
+a(S'Initial formula encoding at horizon: 1'
+p3101
+F0.7906980514526367
+tp3102
+a(S'Initial formula encoding at horizon: 2'
+p3103
+F0.732245922088623
+tp3104
+a(S'Initial formula encoding at horizon: 3'
+p3105
+F0.7608189582824707
+tp3106
+a(S'Initial formula encoding at horizon: 4'
+p3107
+F0.762099027633667
+tp3108
+a(S'Initial formula encoding at horizon: 5'
+p3109
+F0.8312091827392578
+tp3110
+a(S'Initial formula encoding at horizon: 6'
+p3111
+F0.8375709056854248
+tp3112
+a(S'Initial formula encoding at horizon: 7'
+p3113
+F1.4609720706939697
+tp3114
+a(S'Extract model at horizon 7'
+p3115
+F4.838921070098877
+tp3116
+a(S'Encode seq-form of one step 0'
+p3117
+F2.5345888137817383
+tp3118
+a(S'Encode seq-prefix of one step 0'
+p3119
+F0.018458843231201172
+tp3120
+a(S'Check sat of seq-formula 0'
+p3121
+F0.29485297203063965
+tp3122
+a(S'Encode seq-form of one step 1'
+p3123
+F6.69865608215332
+tp3124
+a(S'Encode seq-prefix of one step 1'
+p3125
+F0.0189361572265625
+tp3126
+a(S'Check sat of seq-formula 1'
+p3127
+F21.974781036376953
+tp3128
+a(S'Encode seq-form of one step 2'
+p3129
+F2.3910350799560547
+tp3130
+a(S'Encode seq-prefix of one step 2'
+p3131
+F0.018809080123901367
+tp3132
+a(S'Check sat of seq-formula 2'
+p3133
+F30.60248613357544
+tp3134
+a(S'Encode seq-form of one step 3'
+p3135
+F4.324043035507202
+tp3136
+a(S'Encode seq-prefix of one step 3'
+p3137
+F0.018769025802612305
+tp3138
+a(S'Check sat of seq-formula 3'
+p3139
+F80.3520359992981
+tp3140
+a(S'Encode seq-form of one step 4'
+p3141
+F2.479491949081421
+tp3142
+a(S'Encode seq-prefix of one step 4'
+p3143
+F0.01848006248474121
+tp3144
+a(S'Check sat of seq-formula 4'
+p3145
+F34.54691815376282
+tp3146
+a(S'Encode seq-form of one step 5'
+p3147
+F1.372007131576538
+tp3148
+a(S'Encode seq-prefix of one step 5'
+p3149
+F0.018563032150268555
+tp3150
+a(S'Check sat of seq-formula 5'
+p3151
+F19.165621042251587
+tp3152
+a(S'Encode seq-form of one step 6'
+p3153
+F1.1377818584442139
+tp3154
+a(S'Encode seq-prefix of one step 6'
+p3155
+F0.0189208984375
+tp3156
+a(S'Check sat of seq-formula 6'
+p3157
+F29.929821968078613
+tp3158
+a(S'Exiting search'
+p3159
+F0.16369390487670898
+tp3160
+a(S'Finishing'
+p3161
+F-1.2874603271484375e-05
+tp3162
+asS'exclusion_cnt'
+p3163
+I0
+sS'valid'
+p3164
+I1
+sS'mode'
+p3165
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p3166
+sS'horizon'
+p3167
+I7
+sS'time'
+p3168
+F249.5507800579071
+sS'found'
+p3169
+I01
+sS'f_count'
+p3170
+I595
+sa(dp3171
+S'domain'
+p3172
+S'fo_counters'
+p3173
+sS'exclusion_cnt'
+p3174
+I1134
+sS'time_log'
+p3175
+(lp3176
+(S'Formula encoding at horizon: 1'
+p3177
+F7.951122045516968
+tp3178
+a(S'Sat-check at horizon: 1'
+p3179
+F0.001605987548828125
+tp3180
+a(S'Formula encoding at horizon: 2'
+p3181
+F0.7848410606384277
+tp3182
+a(S'Sat-check at horizon: 2'
+p3183
+F0.009353876113891602
+tp3184
+a(S'Formula encoding at horizon: 3'
+p3185
+F0.7906088829040527
+tp3186
+a(S'Sat-check at horizon: 3'
+p3187
+F0.0182340145111084
+tp3188
+a(S'Formula encoding at horizon: 4'
+p3189
+F0.7927649021148682
+tp3190
+a(S'Sat-check at horizon: 4'
+p3191
+F0.048850059509277344
+tp3192
+a(S'Formula encoding at horizon: 5'
+p3193
+F0.8032851219177246
+tp3194
+a(S'Sat-check at horizon: 5'
+p3195
+F0.10077905654907227
+tp3196
+a(S'Formula encoding at horizon: 6'
+p3197
+F0.8401689529418945
+tp3198
+a(S'Sat-check at horizon: 6'
+p3199
+F0.20712494850158691
+tp3200
+a(S'Formula encoding at horizon: 7'
+p3201
+F0.7820730209350586
+tp3202
+a(S'Sat-check at horizon: 7'
+p3203
+F0.9177350997924805
+tp3204
+a(S'Formula encoding at horizon: 8'
+p3205
+F0.7834610939025879
+tp3206
+a(S'Sat-check at horizon: 8'
+p3207
+F1.0086491107940674
+tp3208
+a(S'Formula encoding at horizon: 9'
+p3209
+F0.7882890701293945
+tp3210
+a(S'Sat-check at horizon: 9'
+p3211
+F16.778794050216675
+tp3212
+a(S'Exiting search'
+p3213
+F0.10150694847106934
+tp3214
+a(S'Finishing'
+p3215
+F-0.0006160736083984375
+tp3216
+asS'instance'
+p3217
+S'instance_21.pddl'
+p3218
+sS'valid'
+p3219
+I1
+sS'mode'
+p3220
+S'parallel incremental'
+p3221
+sS'horizon'
+p3222
+I9
+sS'time'
+p3223
+F33.509894132614136
+sS'found'
+p3224
+I01
+sa(dp3225
+S'domain'
+p3226
+S'fo_counters'
+p3227
+sS'instance'
+p3228
+S'instance_21.pddl'
+p3229
+sS'time_log'
+p3230
+(lp3231
+(S'Formula encoding at horizon: 1'
+p3232
+F7.7183520793914795
+tp3233
+a(S'Sat-check at horizon: 1'
+p3234
+F0.05621600151062012
+tp3235
+a(S'Formula encoding at horizon: 2'
+p3236
+F1.4076759815216064
+tp3237
+a(S'Sat-check at horizon: 2'
+p3238
+F0.08662581443786621
+tp3239
+a(S'Formula encoding at horizon: 3'
+p3240
+F2.1040170192718506
+tp3241
+a(S'Sat-check at horizon: 3'
+p3242
+F0.13663911819458008
+tp3243
+a(S'Formula encoding at horizon: 4'
+p3244
+F2.645098924636841
+tp3245
+a(S'Sat-check at horizon: 4'
+p3246
+F0.18283796310424805
+tp3247
+a(S'Formula encoding at horizon: 5'
+p3248
+F3.2827470302581787
+tp3249
+a(S'Sat-check at horizon: 5'
+p3250
+F0.29935789108276367
+tp3251
+a(S'Formula encoding at horizon: 6'
+p3252
+F3.944758892059326
+tp3253
+a(S'Sat-check at horizon: 6'
+p3254
+F0.6571109294891357
+tp3255
+a(S'Formula encoding at horizon: 7'
+p3256
+F4.600528955459595
+tp3257
+a(S'Sat-check at horizon: 7'
+p3258
+F0.7308390140533447
+tp3259
+a(S'Formula encoding at horizon: 8'
+p3260
+F5.189311981201172
+tp3261
+a(S'Sat-check at horizon: 8'
+p3262
+F1.4185209274291992
+tp3263
+a(S'Formula encoding at horizon: 9'
+p3264
+F5.923102855682373
+tp3265
+a(S'Sat-check at horizon: 9'
+p3266
+F6.283351898193359
+tp3267
+a(S'Finishing'
+p3268
+F-0.10858583450317383
+tp3269
+asS'exclusion_cnt'
+p3270
+I1134
+sS'valid'
+p3271
+I1
+sS'mode'
+p3272
+S'parallel not incremental'
+p3273
+sS'horizon'
+p3274
+I9
+sS'time'
+p3275
+F46.77571392059326
+sS'found'
+p3276
+I01
+sa(dp3277
+S'domain'
+p3278
+S'fo_counters_rnd'
+p3279
+sS'time_log'
+p3280
+NsS'instance'
+p3281
+S'instance_2_1.pddl'
+p3282
+sS'valid'
+p3283
+I-1
+sS'mode'
+p3284
+S'springroll'
+p3285
+sS'horizon'
+p3286
+I0
+sS'time'
+p3287
+F0.8195998668670654
+sS'found'
+p3288
+I01
+sa(dp3289
+S'domain'
+p3290
+S'fo_counters_rnd'
+p3291
+sS'instance'
+p3292
+S'instance_2_1.pddl'
+p3293
+sS'semantics_f_count'
+p3294
+I2
+sS'time_log'
+p3295
+(lp3296
+(S'Initializing encoder.'
+p3297
+F0.04534006118774414
+tp3298
+a(S'Initial formula encoding at horizon: 1'
+p3299
+F0.045786142349243164
+tp3300
+a(S'Initial formula encoding at horizon: 2'
+p3301
+F0.014600038528442383
+tp3302
+a(S'Extract model at horizon 2'
+p3303
+F0.005294084548950195
+tp3304
+a(S'Encode seq-form of one step 0'
+p3305
+F0.027020931243896484
+tp3306
+a(S'Encode seq-prefix of one step 0'
+p3307
+F0.0017790794372558594
+tp3308
+a(S'Check sat of seq-formula 0'
+p3309
+F0.0012080669403076172
+tp3310
+a(S'Encode seq-form of one step 1'
+p3311
+F0.02962207794189453
+tp3312
+a(S'Encode seq-prefix of one step 1'
+p3313
+F0.0018160343170166016
+tp3314
+a(S'Check sat of seq-formula 1'
+p3315
+F0.003155946731567383
+tp3316
+a(S'Exiting search'
+p3317
+F0.002933979034423828
+tp3318
+a(S'Finishing'
+p3319
+F-1.0013580322265625e-05
+tp3320
+asS'exclusion_cnt'
+p3321
+I0
+sS'valid'
+p3322
+I1
+sS'mode'
+p3323
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p3324
+sS'horizon'
+p3325
+I2
+sS'time'
+p3326
+F0.17858004570007324
+sS'found'
+p3327
+I01
+sS'f_count'
+p3328
+I18
+sa(dp3329
+S'domain'
+p3330
+S'fo_counters_rnd'
+p3331
+sS'exclusion_cnt'
+p3332
+I24
+sS'time_log'
+p3333
+(lp3334
+(S'Formula encoding at horizon: 1'
+p3335
+F0.09758210182189941
+tp3336
+a(S'Sat-check at horizon: 1'
+p3337
+F0.0005588531494140625
+tp3338
+a(S'Formula encoding at horizon: 2'
+p3339
+F0.01848888397216797
+tp3340
+a(S'Sat-check at horizon: 2'
+p3341
+F0.002122163772583008
+tp3342
+a(S'Exiting search'
+p3343
+F0.0025739669799804688
+tp3344
+a(S'Finishing'
+p3345
+F-6.508827209472656e-05
+tp3346
+asS'instance'
+p3347
+S'instance_2_1.pddl'
+p3348
+sS'valid'
+p3349
+I1
+sS'mode'
+p3350
+S'parallel incremental'
+p3351
+sS'horizon'
+p3352
+I2
+sS'time'
+p3353
+F0.12139701843261719
+sS'found'
+p3354
+I01
+sa(dp3355
+S'domain'
+p3356
+S'fo_counters_rnd'
+p3357
+sS'instance'
+p3358
+S'instance_2_1.pddl'
+p3359
+sS'time_log'
+p3360
+(lp3361
+(S'Formula encoding at horizon: 1'
+p3362
+F0.08032488822937012
+tp3363
+a(S'Sat-check at horizon: 1'
+p3364
+F0.03116607666015625
+tp3365
+a(S'Formula encoding at horizon: 2'
+p3366
+F0.031893014907836914
+tp3367
+a(S'Sat-check at horizon: 2'
+p3368
+F0.031674861907958984
+tp3369
+a(S'Finishing'
+p3370
+F-0.0026199817657470703
+tp3371
+asS'exclusion_cnt'
+p3372
+I24
+sS'valid'
+p3373
+I1
+sS'mode'
+p3374
+S'parallel not incremental'
+p3375
+sS'horizon'
+p3376
+I2
+sS'time'
+p3377
+F0.17768502235412598
+sS'found'
+p3378
+I01
+sa(dp3379
+S'domain'
+p3380
+S'fo_counters_rnd'
+p3381
+sS'time_log'
+p3382
+NsS'instance'
+p3383
+S'instance_2_2.pddl'
+p3384
+sS'valid'
+p3385
+I-1
+sS'mode'
+p3386
+S'springroll'
+p3387
+sS'horizon'
+p3388
+I0
+sS'time'
+p3389
+F0.7699041366577148
+sS'found'
+p3390
+I01
+sa(dp3391
+S'domain'
+p3392
+S'fo_counters_rnd'
+p3393
+sS'instance'
+p3394
+S'instance_2_2.pddl'
+p3395
+sS'semantics_f_count'
+p3396
+I2
+sS'time_log'
+p3397
+(lp3398
+(S'Initializing encoder.'
+p3399
+F0.04484701156616211
+tp3400
+a(S'Initial formula encoding at horizon: 1'
+p3401
+F0.046301841735839844
+tp3402
+a(S'Initial formula encoding at horizon: 2'
+p3403
+F0.014622926712036133
+tp3404
+a(S'Extract model at horizon 2'
+p3405
+F0.004888057708740234
+tp3406
+a(S'Encode seq-form of one step 0'
+p3407
+F0.026813030242919922
+tp3408
+a(S'Encode seq-prefix of one step 0'
+p3409
+F0.0017631053924560547
+tp3410
+a(S'Check sat of seq-formula 0'
+p3411
+F0.00121307373046875
+tp3412
+a(S'Encode seq-form of one step 1'
+p3413
+F0.007673025131225586
+tp3414
+a(S'Encode seq-prefix of one step 1'
+p3415
+F0.0017769336700439453
+tp3416
+a(S'Check sat of seq-formula 1'
+p3417
+F0.001130819320678711
+tp3418
+a(S'Exiting search'
+p3419
+F0.0011889934539794922
+tp3420
+a(S'Finishing'
+p3421
+F-1.0967254638671875e-05
+tp3422
+asS'exclusion_cnt'
+p3423
+I0
+sS'valid'
+p3424
+I1
+sS'mode'
+p3425
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p3426
+sS'horizon'
+p3427
+I2
+sS'time'
+p3428
+F0.15224504470825195
+sS'found'
+p3429
+I01
+sS'f_count'
+p3430
+I18
+sa(dp3431
+S'domain'
+p3432
+S'fo_counters_rnd'
+p3433
+sS'exclusion_cnt'
+p3434
+I24
+sS'time_log'
+p3435
+(lp3436
+(S'Formula encoding at horizon: 1'
+p3437
+F0.09926891326904297
+tp3438
+a(S'Sat-check at horizon: 1'
+p3439
+F0.0005519390106201172
+tp3440
+a(S'Formula encoding at horizon: 2'
+p3441
+F0.01853799819946289
+tp3442
+a(S'Sat-check at horizon: 2'
+p3443
+F0.0017418861389160156
+tp3444
+a(S'Exiting search'
+p3445
+F0.002568960189819336
+tp3446
+a(S'Finishing'
+p3447
+F-6.699562072753906e-05
+tp3448
+asS'instance'
+p3449
+S'instance_2_2.pddl'
+p3450
+sS'valid'
+p3451
+I1
+sS'mode'
+p3452
+S'parallel incremental'
+p3453
+sS'horizon'
+p3454
+I2
+sS'time'
+p3455
+F0.12274289131164551
+sS'found'
+p3456
+I01
+sa(dp3457
+S'domain'
+p3458
+S'fo_counters_rnd'
+p3459
+sS'instance'
+p3460
+S'instance_2_2.pddl'
+p3461
+sS'time_log'
+p3462
+(lp3463
+(S'Formula encoding at horizon: 1'
+p3464
+F0.0800790786743164
+tp3465
+a(S'Sat-check at horizon: 1'
+p3466
+F0.030482053756713867
+tp3467
+a(S'Formula encoding at horizon: 2'
+p3468
+F0.03189897537231445
+tp3469
+a(S'Sat-check at horizon: 2'
+p3470
+F0.031005859375
+tp3471
+a(S'Finishing'
+p3472
+F-0.0025849342346191406
+tp3473
+asS'exclusion_cnt'
+p3474
+I24
+sS'valid'
+p3475
+I1
+sS'mode'
+p3476
+S'parallel not incremental'
+p3477
+sS'horizon'
+p3478
+I2
+sS'time'
+p3479
+F0.1760571002960205
+sS'found'
+p3480
+I01
+sa(dp3481
+S'domain'
+p3482
+S'fo_counters_rnd'
+p3483
+sS'time_log'
+p3484
+NsS'instance'
+p3485
+S'instance_2_3.pddl'
+p3486
+sS'valid'
+p3487
+I-1
+sS'mode'
+p3488
+S'springroll'
+p3489
+sS'horizon'
+p3490
+I0
+sS'time'
+p3491
+F0.8200600147247314
+sS'found'
+p3492
+I01
+sa(dp3493
+S'domain'
+p3494
+S'fo_counters_rnd'
+p3495
+sS'instance'
+p3496
+S'instance_2_3.pddl'
+p3497
+sS'semantics_f_count'
+p3498
+I3
+sS'time_log'
+p3499
+(lp3500
+(S'Initializing encoder.'
+p3501
+F0.04378199577331543
+tp3502
+a(S'Initial formula encoding at horizon: 1'
+p3503
+F0.0462651252746582
+tp3504
+a(S'Initial formula encoding at horizon: 2'
+p3505
+F0.01465296745300293
+tp3506
+a(S'Initial formula encoding at horizon: 3'
+p3507
+F0.016843080520629883
+tp3508
+a(S'Extract model at horizon 3'
+p3509
+F0.010206937789916992
+tp3510
+a(S'Encode seq-form of one step 0'
+p3511
+F0.02642202377319336
+tp3512
+a(S'Encode seq-prefix of one step 0'
+p3513
+F0.0017600059509277344
+tp3514
+a(S'Check sat of seq-formula 0'
+p3515
+F0.0011968612670898438
+tp3516
+a(S'Encode seq-form of one step 1'
+p3517
+F0.013597965240478516
+tp3518
+a(S'Encode seq-prefix of one step 1'
+p3519
+F0.0018439292907714844
+tp3520
+a(S'Check sat of seq-formula 1'
+p3521
+F0.0016570091247558594
+tp3522
+a(S'Encode seq-form of one step 2'
+p3523
+F0.012436151504516602
+tp3524
+a(S'Encode seq-prefix of one step 2'
+p3525
+F0.0018198490142822266
+tp3526
+a(S'Check sat of seq-formula 2'
+p3527
+F0.001968860626220703
+tp3528
+a(S'Exiting search'
+p3529
+F0.0019290447235107422
+tp3530
+a(S'Finishing'
+p3531
+F-1.1205673217773438e-05
+tp3532
+asS'exclusion_cnt'
+p3533
+I0
+sS'valid'
+p3534
+I1
+sS'mode'
+p3535
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p3536
+sS'horizon'
+p3537
+I3
+sS'time'
+p3538
+F0.19640803337097168
+sS'found'
+p3539
+I01
+sS'f_count'
+p3540
+I27
+sa(dp3541
+S'domain'
+p3542
+S'fo_counters_rnd'
+p3543
+sS'exclusion_cnt'
+p3544
+I48
+sS'time_log'
+p3545
+(lp3546
+(S'Formula encoding at horizon: 1'
+p3547
+F0.09978413581848145
+tp3548
+a(S'Sat-check at horizon: 1'
+p3549
+F0.0005879402160644531
+tp3550
+a(S'Formula encoding at horizon: 2'
+p3551
+F0.018808841705322266
+tp3552
+a(S'Sat-check at horizon: 2'
+p3553
+F0.003047943115234375
+tp3554
+a(S'Formula encoding at horizon: 3'
+p3555
+F0.018579959869384766
+tp3556
+a(S'Sat-check at horizon: 3'
+p3557
+F0.007170200347900391
+tp3558
+a(S'Formula encoding at horizon: 4'
+p3559
+F0.018424034118652344
+tp3560
+a(S'Sat-check at horizon: 4'
+p3561
+F0.0073468685150146484
+tp3562
+a(S'Exiting search'
+p3563
+F0.0046579837799072266
+tp3564
+a(S'Finishing'
+p3565
+F-6.699562072753906e-05
+tp3566
+asS'instance'
+p3567
+S'instance_2_3.pddl'
+p3568
+sS'valid'
+p3569
+I1
+sS'mode'
+p3570
+S'parallel incremental'
+p3571
+sS'horizon'
+p3572
+I4
+sS'time'
+p3573
+F0.17848706245422363
+sS'found'
+p3574
+I01
+sa(dp3575
+S'domain'
+p3576
+S'fo_counters_rnd'
+p3577
+sS'instance'
+p3578
+S'instance_2_3.pddl'
+p3579
+sS'time_log'
+p3580
+(lp3581
+(S'Formula encoding at horizon: 1'
+p3582
+F0.0790550708770752
+tp3583
+a(S'Sat-check at horizon: 1'
+p3584
+F0.030495882034301758
+tp3585
+a(S'Formula encoding at horizon: 2'
+p3586
+F0.03195691108703613
+tp3587
+a(S'Sat-check at horizon: 2'
+p3588
+F0.030580997467041016
+tp3589
+a(S'Formula encoding at horizon: 3'
+p3590
+F0.04672503471374512
+tp3591
+a(S'Sat-check at horizon: 3'
+p3592
+F0.035986900329589844
+tp3593
+a(S'Formula encoding at horizon: 4'
+p3594
+F0.061514854431152344
+tp3595
+a(S'Sat-check at horizon: 4'
+p3596
+F0.040605783462524414
+tp3597
+a(S'Finishing'
+p3598
+F-0.004899024963378906
+tp3599
+asS'exclusion_cnt'
+p3600
+I48
+sS'valid'
+p3601
+I1
+sS'mode'
+p3602
+S'parallel not incremental'
+p3603
+sS'horizon'
+p3604
+I4
+sS'time'
+p3605
+F0.3618330955505371
+sS'found'
+p3606
+I01
+sa(dp3607
+S'domain'
+p3608
+S'fo_counters_rnd'
+p3609
+sS'time_log'
+p3610
+NsS'instance'
+p3611
+S'instance_3_1.pddl'
+p3612
+sS'valid'
+p3613
+I-1
+sS'mode'
+p3614
+S'springroll'
+p3615
+sS'horizon'
+p3616
+I0
+sS'time'
+p3617
+F0.9199020862579346
+sS'found'
+p3618
+I01
+sa(dp3619
+S'domain'
+p3620
+S'fo_counters_rnd'
+p3621
+sS'instance'
+p3622
+S'instance_3_1.pddl'
+p3623
+sS'semantics_f_count'
+p3624
+I3
+sS'time_log'
+p3625
+(lp3626
+(S'Initializing encoder.'
+p3627
+F0.05192708969116211
+tp3628
+a(S'Initial formula encoding at horizon: 1'
+p3629
+F0.05325603485107422
+tp3630
+a(S'Initial formula encoding at horizon: 2'
+p3631
+F0.022760868072509766
+tp3632
+a(S'Initial formula encoding at horizon: 3'
+p3633
+F0.025732994079589844
+tp3634
+a(S'Extract model at horizon 3'
+p3635
+F0.013336181640625
+tp3636
+a(S'Encode seq-form of one step 0'
+p3637
+F0.03697991371154785
+tp3638
+a(S'Encode seq-prefix of one step 0'
+p3639
+F0.002679109573364258
+tp3640
+a(S'Check sat of seq-formula 0'
+p3641
+F0.0022029876708984375
+tp3642
+a(S'Encode seq-form of one step 1'
+p3643
+F0.043833017349243164
+tp3644
+a(S'Encode seq-prefix of one step 1'
+p3645
+F0.0027358531951904297
+tp3646
+a(S'Check sat of seq-formula 1'
+p3647
+F0.007511138916015625
+tp3648
+a(S'Encode seq-form of one step 2'
+p3649
+F0.01827692985534668
+tp3650
+a(S'Encode seq-prefix of one step 2'
+p3651
+F0.002701997756958008
+tp3652
+a(S'Check sat of seq-formula 2'
+p3653
+F0.0028939247131347656
+tp3654
+a(S'Exiting search'
+p3655
+F0.002370119094848633
+tp3656
+a(S'Finishing'
+p3657
+F-1.0967254638671875e-05
+tp3658
+asS'exclusion_cnt'
+p3659
+I0
+sS'valid'
+p3660
+I1
+sS'mode'
+p3661
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p3662
+sS'horizon'
+p3663
+I3
+sS'time'
+p3664
+F0.2892270088195801
+sS'found'
+p3665
+I01
+sS'f_count'
+p3666
+I39
+sa(dp3667
+S'domain'
+p3668
+S'fo_counters_rnd'
+p3669
+sS'exclusion_cnt'
+p3670
+I54
+sS'time_log'
+p3671
+(lp3672
+(S'Formula encoding at horizon: 1'
+p3673
+F0.11902022361755371
+tp3674
+a(S'Sat-check at horizon: 1'
+p3675
+F0.0006818771362304688
+tp3676
+a(S'Formula encoding at horizon: 2'
+p3677
+F0.028550148010253906
+tp3678
+a(S'Sat-check at horizon: 2'
+p3679
+F0.004067897796630859
+tp3680
+a(S'Formula encoding at horizon: 3'
+p3681
+F0.028564929962158203
+tp3682
+a(S'Sat-check at horizon: 3'
+p3683
+F0.008059024810791016
+tp3684
+a(S'Exiting search'
+p3685
+F0.0051860809326171875
+tp3686
+a(S'Finishing'
+p3687
+F-9.417533874511719e-05
+tp3688
+asS'instance'
+p3689
+S'instance_3_1.pddl'
+p3690
+sS'valid'
+p3691
+I1
+sS'mode'
+p3692
+S'parallel incremental'
+p3693
+sS'horizon'
+p3694
+I3
+sS'time'
+p3695
+F0.19423222541809082
+sS'found'
+p3696
+I01
+sa(dp3697
+S'domain'
+p3698
+S'fo_counters_rnd'
+p3699
+sS'instance'
+p3700
+S'instance_3_1.pddl'
+p3701
+sS'time_log'
+p3702
+(lp3703
+(S'Formula encoding at horizon: 1'
+p3704
+F0.09891009330749512
+tp3705
+a(S'Sat-check at horizon: 1'
+p3706
+F0.0324859619140625
+tp3707
+a(S'Formula encoding at horizon: 2'
+p3708
+F0.05015683174133301
+tp3709
+a(S'Sat-check at horizon: 2'
+p3710
+F0.0345761775970459
+tp3711
+a(S'Formula encoding at horizon: 3'
+p3712
+F0.07138705253601074
+tp3713
+a(S'Sat-check at horizon: 3'
+p3714
+F0.04074406623840332
+tp3715
+a(S'Finishing'
+p3716
+F-0.00540614128112793
+tp3717
+asS'exclusion_cnt'
+p3718
+I54
+sS'valid'
+p3719
+I1
+sS'mode'
+p3720
+S'parallel not incremental'
+p3721
+sS'horizon'
+p3722
+I3
+sS'time'
+p3723
+F0.3336770534515381
+sS'found'
+p3724
+I01
+sa(dp3725
+S'domain'
+p3726
+S'fo_counters_rnd'
+p3727
+sS'time_log'
+p3728
+NsS'instance'
+p3729
+S'instance_3_2.pddl'
+p3730
+sS'valid'
+p3731
+I-1
+sS'mode'
+p3732
+S'springroll'
+p3733
+sS'horizon'
+p3734
+I0
+sS'time'
+p3735
+F0.8194739818572998
+sS'found'
+p3736
+I01
+sa(dp3737
+S'domain'
+p3738
+S'fo_counters_rnd'
+p3739
+sS'instance'
+p3740
+S'instance_3_2.pddl'
+p3741
+sS'semantics_f_count'
+p3742
+I3
+sS'time_log'
+p3743
+(lp3744
+(S'Initializing encoder.'
+p3745
+F0.05172896385192871
+tp3746
+a(S'Initial formula encoding at horizon: 1'
+p3747
+F0.05371999740600586
+tp3748
+a(S'Initial formula encoding at horizon: 2'
+p3749
+F0.022795915603637695
+tp3750
+a(S'Initial formula encoding at horizon: 3'
+p3751
+F0.026174068450927734
+tp3752
+a(S'Extract model at horizon 3'
+p3753
+F0.014739036560058594
+tp3754
+a(S'Encode seq-form of one step 0'
+p3755
+F0.029760122299194336
+tp3756
+a(S'Encode seq-prefix of one step 0'
+p3757
+F0.002696990966796875
+tp3758
+a(S'Check sat of seq-formula 0'
+p3759
+F0.001377105712890625
+tp3760
+a(S'Encode seq-form of one step 1'
+p3761
+F0.030549049377441406
+tp3762
+a(S'Encode seq-prefix of one step 1'
+p3763
+F0.002730131149291992
+tp3764
+a(S'Check sat of seq-formula 1'
+p3765
+F0.003340005874633789
+tp3766
+a(S'Encode seq-form of one step 2'
+p3767
+F0.026146888732910156
+tp3768
+a(S'Encode seq-prefix of one step 2'
+p3769
+F0.002749919891357422
+tp3770
+a(S'Check sat of seq-formula 2'
+p3771
+F0.004533052444458008
+tp3772
+a(S'Exiting search'
+p3773
+F0.003275156021118164
+tp3774
+a(S'Finishing'
+p3775
+F-1.1920928955078125e-05
+tp3776
+asS'exclusion_cnt'
+p3777
+I0
+sS'valid'
+p3778
+I1
+sS'mode'
+p3779
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p3780
+sS'horizon'
+p3781
+I3
+sS'time'
+p3782
+F0.27634501457214355
+sS'found'
+p3783
+I01
+sS'f_count'
+p3784
+I39
+sa(dp3785
+S'domain'
+p3786
+S'fo_counters_rnd'
+p3787
+sS'exclusion_cnt'
+p3788
+I54
+sS'time_log'
+p3789
+(lp3790
+(S'Formula encoding at horizon: 1'
+p3791
+F0.1185610294342041
+tp3792
+a(S'Sat-check at horizon: 1'
+p3793
+F0.0006320476531982422
+tp3794
+a(S'Formula encoding at horizon: 2'
+p3795
+F0.028306007385253906
+tp3796
+a(S'Sat-check at horizon: 2'
+p3797
+F0.0035250186920166016
+tp3798
+a(S'Formula encoding at horizon: 3'
+p3799
+F0.028337955474853516
+tp3800
+a(S'Sat-check at horizon: 3'
+p3801
+F0.0025320053100585938
+tp3802
+a(S'Exiting search'
+p3803
+F0.005055904388427734
+tp3804
+a(S'Finishing'
+p3805
+F-9.393692016601562e-05
+tp3806
+asS'instance'
+p3807
+S'instance_3_2.pddl'
+p3808
+sS'valid'
+p3809
+I1
+sS'mode'
+p3810
+S'parallel incremental'
+p3811
+sS'horizon'
+p3812
+I3
+sS'time'
+p3813
+F0.18705296516418457
+sS'found'
+p3814
+I01
+sa(dp3815
+S'domain'
+p3816
+S'fo_counters_rnd'
+p3817
+sS'instance'
+p3818
+S'instance_3_2.pddl'
+p3819
+sS'time_log'
+p3820
+(lp3821
+(S'Formula encoding at horizon: 1'
+p3822
+F0.09669709205627441
+tp3823
+a(S'Sat-check at horizon: 1'
+p3824
+F0.032521963119506836
+tp3825
+a(S'Formula encoding at horizon: 2'
+p3826
+F0.049252986907958984
+tp3827
+a(S'Sat-check at horizon: 2'
+p3828
+F0.03454303741455078
+tp3829
+a(S'Formula encoding at horizon: 3'
+p3830
+F0.07090210914611816
+tp3831
+a(S'Sat-check at horizon: 3'
+p3832
+F0.04235506057739258
+tp3833
+a(S'Finishing'
+p3834
+F-0.0053751468658447266
+tp3835
+asS'exclusion_cnt'
+p3836
+I54
+sS'valid'
+p3837
+I1
+sS'mode'
+p3838
+S'parallel not incremental'
+p3839
+sS'horizon'
+p3840
+I3
+sS'time'
+p3841
+F0.33165717124938965
+sS'found'
+p3842
+I01
+sa(dp3843
+S'domain'
+p3844
+S'fo_counters_rnd'
+p3845
+sS'time_log'
+p3846
+NsS'instance'
+p3847
+S'instance_3_3.pddl'
+p3848
+sS'valid'
+p3849
+I-1
+sS'mode'
+p3850
+S'springroll'
+p3851
+sS'horizon'
+p3852
+I0
+sS'time'
+p3853
+F0.9205138683319092
+sS'found'
+p3854
+I01
+sa(dp3855
+S'domain'
+p3856
+S'fo_counters_rnd'
+p3857
+sS'instance'
+p3858
+S'instance_3_3.pddl'
+p3859
+sS'semantics_f_count'
+p3860
+I3
+sS'time_log'
+p3861
+(lp3862
+(S'Initializing encoder.'
+p3863
+F0.05174708366394043
+tp3864
+a(S'Initial formula encoding at horizon: 1'
+p3865
+F0.053442955017089844
+tp3866
+a(S'Initial formula encoding at horizon: 2'
+p3867
+F0.022644996643066406
+tp3868
+a(S'Initial formula encoding at horizon: 3'
+p3869
+F0.025899887084960938
+tp3870
+a(S'Extract model at horizon 3'
+p3871
+F0.017982959747314453
+tp3872
+a(S'Encode seq-form of one step 0'
+p3873
+F0.03709006309509277
+tp3874
+a(S'Encode seq-prefix of one step 0'
+p3875
+F0.0027289390563964844
+tp3876
+a(S'Check sat of seq-formula 0'
+p3877
+F0.0021970272064208984
+tp3878
+a(S'Encode seq-form of one step 1'
+p3879
+F0.04546809196472168
+tp3880
+a(S'Encode seq-prefix of one step 1'
+p3881
+F0.002766132354736328
+tp3882
+a(S'Check sat of seq-formula 1'
+p3883
+F0.006485939025878906
+tp3884
+a(S'Encode seq-form of one step 2'
+p3885
+F0.02157115936279297
+tp3886
+a(S'Encode seq-prefix of one step 2'
+p3887
+F0.002727985382080078
+tp3888
+a(S'Check sat of seq-formula 2'
+p3889
+F0.003674030303955078
+tp3890
+a(S'Exiting search'
+p3891
+F0.004370927810668945
+tp3892
+a(S'Finishing'
+p3893
+F-1.2159347534179688e-05
+tp3894
+asS'exclusion_cnt'
+p3895
+I0
+sS'valid'
+p3896
+I1
+sS'mode'
+p3897
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p3898
+sS'horizon'
+p3899
+I3
+sS'time'
+p3900
+F0.3008260726928711
+sS'found'
+p3901
+I01
+sS'f_count'
+p3902
+I39
+sa(dp3903
+S'domain'
+p3904
+S'fo_counters_rnd'
+p3905
+sS'exclusion_cnt'
+p3906
+I72
+sS'time_log'
+p3907
+(lp3908
+(S'Formula encoding at horizon: 1'
+p3909
+F0.11903810501098633
+tp3910
+a(S'Sat-check at horizon: 1'
+p3911
+F0.0006849765777587891
+tp3912
+a(S'Formula encoding at horizon: 2'
+p3913
+F0.028609037399291992
+tp3914
+a(S'Sat-check at horizon: 2'
+p3915
+F0.0037081241607666016
+tp3916
+a(S'Formula encoding at horizon: 3'
+p3917
+F0.028445959091186523
+tp3918
+a(S'Sat-check at horizon: 3'
+p3919
+F0.007886886596679688
+tp3920
+a(S'Formula encoding at horizon: 4'
+p3921
+F0.02849102020263672
+tp3922
+a(S'Sat-check at horizon: 4'
+p3923
+F0.012677192687988281
+tp3924
+a(S'Exiting search'
+p3925
+F0.006684064865112305
+tp3926
+a(S'Finishing'
+p3927
+F-9.298324584960938e-05
+tp3928
+asS'instance'
+p3929
+S'instance_3_3.pddl'
+p3930
+sS'valid'
+p3931
+I1
+sS'mode'
+p3932
+S'parallel incremental'
+p3933
+sS'horizon'
+p3934
+I4
+sS'time'
+p3935
+F0.23633193969726562
+sS'found'
+p3936
+I01
+sa(dp3937
+S'domain'
+p3938
+S'fo_counters_rnd'
+p3939
+sS'instance'
+p3940
+S'instance_3_3.pddl'
+p3941
+sS'time_log'
+p3942
+(lp3943
+(S'Formula encoding at horizon: 1'
+p3944
+F0.1001589298248291
+tp3945
+a(S'Sat-check at horizon: 1'
+p3946
+F0.03253483772277832
+tp3947
+a(S'Formula encoding at horizon: 2'
+p3948
+F0.04988503456115723
+tp3949
+a(S'Sat-check at horizon: 2'
+p3950
+F0.034134864807128906
+tp3951
+a(S'Formula encoding at horizon: 3'
+p3952
+F0.07169389724731445
+tp3953
+a(S'Sat-check at horizon: 3'
+p3954
+F0.04096412658691406
+tp3955
+a(S'Formula encoding at horizon: 4'
+p3956
+F0.09448099136352539
+tp3957
+a(S'Sat-check at horizon: 4'
+p3958
+F0.05136680603027344
+tp3959
+a(S'Finishing'
+p3960
+F-0.007133960723876953
+tp3961
+asS'exclusion_cnt'
+p3962
+I72
+sS'valid'
+p3963
+I1
+sS'mode'
+p3964
+S'parallel not incremental'
+p3965
+sS'horizon'
+p3966
+I4
+sS'time'
+p3967
+F0.48236703872680664
+sS'found'
+p3968
+I01
+sa(dp3969
+S'domain'
+p3970
+S'fo_counters_rnd'
+p3971
+sS'time_log'
+p3972
+NsS'instance'
+p3973
+S'instance_4_1.pddl'
+p3974
+sS'valid'
+p3975
+I-1
+sS'mode'
+p3976
+S'springroll'
+p3977
+sS'horizon'
+p3978
+I0
+sS'time'
+p3979
+F0.869549036026001
+sS'found'
+p3980
+I01
+sa(dp3981
+S'domain'
+p3982
+S'fo_counters_rnd'
+p3983
+sS'instance'
+p3984
+S'instance_4_1.pddl'
+p3985
+sS'semantics_f_count'
+p3986
+I3
+sS'time_log'
+p3987
+(lp3988
+(S'Initializing encoder.'
+p3989
+F0.059800148010253906
+tp3990
+a(S'Initial formula encoding at horizon: 1'
+p3991
+F0.06273293495178223
+tp3992
+a(S'Initial formula encoding at horizon: 2'
+p3993
+F0.032221078872680664
+tp3994
+a(S'Initial formula encoding at horizon: 3'
+p3995
+F0.03512310981750488
+tp3996
+a(S'Extract model at horizon 3'
+p3997
+F0.01553201675415039
+tp3998
+a(S'Encode seq-form of one step 1'
+p3999
+F0.057763099670410156
+tp4000
+a(S'Encode seq-prefix of one step 1'
+p4001
+F0.0035240650177001953
+tp4002
+a(S'Check sat of seq-formula 1'
+p4003
+F0.0034220218658447266
+tp4004
+a(S'Encode seq-form of one step 2'
+p4005
+F0.014661073684692383
+tp4006
+a(S'Encode seq-prefix of one step 2'
+p4007
+F0.0036139488220214844
+tp4008
+a(S'Check sat of seq-formula 2'
+p4009
+F0.0017979145050048828
+tp4010
+a(S'Exiting search'
+p4011
+F0.0017161369323730469
+tp4012
+a(S'Finishing'
+p4013
+F-1.0967254638671875e-05
+tp4014
+asS'exclusion_cnt'
+p4015
+I0
+sS'valid'
+p4016
+I1
+sS'mode'
+p4017
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p4018
+sS'horizon'
+p4019
+I3
+sS'time'
+p4020
+F0.2919321060180664
+sS'found'
+p4021
+I01
+sS'f_count'
+p4022
+I51
+sa(dp4023
+S'domain'
+p4024
+S'fo_counters_rnd'
+p4025
+sS'exclusion_cnt'
+p4026
+I96
+sS'time_log'
+p4027
+(lp4028
+(S'Formula encoding at horizon: 1'
+p4029
+F0.1464989185333252
+tp4030
+a(S'Sat-check at horizon: 1'
+p4031
+F0.0007348060607910156
+tp4032
+a(S'Formula encoding at horizon: 2'
+p4033
+F0.0403139591217041
+tp4034
+a(S'Sat-check at horizon: 2'
+p4035
+F0.004167079925537109
+tp4036
+a(S'Formula encoding at horizon: 3'
+p4037
+F0.0395660400390625
+tp4038
+a(S'Sat-check at horizon: 3'
+p4039
+F0.013741016387939453
+tp4040
+a(S'Formula encoding at horizon: 4'
+p4041
+F0.04001212120056152
+tp4042
+a(S'Sat-check at horizon: 4'
+p4043
+F0.019909143447875977
+tp4044
+a(S'Exiting search'
+p4045
+F0.008810043334960938
+tp4046
+a(S'Finishing'
+p4047
+F-0.00012302398681640625
+tp4048
+asS'instance'
+p4049
+S'instance_4_1.pddl'
+p4050
+sS'valid'
+p4051
+I1
+sS'mode'
+p4052
+S'parallel incremental'
+p4053
+sS'horizon'
+p4054
+I4
+sS'time'
+p4055
+F0.3138880729675293
+sS'found'
+p4056
+I01
+sa(dp4057
+S'domain'
+p4058
+S'fo_counters_rnd'
+p4059
+sS'instance'
+p4060
+S'instance_4_1.pddl'
+p4061
+sS'time_log'
+p4062
+(lp4063
+(S'Formula encoding at horizon: 1'
+p4064
+F0.12560009956359863
+tp4065
+a(S'Sat-check at horizon: 1'
+p4066
+F0.03291583061218262
+tp4067
+a(S'Formula encoding at horizon: 2'
+p4068
+F0.06979894638061523
+tp4069
+a(S'Sat-check at horizon: 2'
+p4070
+F0.03677010536193848
+tp4071
+a(S'Formula encoding at horizon: 3'
+p4072
+F0.10106611251831055
+tp4073
+a(S'Sat-check at horizon: 3'
+p4074
+F0.04630088806152344
+tp4075
+a(S'Formula encoding at horizon: 4'
+p4076
+F0.13300490379333496
+tp4077
+a(S'Sat-check at horizon: 4'
+p4078
+F0.05672907829284668
+tp4079
+a(S'Finishing'
+p4080
+F-0.009379148483276367
+tp4081
+asS'exclusion_cnt'
+p4082
+I96
+sS'valid'
+p4083
+I1
+sS'mode'
+p4084
+S'parallel not incremental'
+p4085
+sS'horizon'
+p4086
+I4
+sS'time'
+p4087
+F0.6115760803222656
+sS'found'
+p4088
+I01
+sa(dp4089
+S'domain'
+p4090
+S'fo_counters_rnd'
+p4091
+sS'time_log'
+p4092
+NsS'instance'
+p4093
+S'instance_4_2.pddl'
+p4094
+sS'valid'
+p4095
+I-1
+sS'mode'
+p4096
+S'springroll'
+p4097
+sS'horizon'
+p4098
+I0
+sS'time'
+p4099
+F0.8699829578399658
+sS'found'
+p4100
+I01
+sa(dp4101
+S'domain'
+p4102
+S'fo_counters_rnd'
+p4103
+sS'instance'
+p4104
+S'instance_4_2.pddl'
+p4105
+sS'semantics_f_count'
+p4106
+I2
+sS'time_log'
+p4107
+(lp4108
+(S'Initializing encoder.'
+p4109
+F0.05823111534118652
+tp4110
+a(S'Initial formula encoding at horizon: 1'
+p4111
+F0.06181001663208008
+tp4112
+a(S'Initial formula encoding at horizon: 2'
+p4113
+F0.032318115234375
+tp4114
+a(S'Extract model at horizon 2'
+p4115
+F0.009469985961914062
+tp4116
+a(S'Encode seq-form of one step 0'
+p4117
+F0.06313920021057129
+tp4118
+a(S'Encode seq-prefix of one step 0'
+p4119
+F0.0036668777465820312
+tp4120
+a(S'Check sat of seq-formula 0'
+p4121
+F0.0031430721282958984
+tp4122
+a(S'Encode seq-form of one step 1'
+p4123
+F0.12194299697875977
+tp4124
+a(S'Encode seq-prefix of one step 1'
+p4125
+F0.003625154495239258
+tp4126
+a(S'Check sat of seq-formula 1'
+p4127
+F0.035685062408447266
+tp4128
+a(S'Exiting search'
+p4129
+F0.01034092903137207
+tp4130
+a(S'Finishing'
+p4131
+F-1.2159347534179688e-05
+tp4132
+asS'exclusion_cnt'
+p4133
+I0
+sS'valid'
+p4134
+I1
+sS'mode'
+p4135
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p4136
+sS'horizon'
+p4137
+I2
+sS'time'
+p4138
+F0.4033961296081543
+sS'found'
+p4139
+I01
+sS'f_count'
+p4140
+I34
+sa(dp4141
+S'domain'
+p4142
+S'fo_counters_rnd'
+p4143
+sS'exclusion_cnt'
+p4144
+I48
+sS'time_log'
+p4145
+(lp4146
+(S'Formula encoding at horizon: 1'
+p4147
+F0.14690113067626953
+tp4148
+a(S'Sat-check at horizon: 1'
+p4149
+F0.0007419586181640625
+tp4150
+a(S'Formula encoding at horizon: 2'
+p4151
+F0.0399479866027832
+tp4152
+a(S'Sat-check at horizon: 2'
+p4153
+F0.006052970886230469
+tp4154
+a(S'Exiting search'
+p4155
+F0.0045778751373291016
+tp4156
+a(S'Finishing'
+p4157
+F-0.00011992454528808594
+tp4158
+asS'instance'
+p4159
+S'instance_4_2.pddl'
+p4160
+sS'valid'
+p4161
+I1
+sS'mode'
+p4162
+S'parallel incremental'
+p4163
+sS'horizon'
+p4164
+I2
+sS'time'
+p4165
+F0.1983480453491211
+sS'found'
+p4166
+I01
+sa(dp4167
+S'domain'
+p4168
+S'fo_counters_rnd'
+p4169
+sS'instance'
+p4170
+S'instance_4_2.pddl'
+p4171
+sS'time_log'
+p4172
+(lp4173
+(S'Formula encoding at horizon: 1'
+p4174
+F0.12311792373657227
+tp4175
+a(S'Sat-check at horizon: 1'
+p4176
+F0.03389596939086914
+tp4177
+a(S'Formula encoding at horizon: 2'
+p4178
+F0.06887698173522949
+tp4179
+a(S'Sat-check at horizon: 2'
+p4180
+F0.038066864013671875
+tp4181
+a(S'Finishing'
+p4182
+F-0.004892826080322266
+tp4183
+asS'exclusion_cnt'
+p4184
+I48
+sS'valid'
+p4185
+I1
+sS'mode'
+p4186
+S'parallel not incremental'
+p4187
+sS'horizon'
+p4188
+I2
+sS'time'
+p4189
+F0.2688579559326172
+sS'found'
+p4190
+I01
+sa(dp4191
+S'domain'
+p4192
+S'fo_counters_rnd'
+p4193
+sS'time_log'
+p4194
+NsS'instance'
+p4195
+S'instance_4_3.pddl'
+p4196
+sS'valid'
+p4197
+I-1
+sS'mode'
+p4198
+S'springroll'
+p4199
+sS'horizon'
+p4200
+I0
+sS'time'
+p4201
+F0.9204080104827881
+sS'found'
+p4202
+I01
+sa(dp4203
+S'domain'
+p4204
+S'fo_counters_rnd'
+p4205
+sS'instance'
+p4206
+S'instance_4_3.pddl'
+p4207
+sS'semantics_f_count'
+p4208
+I4
+sS'time_log'
+p4209
+(lp4210
+(S'Initializing encoder.'
+p4211
+F0.05878782272338867
+tp4212
+a(S'Initial formula encoding at horizon: 1'
+p4213
+F0.062258005142211914
+tp4214
+a(S'Initial formula encoding at horizon: 2'
+p4215
+F0.03229784965515137
+tp4216
+a(S'Initial formula encoding at horizon: 3'
+p4217
+F0.033860206604003906
+tp4218
+a(S'Initial formula encoding at horizon: 4'
+p4219
+F0.04075002670288086
+tp4220
+a(S'Extract model at horizon 4'
+p4221
+F0.04366898536682129
+tp4222
+a(S'Encode seq-form of one step 0'
+p4223
+F0.04030013084411621
+tp4224
+a(S'Encode seq-prefix of one step 0'
+p4225
+F0.003587007522583008
+tp4226
+a(S'Check sat of seq-formula 0'
+p4227
+F0.0021948814392089844
+tp4228
+a(S'Encode seq-form of one step 1'
+p4229
+F0.04474902153015137
+tp4230
+a(S'Encode seq-prefix of one step 1'
+p4231
+F0.003609895706176758
+tp4232
+a(S'Check sat of seq-formula 1'
+p4233
+F0.006250858306884766
+tp4234
+a(S'Encode seq-form of one step 2'
+p4235
+F0.08510398864746094
+tp4236
+a(S'Encode seq-prefix of one step 2'
+p4237
+F0.0036079883575439453
+tp4238
+a(S'Check sat of seq-formula 2'
+p4239
+F0.023669004440307617
+tp4240
+a(S'Encode seq-form of one step 3'
+p4241
+F0.030630111694335938
+tp4242
+a(S'Encode seq-prefix of one step 3'
+p4243
+F0.003592967987060547
+tp4244
+a(S'Check sat of seq-formula 3'
+p4245
+F0.005952119827270508
+tp4246
+a(S'Exiting search'
+p4247
+F0.005007028579711914
+tp4248
+a(S'Finishing'
+p4249
+F-1.2159347534179688e-05
+tp4250
+asS'exclusion_cnt'
+p4251
+I0
+sS'valid'
+p4252
+I1
+sS'mode'
+p4253
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p4254
+sS'horizon'
+p4255
+I4
+sS'time'
+p4256
+F0.5299129486083984
+sS'found'
+p4257
+I01
+sS'f_count'
+p4258
+I68
+sa(dp4259
+S'domain'
+p4260
+S'fo_counters_rnd'
+p4261
+sS'exclusion_cnt'
+p4262
+I96
+sS'time_log'
+p4263
+(lp4264
+(S'Formula encoding at horizon: 1'
+p4265
+F0.14668989181518555
+tp4266
+a(S'Sat-check at horizon: 1'
+p4267
+F0.0007748603820800781
+tp4268
+a(S'Formula encoding at horizon: 2'
+p4269
+F0.04011797904968262
+tp4270
+a(S'Sat-check at horizon: 2'
+p4271
+F0.004743814468383789
+tp4272
+a(S'Formula encoding at horizon: 3'
+p4273
+F0.03960299491882324
+tp4274
+a(S'Sat-check at horizon: 3'
+p4275
+F0.011884927749633789
+tp4276
+a(S'Formula encoding at horizon: 4'
+p4277
+F0.039700984954833984
+tp4278
+a(S'Sat-check at horizon: 4'
+p4279
+F0.03773903846740723
+tp4280
+a(S'Exiting search'
+p4281
+F0.008775949478149414
+tp4282
+a(S'Finishing'
+p4283
+F-0.00012087821960449219
+tp4284
+asS'instance'
+p4285
+S'instance_4_3.pddl'
+p4286
+sS'valid'
+p4287
+I1
+sS'mode'
+p4288
+S'parallel incremental'
+p4289
+sS'horizon'
+p4290
+I4
+sS'time'
+p4291
+F0.33016395568847656
+sS'found'
+p4292
+I01
+sa(dp4293
+S'domain'
+p4294
+S'fo_counters_rnd'
+p4295
+sS'instance'
+p4296
+S'instance_4_3.pddl'
+p4297
+sS'time_log'
+p4298
+(lp4299
+(S'Formula encoding at horizon: 1'
+p4300
+F0.12560701370239258
+tp4301
+a(S'Sat-check at horizon: 1'
+p4302
+F0.033679962158203125
+tp4303
+a(S'Formula encoding at horizon: 2'
+p4304
+F0.06899189949035645
+tp4305
+a(S'Sat-check at horizon: 2'
+p4306
+F0.03670787811279297
+tp4307
+a(S'Formula encoding at horizon: 3'
+p4308
+F0.10049700736999512
+tp4309
+a(S'Sat-check at horizon: 3'
+p4310
+F0.0459141731262207
+tp4311
+a(S'Formula encoding at horizon: 4'
+p4312
+F0.13257098197937012
+tp4313
+a(S'Sat-check at horizon: 4'
+p4314
+F0.06386995315551758
+tp4315
+a(S'Finishing'
+p4316
+F-0.009344816207885742
+tp4317
+asS'exclusion_cnt'
+p4318
+I96
+sS'valid'
+p4319
+I1
+sS'mode'
+p4320
+S'parallel not incremental'
+p4321
+sS'horizon'
+p4322
+I4
+sS'time'
+p4323
+F0.6171958446502686
+sS'found'
+p4324
+I01
+sa(dp4325
+S'domain'
+p4326
+S'fo_counters_rnd'
+p4327
+sS'time_log'
+p4328
+NsS'instance'
+p4329
+S'instance_5_1.pddl'
+p4330
+sS'valid'
+p4331
+I-1
+sS'mode'
+p4332
+S'springroll'
+p4333
+sS'horizon'
+p4334
+I0
+sS'time'
+p4335
+F0.9704470634460449
+sS'found'
+p4336
+I01
+sa(dp4337
+S'domain'
+p4338
+S'fo_counters_rnd'
+p4339
+sS'instance'
+p4340
+S'instance_5_1.pddl'
+p4341
+sS'semantics_f_count'
+p4342
+I4
+sS'time_log'
+p4343
+(lp4344
+(S'Initializing encoder.'
+p4345
+F0.06930208206176758
+tp4346
+a(S'Initial formula encoding at horizon: 1'
+p4347
+F0.07380890846252441
+tp4348
+a(S'Initial formula encoding at horizon: 2'
+p4349
+F0.04275989532470703
+tp4350
+a(S'Initial formula encoding at horizon: 3'
+p4351
+F0.047091007232666016
+tp4352
+a(S'Initial formula encoding at horizon: 4'
+p4353
+F0.05343317985534668
+tp4354
+a(S'Extract model at horizon 4'
+p4355
+F0.03925299644470215
+tp4356
+a(S'Encode seq-form of one step 0'
+p4357
+F0.05669093132019043
+tp4358
+a(S'Encode seq-prefix of one step 0'
+p4359
+F0.004431962966918945
+tp4360
+a(S'Check sat of seq-formula 0'
+p4361
+F0.0035109519958496094
+tp4362
+a(S'Encode seq-form of one step 1'
+p4363
+F0.07279396057128906
+tp4364
+a(S'Encode seq-prefix of one step 1'
+p4365
+F0.004567146301269531
+tp4366
+a(S'Check sat of seq-formula 1'
+p4367
+F0.012938976287841797
+tp4368
+a(S'Encode seq-form of one step 2'
+p4369
+F0.08085417747497559
+tp4370
+a(S'Encode seq-prefix of one step 2'
+p4371
+F0.00457000732421875
+tp4372
+a(S'Check sat of seq-formula 2'
+p4373
+F0.03156709671020508
+tp4374
+a(S'Encode seq-form of one step 3'
+p4375
+F0.0895838737487793
+tp4376
+a(S'Encode seq-prefix of one step 3'
+p4377
+F0.0045430660247802734
+tp4378
+a(S'Check sat of seq-formula 3'
+p4379
+F0.04951882362365723
+tp4380
+a(S'Exiting search'
+p4381
+F0.010933876037597656
+tp4382
+a(S'Finishing'
+p4383
+F-1.2159347534179688e-05
+tp4384
+asS'exclusion_cnt'
+p4385
+I0
+sS'valid'
+p4386
+I1
+sS'mode'
+p4387
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p4388
+sS'horizon'
+p4389
+I4
+sS'time'
+p4390
+F0.752190113067627
+sS'found'
+p4391
+I01
+sS'f_count'
+p4392
+I84
+sa(dp4393
+S'domain'
+p4394
+S'fo_counters_rnd'
+p4395
+sS'exclusion_cnt'
+p4396
+I150
+sS'time_log'
+p4397
+(lp4398
+(S'Formula encoding at horizon: 1'
+p4399
+F0.18799710273742676
+tp4400
+a(S'Sat-check at horizon: 1'
+p4401
+F0.0008461475372314453
+tp4402
+a(S'Formula encoding at horizon: 2'
+p4403
+F0.05322098731994629
+tp4404
+a(S'Sat-check at horizon: 2'
+p4405
+F0.004033088684082031
+tp4406
+a(S'Formula encoding at horizon: 3'
+p4407
+F0.05311393737792969
+tp4408
+a(S'Sat-check at horizon: 3'
+p4409
+F0.010291099548339844
+tp4410
+a(S'Formula encoding at horizon: 4'
+p4411
+F0.05325913429260254
+tp4412
+a(S'Sat-check at horizon: 4'
+p4413
+F0.0455019474029541
+tp4414
+a(S'Formula encoding at horizon: 5'
+p4415
+F0.05331301689147949
+tp4416
+a(S'Sat-check at horizon: 5'
+p4417
+F0.07423996925354004
+tp4418
+a(S'Exiting search'
+p4419
+F0.013641119003295898
+tp4420
+a(S'Finishing'
+p4421
+F-0.00015401840209960938
+tp4422
+asS'instance'
+p4423
+S'instance_5_1.pddl'
+p4424
+sS'valid'
+p4425
+I1
+sS'mode'
+p4426
+S'parallel incremental'
+p4427
+sS'horizon'
+p4428
+I5
+sS'time'
+p4429
+F0.5496261119842529
+sS'found'
+p4430
+I01
+sa(dp4431
+S'domain'
+p4432
+S'fo_counters_rnd'
+p4433
+sS'instance'
+p4434
+S'instance_5_1.pddl'
+p4435
+sS'time_log'
+p4436
+(lp4437
+(S'Formula encoding at horizon: 1'
+p4438
+F0.16198396682739258
+tp4439
+a(S'Sat-check at horizon: 1'
+p4440
+F0.03480195999145508
+tp4441
+a(S'Formula encoding at horizon: 2'
+p4442
+F0.09288191795349121
+tp4443
+a(S'Sat-check at horizon: 2'
+p4444
+F0.03977680206298828
+tp4445
+a(S'Formula encoding at horizon: 3'
+p4446
+F0.13434195518493652
+tp4447
+a(S'Sat-check at horizon: 3'
+p4448
+F0.056609153747558594
+tp4449
+a(S'Formula encoding at horizon: 4'
+p4450
+F0.17686200141906738
+tp4451
+a(S'Sat-check at horizon: 4'
+p4452
+F0.07323503494262695
+tp4453
+a(S'Formula encoding at horizon: 5'
+p4454
+F0.22233009338378906
+tp4455
+a(S'Sat-check at horizon: 5'
+p4456
+F0.10929107666015625
+tp4457
+a(S'Finishing'
+p4458
+F-0.014622926712036133
+tp4459
+asS'exclusion_cnt'
+p4460
+I150
+sS'valid'
+p4461
+I1
+sS'mode'
+p4462
+S'parallel not incremental'
+p4463
+sS'horizon'
+p4464
+I5
+sS'time'
+p4465
+F1.116753101348877
+sS'found'
+p4466
+I01
+sa(dp4467
+S'domain'
+p4468
+S'fo_counters_rnd'
+p4469
+sS'time_log'
+p4470
+NsS'instance'
+p4471
+S'instance_5_2.pddl'
+p4472
+sS'valid'
+p4473
+I-1
+sS'mode'
+p4474
+S'springroll'
+p4475
+sS'horizon'
+p4476
+I0
+sS'time'
+p4477
+F0.9196560382843018
+sS'found'
+p4478
+I01
+sa(dp4479
+S'domain'
+p4480
+S'fo_counters_rnd'
+p4481
+sS'instance'
+p4482
+S'instance_5_2.pddl'
+p4483
+sS'semantics_f_count'
+p4484
+I4
+sS'time_log'
+p4485
+(lp4486
+(S'Initializing encoder.'
+p4487
+F0.11004781723022461
+tp4488
+a(S'Initial formula encoding at horizon: 1'
+p4489
+F0.07281208038330078
+tp4490
+a(S'Initial formula encoding at horizon: 2'
+p4491
+F0.04285287857055664
+tp4492
+a(S'Initial formula encoding at horizon: 3'
+p4493
+F0.04677915573120117
+tp4494
+a(S'Initial formula encoding at horizon: 4'
+p4495
+F0.06044793128967285
+tp4496
+a(S'Extract model at horizon 4'
+p4497
+F0.03987598419189453
+tp4498
+a(S'Encode seq-form of one step 0'
+p4499
+F0.056214094161987305
+tp4500
+a(S'Encode seq-prefix of one step 0'
+p4501
+F0.004403114318847656
+tp4502
+a(S'Check sat of seq-formula 0'
+p4503
+F0.0039789676666259766
+tp4504
+a(S'Encode seq-form of one step 1'
+p4505
+F0.10004782676696777
+tp4506
+a(S'Encode seq-prefix of one step 1'
+p4507
+F0.004503965377807617
+tp4508
+a(S'Check sat of seq-formula 1'
+p4509
+F0.03404808044433594
+tp4510
+a(S'Encode seq-form of one step 2'
+p4511
+F0.07272005081176758
+tp4512
+a(S'Encode seq-prefix of one step 2'
+p4513
+F0.004511117935180664
+tp4514
+a(S'Check sat of seq-formula 2'
+p4515
+F0.021399974822998047
+tp4516
+a(S'Encode seq-form of one step 3'
+p4517
+F0.0964350700378418
+tp4518
+a(S'Encode seq-prefix of one step 3'
+p4519
+F0.004548072814941406
+tp4520
+a(S'Check sat of seq-formula 3'
+p4521
+F0.04916810989379883
+tp4522
+a(S'Exiting search'
+p4523
+F0.010776042938232422
+tp4524
+a(S'Finishing'
+p4525
+F-1.1920928955078125e-05
+tp4526
+asS'exclusion_cnt'
+p4527
+I0
+sS'valid'
+p4528
+I1
+sS'mode'
+p4529
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p4530
+sS'horizon'
+p4531
+I4
+sS'time'
+p4532
+F0.8356068134307861
+sS'found'
+p4533
+I01
+sS'f_count'
+p4534
+I84
+sa(dp4535
+S'domain'
+p4536
+S'fo_counters_rnd'
+p4537
+sS'exclusion_cnt'
+p4538
+I120
+sS'time_log'
+p4539
+(lp4540
+(S'Formula encoding at horizon: 1'
+p4541
+F0.18755602836608887
+tp4542
+a(S'Sat-check at horizon: 1'
+p4543
+F0.0008389949798583984
+tp4544
+a(S'Formula encoding at horizon: 2'
+p4545
+F0.0533900260925293
+tp4546
+a(S'Sat-check at horizon: 2'
+p4547
+F0.0035200119018554688
+tp4548
+a(S'Formula encoding at horizon: 3'
+p4549
+F0.05309796333312988
+tp4550
+a(S'Sat-check at horizon: 3'
+p4551
+F0.013164043426513672
+tp4552
+a(S'Formula encoding at horizon: 4'
+p4553
+F0.05308198928833008
+tp4554
+a(S'Sat-check at horizon: 4'
+p4555
+F0.0445551872253418
+tp4556
+a(S'Exiting search'
+p4557
+F0.011009931564331055
+tp4558
+a(S'Finishing'
+p4559
+F-0.00016117095947265625
+tp4560
+asS'instance'
+p4561
+S'instance_5_2.pddl'
+p4562
+sS'valid'
+p4563
+I1
+sS'mode'
+p4564
+S'parallel incremental'
+p4565
+sS'horizon'
+p4566
+I4
+sS'time'
+p4567
+F0.42038917541503906
+sS'found'
+p4568
+I01
+sa(dp4569
+S'domain'
+p4570
+S'fo_counters_rnd'
+p4571
+sS'instance'
+p4572
+S'instance_5_2.pddl'
+p4573
+sS'time_log'
+p4574
+(lp4575
+(S'Formula encoding at horizon: 1'
+p4576
+F0.16456985473632812
+tp4577
+a(S'Sat-check at horizon: 1'
+p4578
+F0.03476405143737793
+tp4579
+a(S'Formula encoding at horizon: 2'
+p4580
+F0.1325669288635254
+tp4581
+a(S'Sat-check at horizon: 2'
+p4582
+F0.04018807411193848
+tp4583
+a(S'Formula encoding at horizon: 3'
+p4584
+F0.13312697410583496
+tp4585
+a(S'Sat-check at horizon: 3'
+p4586
+F0.05208897590637207
+tp4587
+a(S'Formula encoding at horizon: 4'
+p4588
+F0.17641901969909668
+tp4589
+a(S'Sat-check at horizon: 4'
+p4590
+F0.07646822929382324
+tp4591
+a(S'Finishing'
+p4592
+F-0.011828899383544922
+tp4593
+asS'exclusion_cnt'
+p4594
+I120
+sS'valid'
+p4595
+I1
+sS'mode'
+p4596
+S'parallel not incremental'
+p4597
+sS'horizon'
+p4598
+I4
+sS'time'
+p4599
+F0.8220338821411133
+sS'found'
+p4600
+I01
+sa(dp4601
+S'domain'
+p4602
+S'fo_counters_rnd'
+p4603
+sS'time_log'
+p4604
+NsS'instance'
+p4605
+S'instance_5_3.pddl'
+p4606
+sS'valid'
+p4607
+I-1
+sS'mode'
+p4608
+S'springroll'
+p4609
+sS'horizon'
+p4610
+I0
+sS'time'
+p4611
+F0.9202899932861328
+sS'found'
+p4612
+I01
+sa(dp4613
+S'domain'
+p4614
+S'fo_counters_rnd'
+p4615
+sS'instance'
+p4616
+S'instance_5_3.pddl'
+p4617
+sS'semantics_f_count'
+p4618
+I3
+sS'time_log'
+p4619
+(lp4620
+(S'Initializing encoder.'
+p4621
+F0.06769084930419922
+tp4622
+a(S'Initial formula encoding at horizon: 1'
+p4623
+F0.07369685173034668
+tp4624
+a(S'Initial formula encoding at horizon: 2'
+p4625
+F0.0435488224029541
+tp4626
+a(S'Initial formula encoding at horizon: 3'
+p4627
+F0.04869580268859863
+tp4628
+a(S'Extract model at horizon 3'
+p4629
+F0.03330397605895996
+tp4630
+a(S'Encode seq-form of one step 0'
+p4631
+F0.0657200813293457
+tp4632
+a(S'Encode seq-prefix of one step 0'
+p4633
+F0.004577159881591797
+tp4634
+a(S'Check sat of seq-formula 0'
+p4635
+F0.003915071487426758
+tp4636
+a(S'Encode seq-form of one step 1'
+p4637
+F0.1499319076538086
+tp4638
+a(S'Encode seq-prefix of one step 1'
+p4639
+F0.0045778751373291016
+tp4640
+a(S'Check sat of seq-formula 1'
+p4641
+F0.022251129150390625
+tp4642
+a(S'Encode seq-form of one step 2'
+p4643
+F0.042948007583618164
+tp4644
+a(S'Encode seq-prefix of one step 2'
+p4645
+F0.004548072814941406
+tp4646
+a(S'Check sat of seq-formula 2'
+p4647
+F0.018162965774536133
+tp4648
+a(S'Exiting search'
+p4649
+F0.005221843719482422
+tp4650
+a(S'Finishing'
+p4651
+F-1.2159347534179688e-05
+tp4652
+asS'exclusion_cnt'
+p4653
+I0
+sS'valid'
+p4654
+I1
+sS'mode'
+p4655
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p4656
+sS'horizon'
+p4657
+I3
+sS'time'
+p4658
+F0.5888240337371826
+sS'found'
+p4659
+I01
+sS'f_count'
+p4660
+I63
+sa(dp4661
+S'domain'
+p4662
+S'fo_counters_rnd'
+p4663
+sS'exclusion_cnt'
+p4664
+I120
+sS'time_log'
+p4665
+(lp4666
+(S'Formula encoding at horizon: 1'
+p4667
+F0.2257370948791504
+tp4668
+a(S'Sat-check at horizon: 1'
+p4669
+F0.0007879734039306641
+tp4670
+a(S'Formula encoding at horizon: 2'
+p4671
+F0.05330204963684082
+tp4672
+a(S'Sat-check at horizon: 2'
+p4673
+F0.007109880447387695
+tp4674
+a(S'Formula encoding at horizon: 3'
+p4675
+F0.05294322967529297
+tp4676
+a(S'Sat-check at horizon: 3'
+p4677
+F0.012747049331665039
+tp4678
+a(S'Formula encoding at horizon: 4'
+p4679
+F0.05330204963684082
+tp4680
+a(S'Sat-check at horizon: 4'
+p4681
+F0.023992061614990234
+tp4682
+a(S'Exiting search'
+p4683
+F0.011023998260498047
+tp4684
+a(S'Finishing'
+p4685
+F-0.00015401840209960938
+tp4686
+asS'instance'
+p4687
+S'instance_5_3.pddl'
+p4688
+sS'valid'
+p4689
+I1
+sS'mode'
+p4690
+S'parallel incremental'
+p4691
+sS'horizon'
+p4692
+I4
+sS'time'
+p4693
+F0.44111108779907227
+sS'found'
+p4694
+I01
+sa(dp4695
+S'domain'
+p4696
+S'fo_counters_rnd'
+p4697
+sS'instance'
+p4698
+S'instance_5_3.pddl'
+p4699
+sS'time_log'
+p4700
+(lp4701
+(S'Formula encoding at horizon: 1'
+p4702
+F0.16161394119262695
+tp4703
+a(S'Sat-check at horizon: 1'
+p4704
+F0.034364938735961914
+tp4705
+a(S'Formula encoding at horizon: 2'
+p4706
+F0.09107017517089844
+tp4707
+a(S'Sat-check at horizon: 2'
+p4708
+F0.0387568473815918
+tp4709
+a(S'Formula encoding at horizon: 3'
+p4710
+F0.13203692436218262
+tp4711
+a(S'Sat-check at horizon: 3'
+p4712
+F0.05303597450256348
+tp4713
+a(S'Formula encoding at horizon: 4'
+p4714
+F0.17622590065002441
+tp4715
+a(S'Sat-check at horizon: 4'
+p4716
+F0.07015419006347656
+tp4717
+a(S'Finishing'
+p4718
+F-0.011626005172729492
+tp4719
+asS'exclusion_cnt'
+p4720
+I120
+sS'valid'
+p4721
+I1
+sS'mode'
+p4722
+S'parallel not incremental'
+p4723
+sS'horizon'
+p4724
+I4
+sS'time'
+p4725
+F0.7688961029052734
+sS'found'
+p4726
+I01
+sa(dp4727
+S'domain'
+p4728
+S'fo_counters_rnd'
+p4729
+sS'time_log'
+p4730
+NsS'instance'
+p4731
+S'instance_6_1.pddl'
+p4732
+sS'valid'
+p4733
+I-1
+sS'mode'
+p4734
+S'springroll'
+p4735
+sS'horizon'
+p4736
+I0
+sS'time'
+p4737
+F0.9708631038665771
+sS'found'
+p4738
+I01
+sa(dp4739
+S'domain'
+p4740
+S'fo_counters_rnd'
+p4741
+sS'instance'
+p4742
+S'instance_6_1.pddl'
+p4743
+sS'semantics_f_count'
+p4744
+I4
+sS'time_log'
+p4745
+(lp4746
+(S'Initializing encoder.'
+p4747
+F0.0781099796295166
+tp4748
+a(S'Initial formula encoding at horizon: 1'
+p4749
+F0.08753108978271484
+tp4750
+a(S'Initial formula encoding at horizon: 2'
+p4751
+F0.0545651912689209
+tp4752
+a(S'Initial formula encoding at horizon: 3'
+p4753
+F0.05965685844421387
+tp4754
+a(S'Initial formula encoding at horizon: 4'
+p4755
+F0.1138608455657959
+tp4756
+a(S'Extract model at horizon 4'
+p4757
+F0.04526400566101074
+tp4758
+a(S'Encode seq-form of one step 0'
+p4759
+F0.08525395393371582
+tp4760
+a(S'Encode seq-prefix of one step 0'
+p4761
+F0.005300998687744141
+tp4762
+a(S'Check sat of seq-formula 0'
+p4763
+F0.004987955093383789
+tp4764
+a(S'Encode seq-form of one step 1'
+p4765
+F0.10389900207519531
+tp4766
+a(S'Encode seq-prefix of one step 1'
+p4767
+F0.00545501708984375
+tp4768
+a(S'Check sat of seq-formula 1'
+p4769
+F0.014766931533813477
+tp4770
+a(S'Encode seq-form of one step 2'
+p4771
+F0.06385993957519531
+tp4772
+a(S'Encode seq-prefix of one step 2'
+p4773
+F0.005435943603515625
+tp4774
+a(S'Check sat of seq-formula 2'
+p4775
+F0.016598939895629883
+tp4776
+a(S'Encode seq-form of one step 3'
+p4777
+F0.10588312149047852
+tp4778
+a(S'Encode seq-prefix of one step 3'
+p4779
+F0.005368947982788086
+tp4780
+a(S'Check sat of seq-formula 3'
+p4781
+F0.08419394493103027
+tp4782
+a(S'Exiting search'
+p4783
+F0.01116800308227539
+tp4784
+a(S'Finishing'
+p4785
+F-1.1920928955078125e-05
+tp4786
+asS'exclusion_cnt'
+p4787
+I0
+sS'valid'
+p4788
+I1
+sS'mode'
+p4789
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p4790
+sS'horizon'
+p4791
+I4
+sS'time'
+p4792
+F0.9511969089508057
+sS'found'
+p4793
+I01
+sS'f_count'
+p4794
+I100
+sa(dp4795
+S'domain'
+p4796
+S'fo_counters_rnd'
+p4797
+sS'exclusion_cnt'
+p4798
+I180
+sS'time_log'
+p4799
+(lp4800
+(S'Formula encoding at horizon: 1'
+p4801
+F0.27950406074523926
+tp4802
+a(S'Sat-check at horizon: 1'
+p4803
+F0.001049041748046875
+tp4804
+a(S'Formula encoding at horizon: 2'
+p4805
+F0.06625890731811523
+tp4806
+a(S'Sat-check at horizon: 2'
+p4807
+F0.007475137710571289
+tp4808
+a(S'Formula encoding at horizon: 3'
+p4809
+F0.0662848949432373
+tp4810
+a(S'Sat-check at horizon: 3'
+p4811
+F0.012687921524047852
+tp4812
+a(S'Formula encoding at horizon: 4'
+p4813
+F0.06659293174743652
+tp4814
+a(S'Sat-check at horizon: 4'
+p4815
+F0.05566596984863281
+tp4816
+a(S'Formula encoding at horizon: 5'
+p4817
+F0.06739091873168945
+tp4818
+a(S'Sat-check at horizon: 5'
+p4819
+F0.05574798583984375
+tp4820
+a(S'Exiting search'
+p4821
+F0.01569986343383789
+tp4822
+a(S'Finishing'
+p4823
+F-0.00017499923706054688
+tp4824
+asS'instance'
+p4825
+S'instance_6_1.pddl'
+p4826
+sS'valid'
+p4827
+I1
+sS'mode'
+p4828
+S'parallel incremental'
+p4829
+sS'horizon'
+p4830
+I5
+sS'time'
+p4831
+F0.6945428848266602
+sS'found'
+p4832
+I01
+sa(dp4833
+S'domain'
+p4834
+S'fo_counters_rnd'
+p4835
+sS'instance'
+p4836
+S'instance_6_1.pddl'
+p4837
+sS'time_log'
+p4838
+(lp4839
+(S'Formula encoding at horizon: 1'
+p4840
+F0.21699213981628418
+tp4841
+a(S'Sat-check at horizon: 1'
+p4842
+F0.03608393669128418
+tp4843
+a(S'Formula encoding at horizon: 2'
+p4844
+F0.15772700309753418
+tp4845
+a(S'Sat-check at horizon: 2'
+p4846
+F0.04375290870666504
+tp4847
+a(S'Formula encoding at horizon: 3'
+p4848
+F0.1702098846435547
+tp4849
+a(S'Sat-check at horizon: 3'
+p4850
+F0.05824089050292969
+tp4851
+a(S'Formula encoding at horizon: 4'
+p4852
+F0.2221970558166504
+tp4853
+a(S'Sat-check at horizon: 4'
+p4854
+F0.09077000617980957
+tp4855
+a(S'Formula encoding at horizon: 5'
+p4856
+F0.27558398246765137
+tp4857
+a(S'Sat-check at horizon: 5'
+p4858
+F0.09769010543823242
+tp4859
+a(S'Finishing'
+p4860
+F-0.017299890518188477
+tp4861
+asS'exclusion_cnt'
+p4862
+I180
+sS'valid'
+p4863
+I1
+sS'mode'
+p4864
+S'parallel not incremental'
+p4865
+sS'horizon'
+p4866
+I5
+sS'time'
+p4867
+F1.3865680694580078
+sS'found'
+p4868
+I01
+sa(dp4869
+S'domain'
+p4870
+S'fo_counters_rnd'
+p4871
+sS'time_log'
+p4872
+NsS'instance'
+p4873
+S'instance_6_2.pddl'
+p4874
+sS'valid'
+p4875
+I-1
+sS'mode'
+p4876
+S'springroll'
+p4877
+sS'horizon'
+p4878
+I0
+sS'time'
+p4879
+F1.0207250118255615
+sS'found'
+p4880
+I01
+sa(dp4881
+S'domain'
+p4882
+S'fo_counters_rnd'
+p4883
+sS'instance'
+p4884
+S'instance_6_2.pddl'
+p4885
+sS'semantics_f_count'
+p4886
+I5
+sS'time_log'
+p4887
+(lp4888
+(S'Initializing encoder.'
+p4889
+F0.08009719848632812
+tp4890
+a(S'Initial formula encoding at horizon: 1'
+p4891
+F0.0880889892578125
+tp4892
+a(S'Initial formula encoding at horizon: 2'
+p4893
+F0.05491995811462402
+tp4894
+a(S'Initial formula encoding at horizon: 3'
+p4895
+F0.060105085372924805
+tp4896
+a(S'Initial formula encoding at horizon: 4'
+p4897
+F0.11226701736450195
+tp4898
+a(S'Initial formula encoding at horizon: 5'
+p4899
+F0.08523178100585938
+tp4900
+a(S'Extract model at horizon 5'
+p4901
+F0.09950494766235352
+tp4902
+a(S'Encode seq-form of one step 0'
+p4903
+F0.04960799217224121
+tp4904
+a(S'Encode seq-prefix of one step 0'
+p4905
+F0.005323171615600586
+tp4906
+a(S'Check sat of seq-formula 0'
+p4907
+F0.0026679039001464844
+tp4908
+a(S'Encode seq-form of one step 1'
+p4909
+F0.07435798645019531
+tp4910
+a(S'Encode seq-prefix of one step 1'
+p4911
+F0.0054399967193603516
+tp4912
+a(S'Check sat of seq-formula 1'
+p4913
+F0.009165048599243164
+tp4914
+a(S'Encode seq-form of one step 2'
+p4915
+F0.15257000923156738
+tp4916
+a(S'Encode seq-prefix of one step 2'
+p4917
+F0.005494117736816406
+tp4918
+a(S'Check sat of seq-formula 2'
+p4919
+F0.05233001708984375
+tp4920
+a(S'Encode seq-form of one step 3'
+p4921
+F0.10073995590209961
+tp4922
+a(S'Encode seq-prefix of one step 3'
+p4923
+F0.005452871322631836
+tp4924
+a(S'Check sat of seq-formula 3'
+p4925
+F0.04687309265136719
+tp4926
+a(S'Encode seq-form of one step 4'
+p4927
+F0.05681920051574707
+tp4928
+a(S'Encode seq-prefix of one step 4'
+p4929
+F0.005450010299682617
+tp4930
+a(S'Check sat of seq-formula 4'
+p4931
+F0.021185874938964844
+tp4932
+a(S'Exiting search'
+p4933
+F0.0075609683990478516
+tp4934
+a(S'Finishing'
+p4935
+F-1.1920928955078125e-05
+tp4936
+asS'exclusion_cnt'
+p4937
+I0
+sS'valid'
+p4938
+I1
+sS'mode'
+p4939
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p4940
+sS'horizon'
+p4941
+I5
+sS'time'
+p4942
+F1.1812920570373535
+sS'found'
+p4943
+I01
+sS'f_count'
+p4944
+I125
+sa(dp4945
+S'domain'
+p4946
+S'fo_counters_rnd'
+p4947
+sS'exclusion_cnt'
+p4948
+I216
+sS'time_log'
+p4949
+(lp4950
+(S'Formula encoding at horizon: 1'
+p4951
+F0.27878808975219727
+tp4952
+a(S'Sat-check at horizon: 1'
+p4953
+F0.0008289813995361328
+tp4954
+a(S'Formula encoding at horizon: 2'
+p4955
+F0.0671241283416748
+tp4956
+a(S'Sat-check at horizon: 2'
+p4957
+F0.0043871402740478516
+tp4958
+a(S'Formula encoding at horizon: 3'
+p4959
+F0.06641697883605957
+tp4960
+a(S'Sat-check at horizon: 3'
+p4961
+F0.013601064682006836
+tp4962
+a(S'Formula encoding at horizon: 4'
+p4963
+F0.06698107719421387
+tp4964
+a(S'Sat-check at horizon: 4'
+p4965
+F0.08423399925231934
+tp4966
+a(S'Formula encoding at horizon: 5'
+p4967
+F0.06770896911621094
+tp4968
+a(S'Sat-check at horizon: 5'
+p4969
+F0.09549093246459961
+tp4970
+a(S'Formula encoding at horizon: 6'
+p4971
+F0.06713604927062988
+tp4972
+a(S'Sat-check at horizon: 6'
+p4973
+F0.26904892921447754
+tp4974
+a(S'Exiting search'
+p4975
+F0.01900792121887207
+tp4976
+a(S'Finishing'
+p4977
+F-0.00017714500427246094
+tp4978
+asS'instance'
+p4979
+S'instance_6_2.pddl'
+p4980
+sS'valid'
+p4981
+I1
+sS'mode'
+p4982
+S'parallel incremental'
+p4983
+sS'horizon'
+p4984
+I6
+sS'time'
+p4985
+F1.1009480953216553
+sS'found'
+p4986
+I01
+sa(dp4987
+S'domain'
+p4988
+S'fo_counters_rnd'
+p4989
+sS'instance'
+p4990
+S'instance_6_2.pddl'
+p4991
+sS'time_log'
+p4992
+(lp4993
+(S'Formula encoding at horizon: 1'
+p4994
+F0.21097302436828613
+tp4995
+a(S'Sat-check at horizon: 1'
+p4996
+F0.03611588478088379
+tp4997
+a(S'Formula encoding at horizon: 2'
+p4998
+F0.15796899795532227
+tp4999
+a(S'Sat-check at horizon: 2'
+p5000
+F0.04364585876464844
+tp5001
+a(S'Formula encoding at horizon: 3'
+p5002
+F0.16994595527648926
+tp5003
+a(S'Sat-check at horizon: 3'
+p5004
+F0.05611610412597656
+tp5005
+a(S'Formula encoding at horizon: 4'
+p5006
+F0.22377896308898926
+tp5007
+a(S'Sat-check at horizon: 4'
+p5008
+F0.08929800987243652
+tp5009
+a(S'Formula encoding at horizon: 5'
+p5010
+F0.2774930000305176
+tp5011
+a(S'Sat-check at horizon: 5'
+p5012
+F0.12067508697509766
+tp5013
+a(S'Formula encoding at horizon: 6'
+p5014
+F0.3309309482574463
+tp5015
+a(S'Sat-check at horizon: 6'
+p5016
+F0.18787503242492676
+tp5017
+a(S'Finishing'
+p5018
+F-0.020613908767700195
+tp5019
+asS'exclusion_cnt'
+p5020
+I216
+sS'valid'
+p5021
+I1
+sS'mode'
+p5022
+S'parallel not incremental'
+p5023
+sS'horizon'
+p5024
+I6
+sS'time'
+p5025
+F1.925450086593628
+sS'found'
+p5026
+I01
+sa(dp5027
+S'domain'
+p5028
+S'fo_counters_rnd'
+p5029
+sS'time_log'
+p5030
+NsS'instance'
+p5031
+S'instance_6_3.pddl'
+p5032
+sS'valid'
+p5033
+I-1
+sS'mode'
+p5034
+S'springroll'
+p5035
+sS'horizon'
+p5036
+I0
+sS'time'
+p5037
+F0.969904899597168
+sS'found'
+p5038
+I01
+sa(dp5039
+S'domain'
+p5040
+S'fo_counters_rnd'
+p5041
+sS'instance'
+p5042
+S'instance_6_3.pddl'
+p5043
+sS'semantics_f_count'
+p5044
+I4
+sS'time_log'
+p5045
+(lp5046
+(S'Initializing encoder.'
+p5047
+F0.07876801490783691
+tp5048
+a(S'Initial formula encoding at horizon: 1'
+p5049
+F0.08799409866333008
+tp5050
+a(S'Initial formula encoding at horizon: 2'
+p5051
+F0.05507802963256836
+tp5052
+a(S'Initial formula encoding at horizon: 3'
+p5053
+F0.06109499931335449
+tp5054
+a(S'Initial formula encoding at horizon: 4'
+p5055
+F0.12285709381103516
+tp5056
+a(S'Extract model at horizon 4'
+p5057
+F0.06876206398010254
+tp5058
+a(S'Encode seq-form of one step 0'
+p5059
+F0.062040090560913086
+tp5060
+a(S'Encode seq-prefix of one step 0'
+p5061
+F0.0052950382232666016
+tp5062
+a(S'Check sat of seq-formula 0'
+p5063
+F0.0038819313049316406
+tp5064
+a(S'Encode seq-form of one step 1'
+p5065
+F0.056073904037475586
+tp5066
+a(S'Encode seq-prefix of one step 1'
+p5067
+F0.0053980350494384766
+tp5068
+a(S'Check sat of seq-formula 1'
+p5069
+F0.010103940963745117
+tp5070
+a(S'Encode seq-form of one step 2'
+p5071
+F0.2103579044342041
+tp5072
+a(S'Encode seq-prefix of one step 2'
+p5073
+F0.005388021469116211
+tp5074
+a(S'Check sat of seq-formula 2'
+p5075
+F0.07371020317077637
+tp5076
+a(S'Encode seq-form of one step 3'
+p5077
+F0.15962505340576172
+tp5078
+a(S'Encode seq-prefix of one step 3'
+p5079
+F0.005393028259277344
+tp5080
+a(S'Check sat of seq-formula 3'
+p5081
+F0.1801280975341797
+tp5082
+a(S'Exiting search'
+p5083
+F0.016788005828857422
+tp5084
+a(S'Finishing'
+p5085
+F-1.2159347534179688e-05
+tp5086
+asS'exclusion_cnt'
+p5087
+I0
+sS'valid'
+p5088
+I1
+sS'mode'
+p5089
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p5090
+sS'horizon'
+p5091
+I4
+sS'time'
+p5092
+F1.268773078918457
+sS'found'
+p5093
+I01
+sS'f_count'
+p5094
+I100
+sa(dp5095
+S'domain'
+p5096
+S'fo_counters_rnd'
+p5097
+sS'exclusion_cnt'
+p5098
+I144
+sS'time_log'
+p5099
+(lp5100
+(S'Formula encoding at horizon: 1'
+p5101
+F0.2800710201263428
+tp5102
+a(S'Sat-check at horizon: 1'
+p5103
+F0.0008378028869628906
+tp5104
+a(S'Formula encoding at horizon: 2'
+p5105
+F0.06734180450439453
+tp5106
+a(S'Sat-check at horizon: 2'
+p5107
+F0.003167867660522461
+tp5108
+a(S'Formula encoding at horizon: 3'
+p5109
+F0.06761288642883301
+tp5110
+a(S'Sat-check at horizon: 3'
+p5111
+F0.015733957290649414
+tp5112
+a(S'Formula encoding at horizon: 4'
+p5113
+F0.06832098960876465
+tp5114
+a(S'Sat-check at horizon: 4'
+p5115
+F0.04445290565490723
+tp5116
+a(S'Exiting search'
+p5117
+F0.012881040573120117
+tp5118
+a(S'Finishing'
+p5119
+F-0.00017786026000976562
+tp5120
+asS'instance'
+p5121
+S'instance_6_3.pddl'
+p5122
+sS'valid'
+p5123
+I1
+sS'mode'
+p5124
+S'parallel incremental'
+p5125
+sS'horizon'
+p5126
+I4
+sS'time'
+p5127
+F0.5606100559234619
+sS'found'
+p5128
+I01
+sa(dp5129
+S'domain'
+p5130
+S'fo_counters_rnd'
+p5131
+sS'instance'
+p5132
+S'instance_6_3.pddl'
+p5133
+sS'time_log'
+p5134
+(lp5135
+(S'Formula encoding at horizon: 1'
+p5136
+F0.21710515022277832
+tp5137
+a(S'Sat-check at horizon: 1'
+p5138
+F0.03650498390197754
+tp5139
+a(S'Formula encoding at horizon: 2'
+p5140
+F0.15974807739257812
+tp5141
+a(S'Sat-check at horizon: 2'
+p5142
+F0.04494619369506836
+tp5143
+a(S'Formula encoding at horizon: 3'
+p5144
+F0.1724550724029541
+tp5145
+a(S'Sat-check at horizon: 3'
+p5146
+F0.05712413787841797
+tp5147
+a(S'Formula encoding at horizon: 4'
+p5148
+F0.22796893119812012
+tp5149
+a(S'Sat-check at horizon: 4'
+p5150
+F0.08508014678955078
+tp5151
+a(S'Finishing'
+p5152
+F-0.014259099960327148
+tp5153
+asS'exclusion_cnt'
+p5154
+I144
+sS'valid'
+p5155
+I1
+sS'mode'
+p5156
+S'parallel not incremental'
+p5157
+sS'horizon'
+p5158
+I4
+sS'time'
+p5159
+F1.0152051448822021
+sS'found'
+p5160
+I01
+sa(dp5161
+S'domain'
+p5162
+S'fo_counters_rnd'
+p5163
+sS'time_log'
+p5164
+NsS'instance'
+p5165
+S'instance_7_1.pddl'
+p5166
+sS'valid'
+p5167
+I-1
+sS'mode'
+p5168
+S'springroll'
+p5169
+sS'horizon'
+p5170
+I0
+sS'time'
+p5171
+F1.1204040050506592
+sS'found'
+p5172
+I01
+sa(dp5173
+S'domain'
+p5174
+S'fo_counters_rnd'
+p5175
+sS'instance'
+p5176
+S'instance_7_1.pddl'
+p5177
+sS'semantics_f_count'
+p5178
+I4
+sS'time_log'
+p5179
+(lp5180
+(S'Initializing encoder.'
+p5181
+F0.12467789649963379
+tp5182
+a(S'Initial formula encoding at horizon: 1'
+p5183
+F0.1011660099029541
+tp5184
+a(S'Initial formula encoding at horizon: 2'
+p5185
+F0.0695657730102539
+tp5186
+a(S'Initial formula encoding at horizon: 3'
+p5187
+F0.07603287696838379
+tp5188
+a(S'Initial formula encoding at horizon: 4'
+p5189
+F0.07983708381652832
+tp5190
+a(S'Extract model at horizon 4'
+p5191
+F0.10081911087036133
+tp5192
+a(S'Encode seq-form of one step 0'
+p5193
+F0.16213512420654297
+tp5194
+a(S'Encode seq-prefix of one step 0'
+p5195
+F0.0061609745025634766
+tp5196
+a(S'Check sat of seq-formula 0'
+p5197
+F0.014129877090454102
+tp5198
+a(S'Encode seq-form of one step 1'
+p5199
+F0.30074501037597656
+tp5200
+a(S'Encode seq-prefix of one step 1'
+p5201
+F0.006278038024902344
+tp5202
+a(S'Check sat of seq-formula 1'
+p5203
+F0.2801089286804199
+tp5204
+a(S'Encode seq-form of one step 2'
+p5205
+F0.2529749870300293
+tp5206
+a(S'Encode seq-prefix of one step 2'
+p5207
+F0.006206989288330078
+tp5208
+a(S'Check sat of seq-formula 2'
+p5209
+F0.13221001625061035
+tp5210
+a(S'Encode seq-form of one step 3'
+p5211
+F0.11720609664916992
+tp5212
+a(S'Encode seq-prefix of one step 3'
+p5213
+F0.006218910217285156
+tp5214
+a(S'Check sat of seq-formula 3'
+p5215
+F0.17777395248413086
+tp5216
+a(S'Exiting search'
+p5217
+F0.02285599708557129
+tp5218
+a(S'Finishing'
+p5219
+F-1.2874603271484375e-05
+tp5220
+asS'exclusion_cnt'
+p5221
+I0
+sS'valid'
+p5222
+I1
+sS'mode'
+p5223
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p5224
+sS'horizon'
+p5225
+I4
+sS'time'
+p5226
+F2.0371408462524414
+sS'found'
+p5227
+I01
+sS'f_count'
+p5228
+I116
+sa(dp5229
+S'domain'
+p5230
+S'fo_counters_rnd'
+p5231
+sS'exclusion_cnt'
+p5232
+I210
+sS'time_log'
+p5233
+(lp5234
+(S'Formula encoding at horizon: 1'
+p5235
+F0.3152658939361572
+tp5236
+a(S'Sat-check at horizon: 1'
+p5237
+F0.0009548664093017578
+tp5238
+a(S'Formula encoding at horizon: 2'
+p5239
+F0.08424615859985352
+tp5240
+a(S'Sat-check at horizon: 2'
+p5241
+F0.005266904830932617
+tp5242
+a(S'Formula encoding at horizon: 3'
+p5243
+F0.08421802520751953
+tp5244
+a(S'Sat-check at horizon: 3'
+p5245
+F0.015496015548706055
+tp5246
+a(S'Formula encoding at horizon: 4'
+p5247
+F0.08449292182922363
+tp5248
+a(S'Sat-check at horizon: 4'
+p5249
+F0.08497500419616699
+tp5250
+a(S'Formula encoding at horizon: 5'
+p5251
+F0.0849909782409668
+tp5252
+a(S'Sat-check at horizon: 5'
+p5253
+F0.18116116523742676
+tp5254
+a(S'Exiting search'
+p5255
+F0.01880788803100586
+tp5256
+a(S'Finishing'
+p5257
+F-0.00021314620971679688
+tp5258
+asS'instance'
+p5259
+S'instance_7_1.pddl'
+p5260
+sS'valid'
+p5261
+I1
+sS'mode'
+p5262
+S'parallel incremental'
+p5263
+sS'horizon'
+p5264
+I5
+sS'time'
+p5265
+F0.9601030349731445
+sS'found'
+p5266
+I01
+sa(dp5267
+S'domain'
+p5268
+S'fo_counters_rnd'
+p5269
+sS'instance'
+p5270
+S'instance_7_1.pddl'
+p5271
+sS'time_log'
+p5272
+(lp5273
+(S'Formula encoding at horizon: 1'
+p5274
+F0.28830909729003906
+tp5275
+a(S'Sat-check at horizon: 1'
+p5276
+F0.0366971492767334
+tp5277
+a(S'Formula encoding at horizon: 2'
+p5278
+F0.14681005477905273
+tp5279
+a(S'Sat-check at horizon: 2'
+p5280
+F0.04488992691040039
+tp5281
+a(S'Formula encoding at horizon: 3'
+p5282
+F0.21344900131225586
+tp5283
+a(S'Sat-check at horizon: 3'
+p5284
+F0.060452938079833984
+tp5285
+a(S'Formula encoding at horizon: 4'
+p5286
+F0.2825891971588135
+tp5287
+a(S'Sat-check at horizon: 4'
+p5288
+F0.11217188835144043
+tp5289
+a(S'Formula encoding at horizon: 5'
+p5290
+F0.34915685653686523
+tp5291
+a(S'Sat-check at horizon: 5'
+p5292
+F0.15154504776000977
+tp5293
+a(S'Finishing'
+p5294
+F-0.020206928253173828
+tp5295
+asS'exclusion_cnt'
+p5296
+I210
+sS'valid'
+p5297
+I1
+sS'mode'
+p5298
+S'parallel not incremental'
+p5299
+sS'horizon'
+p5300
+I5
+sS'time'
+p5301
+F1.7062931060791016
+sS'found'
+p5302
+I01
+sa(dp5303
+S'domain'
+p5304
+S'fo_counters_rnd'
+p5305
+sS'time_log'
+p5306
+NsS'instance'
+p5307
+S'instance_7_2.pddl'
+p5308
+sS'valid'
+p5309
+I-1
+sS'mode'
+p5310
+S'springroll'
+p5311
+sS'horizon'
+p5312
+I0
+sS'time'
+p5313
+F1.070369005203247
+sS'found'
+p5314
+I01
+sa(dp5315
+S'domain'
+p5316
+S'fo_counters_rnd'
+p5317
+sS'instance'
+p5318
+S'instance_7_2.pddl'
+p5319
+sS'semantics_f_count'
+p5320
+I5
+sS'time_log'
+p5321
+(lp5322
+(S'Initializing encoder.'
+p5323
+F0.09027481079101562
+tp5324
+a(S'Initial formula encoding at horizon: 1'
+p5325
+F0.10216879844665527
+tp5326
+a(S'Initial formula encoding at horizon: 2'
+p5327
+F0.0695948600769043
+tp5328
+a(S'Initial formula encoding at horizon: 3'
+p5329
+F0.07536911964416504
+tp5330
+a(S'Initial formula encoding at horizon: 4'
+p5331
+F0.08153295516967773
+tp5332
+a(S'Initial formula encoding at horizon: 5'
+p5333
+F0.140455961227417
+tp5334
+a(S'Extract model at horizon 5'
+p5335
+F0.17118597030639648
+tp5336
+a(S'Encode seq-form of one step 0'
+p5337
+F0.08017206192016602
+tp5338
+a(S'Encode seq-prefix of one step 0'
+p5339
+F0.006124973297119141
+tp5340
+a(S'Check sat of seq-formula 0'
+p5341
+F0.008682966232299805
+tp5342
+a(S'Encode seq-form of one step 1'
+p5343
+F0.22815299034118652
+tp5344
+a(S'Encode seq-prefix of one step 1'
+p5345
+F0.0062749385833740234
+tp5346
+a(S'Check sat of seq-formula 1'
+p5347
+F0.050958871841430664
+tp5348
+a(S'Encode seq-form of one step 2'
+p5349
+F0.20095610618591309
+tp5350
+a(S'Encode seq-prefix of one step 2'
+p5351
+F0.00624394416809082
+tp5352
+a(S'Check sat of seq-formula 2'
+p5353
+F0.19287586212158203
+tp5354
+a(S'Encode seq-form of one step 3'
+p5355
+F0.148514986038208
+tp5356
+a(S'Encode seq-prefix of one step 3'
+p5357
+F0.006340980529785156
+tp5358
+a(S'Check sat of seq-formula 3'
+p5359
+F0.10333704948425293
+tp5360
+a(S'Encode seq-form of one step 4'
+p5361
+F0.09480500221252441
+tp5362
+a(S'Encode seq-prefix of one step 4'
+p5363
+F0.006193876266479492
+tp5364
+a(S'Check sat of seq-formula 4'
+p5365
+F0.11175990104675293
+tp5366
+a(S'Exiting search'
+p5367
+F0.014654874801635742
+tp5368
+a(S'Finishing'
+p5369
+F-1.1920928955078125e-05
+tp5370
+asS'exclusion_cnt'
+p5371
+I0
+sS'valid'
+p5372
+I1
+sS'mode'
+p5373
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p5374
+sS'horizon'
+p5375
+I5
+sS'time'
+p5376
+F1.9966728687286377
+sS'found'
+p5377
+I01
+sS'f_count'
+p5378
+I145
+sa(dp5379
+S'domain'
+p5380
+S'fo_counters_rnd'
+p5381
+sS'exclusion_cnt'
+p5382
+I252
+sS'time_log'
+p5383
+(lp5384
+(S'Formula encoding at horizon: 1'
+p5385
+F0.31200385093688965
+tp5386
+a(S'Sat-check at horizon: 1'
+p5387
+F0.0010180473327636719
+tp5388
+a(S'Formula encoding at horizon: 2'
+p5389
+F0.08331894874572754
+tp5390
+a(S'Sat-check at horizon: 2'
+p5391
+F0.004038095474243164
+tp5392
+a(S'Formula encoding at horizon: 3'
+p5393
+F0.08331918716430664
+tp5394
+a(S'Sat-check at horizon: 3'
+p5395
+F0.011221885681152344
+tp5396
+a(S'Formula encoding at horizon: 4'
+p5397
+F0.08330988883972168
+tp5398
+a(S'Sat-check at horizon: 4'
+p5399
+F0.05009317398071289
+tp5400
+a(S'Formula encoding at horizon: 5'
+p5401
+F0.08343005180358887
+tp5402
+a(S'Sat-check at horizon: 5'
+p5403
+F0.08155989646911621
+tp5404
+a(S'Formula encoding at horizon: 6'
+p5405
+F0.08349800109863281
+tp5406
+a(S'Sat-check at horizon: 6'
+p5407
+F0.20053505897521973
+tp5408
+a(S'Exiting search'
+p5409
+F0.022283077239990234
+tp5410
+a(S'Finishing'
+p5411
+F-0.0002079010009765625
+tp5412
+asS'instance'
+p5413
+S'instance_7_2.pddl'
+p5414
+sS'valid'
+p5415
+I1
+sS'mode'
+p5416
+S'parallel incremental'
+p5417
+sS'horizon'
+p5418
+I6
+sS'time'
+p5419
+F1.099855899810791
+sS'found'
+p5420
+I01
+sa(dp5421
+S'domain'
+p5422
+S'fo_counters_rnd'
+p5423
+sS'instance'
+p5424
+S'instance_7_2.pddl'
+p5425
+sS'time_log'
+p5426
+(lp5427
+(S'Formula encoding at horizon: 1'
+p5428
+F0.28729820251464844
+tp5429
+a(S'Sat-check at horizon: 1'
+p5430
+F0.03709101676940918
+tp5431
+a(S'Formula encoding at horizon: 2'
+p5432
+F0.14673495292663574
+tp5433
+a(S'Sat-check at horizon: 2'
+p5434
+F0.044033050537109375
+tp5435
+a(S'Formula encoding at horizon: 3'
+p5436
+F0.21491384506225586
+tp5437
+a(S'Sat-check at horizon: 3'
+p5438
+F0.06150507926940918
+tp5439
+a(S'Formula encoding at horizon: 4'
+p5440
+F0.284257173538208
+tp5441
+a(S'Sat-check at horizon: 4'
+p5442
+F0.08877801895141602
+tp5443
+a(S'Formula encoding at horizon: 5'
+p5444
+F0.34978199005126953
+tp5445
+a(S'Sat-check at horizon: 5'
+p5446
+F0.1474318504333496
+tp5447
+a(S'Formula encoding at horizon: 6'
+p5448
+F0.41797685623168945
+tp5449
+a(S'Sat-check at horizon: 6'
+p5450
+F0.20603513717651367
+tp5451
+a(S'Finishing'
+p5452
+F-0.024265050888061523
+tp5453
+asS'exclusion_cnt'
+p5454
+I252
+sS'valid'
+p5455
+I1
+sS'mode'
+p5456
+S'parallel not incremental'
+p5457
+sS'horizon'
+p5458
+I6
+sS'time'
+p5459
+F2.310120105743408
+sS'found'
+p5460
+I01
+sa(dp5461
+S'domain'
+p5462
+S'fo_counters_rnd'
+p5463
+sS'time_log'
+p5464
+NsS'instance'
+p5465
+S'instance_7_3.pddl'
+p5466
+sS'valid'
+p5467
+I-1
+sS'mode'
+p5468
+S'springroll'
+p5469
+sS'horizon'
+p5470
+I0
+sS'time'
+p5471
+F1.0707199573516846
+sS'found'
+p5472
+I01
+sa(dp5473
+S'domain'
+p5474
+S'fo_counters_rnd'
+p5475
+sS'instance'
+p5476
+S'instance_7_3.pddl'
+p5477
+sS'semantics_f_count'
+p5478
+I4
+sS'time_log'
+p5479
+(lp5480
+(S'Initializing encoder.'
+p5481
+F0.0897059440612793
+tp5482
+a(S'Initial formula encoding at horizon: 1'
+p5483
+F0.10278105735778809
+tp5484
+a(S'Initial formula encoding at horizon: 2'
+p5485
+F0.07006001472473145
+tp5486
+a(S'Initial formula encoding at horizon: 3'
+p5487
+F0.07418203353881836
+tp5488
+a(S'Initial formula encoding at horizon: 4'
+p5489
+F0.08057808876037598
+tp5490
+a(S'Extract model at horizon 4'
+p5491
+F0.08163022994995117
+tp5492
+a(S'Encode seq-form of one step 0'
+p5493
+F0.16192102432250977
+tp5494
+a(S'Encode seq-prefix of one step 0'
+p5495
+F0.006233930587768555
+tp5496
+a(S'Check sat of seq-formula 0'
+p5497
+F0.01407003402709961
+tp5498
+a(S'Encode seq-form of one step 1'
+p5499
+F0.30368518829345703
+tp5500
+a(S'Encode seq-prefix of one step 1'
+p5501
+F0.006254911422729492
+tp5502
+a(S'Check sat of seq-formula 1'
+p5503
+F0.2541980743408203
+tp5504
+a(S'Encode seq-form of one step 2'
+p5505
+F0.18028497695922852
+tp5506
+a(S'Encode seq-prefix of one step 2'
+p5507
+F0.0063419342041015625
+tp5508
+a(S'Check sat of seq-formula 2'
+p5509
+F0.30410313606262207
+tp5510
+a(S'Encode seq-form of one step 3'
+p5511
+F0.24358606338500977
+tp5512
+a(S'Encode seq-prefix of one step 3'
+p5513
+F0.006314992904663086
+tp5514
+a(S'Check sat of seq-formula 3'
+p5515
+F0.6983449459075928
+tp5516
+a(S'Exiting search'
+p5517
+F0.027198076248168945
+tp5518
+a(S'Finishing'
+p5519
+F-1.3113021850585938e-05
+tp5520
+asS'exclusion_cnt'
+p5521
+I0
+sS'valid'
+p5522
+I1
+sS'mode'
+p5523
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p5524
+sS'horizon'
+p5525
+I4
+sS'time'
+p5526
+F2.711513042449951
+sS'found'
+p5527
+I01
+sS'f_count'
+p5528
+I116
+sa(dp5529
+S'domain'
+p5530
+S'fo_counters_rnd'
+p5531
+sS'exclusion_cnt'
+p5532
+I210
+sS'time_log'
+p5533
+(lp5534
+(S'Formula encoding at horizon: 1'
+p5535
+F0.3116440773010254
+tp5536
+a(S'Sat-check at horizon: 1'
+p5537
+F0.0010809898376464844
+tp5538
+a(S'Formula encoding at horizon: 2'
+p5539
+F0.08341407775878906
+tp5540
+a(S'Sat-check at horizon: 2'
+p5541
+F0.00786900520324707
+tp5542
+a(S'Formula encoding at horizon: 3'
+p5543
+F0.08367395401000977
+tp5544
+a(S'Sat-check at horizon: 3'
+p5545
+F0.013710975646972656
+tp5546
+a(S'Formula encoding at horizon: 4'
+p5547
+F0.08341097831726074
+tp5548
+a(S'Sat-check at horizon: 4'
+p5549
+F0.04423999786376953
+tp5550
+a(S'Formula encoding at horizon: 5'
+p5551
+F0.08353590965270996
+tp5552
+a(S'Sat-check at horizon: 5'
+p5553
+F0.09252786636352539
+tp5554
+a(S'Exiting search'
+p5555
+F0.018537044525146484
+tp5556
+a(S'Finishing'
+p5557
+F-0.00020599365234375
+tp5558
+asS'instance'
+p5559
+S'instance_7_3.pddl'
+p5560
+sS'valid'
+p5561
+I1
+sS'mode'
+p5562
+S'parallel incremental'
+p5563
+sS'horizon'
+p5564
+I5
+sS'time'
+p5565
+F0.8238639831542969
+sS'found'
+p5566
+I01
+sa(dp5567
+S'domain'
+p5568
+S'fo_counters_rnd'
+p5569
+sS'instance'
+p5570
+S'instance_7_3.pddl'
+p5571
+sS'time_log'
+p5572
+(lp5573
+(S'Formula encoding at horizon: 1'
+p5574
+F0.28827404975891113
+tp5575
+a(S'Sat-check at horizon: 1'
+p5576
+F0.03711104393005371
+tp5577
+a(S'Formula encoding at horizon: 2'
+p5578
+F0.14713382720947266
+tp5579
+a(S'Sat-check at horizon: 2'
+p5580
+F0.047638893127441406
+tp5581
+a(S'Formula encoding at horizon: 3'
+p5582
+F0.21500897407531738
+tp5583
+a(S'Sat-check at horizon: 3'
+p5584
+F0.062139034271240234
+tp5585
+a(S'Formula encoding at horizon: 4'
+p5586
+F0.28263092041015625
+tp5587
+a(S'Sat-check at horizon: 4'
+p5588
+F0.0856471061706543
+tp5589
+a(S'Formula encoding at horizon: 5'
+p5590
+F0.34891200065612793
+tp5591
+a(S'Sat-check at horizon: 5'
+p5592
+F0.1539778709411621
+tp5593
+a(S'Finishing'
+p5594
+F-0.020324230194091797
+tp5595
+asS'exclusion_cnt'
+p5596
+I210
+sS'valid'
+p5597
+I1
+sS'mode'
+p5598
+S'parallel not incremental'
+p5599
+sS'horizon'
+p5600
+I5
+sS'time'
+p5601
+F1.6888132095336914
+sS'found'
+p5602
+I01
+sa(dp5603
+S'domain'
+p5604
+S'fo_counters_rnd'
+p5605
+sS'time_log'
+p5606
+NsS'instance'
+p5607
+S'instance_8_1.pddl'
+p5608
+sS'valid'
+p5609
+I-1
+sS'mode'
+p5610
+S'springroll'
+p5611
+sS'horizon'
+p5612
+I0
+sS'time'
+p5613
+F1.070936918258667
+sS'found'
+p5614
+I01
+sa(dp5615
+S'domain'
+p5616
+S'fo_counters_rnd'
+p5617
+sS'instance'
+p5618
+S'instance_8_1.pddl'
+p5619
+sS'semantics_f_count'
+p5620
+I5
+sS'time_log'
+p5621
+(lp5622
+(S'Initializing encoder.'
+p5623
+F0.10712790489196777
+tp5624
+a(S'Initial formula encoding at horizon: 1'
+p5625
+F0.11977696418762207
+tp5626
+a(S'Initial formula encoding at horizon: 2'
+p5627
+F0.08744406700134277
+tp5628
+a(S'Initial formula encoding at horizon: 3'
+p5629
+F0.0942530632019043
+tp5630
+a(S'Initial formula encoding at horizon: 4'
+p5631
+F0.101470947265625
+tp5632
+a(S'Initial formula encoding at horizon: 5'
+p5633
+F0.11647391319274902
+tp5634
+a(S'Extract model at horizon 5'
+p5635
+F0.18130898475646973
+tp5636
+a(S'Encode seq-form of one step 0'
+p5637
+F0.08822822570800781
+tp5638
+a(S'Encode seq-prefix of one step 0'
+p5639
+F0.007047891616821289
+tp5640
+a(S'Check sat of seq-formula 0'
+p5641
+F0.006412029266357422
+tp5642
+a(S'Encode seq-form of one step 1'
+p5643
+F0.37906718254089355
+tp5644
+a(S'Encode seq-prefix of one step 1'
+p5645
+F0.00713801383972168
+tp5646
+a(S'Check sat of seq-formula 1'
+p5647
+F0.2503659725189209
+tp5648
+a(S'Encode seq-form of one step 2'
+p5649
+F0.31284499168395996
+tp5650
+a(S'Encode seq-prefix of one step 2'
+p5651
+F0.0071489810943603516
+tp5652
+a(S'Check sat of seq-formula 2'
+p5653
+F0.4761650562286377
+tp5654
+a(S'Encode seq-form of one step 3'
+p5655
+F0.16588115692138672
+tp5656
+a(S'Encode seq-prefix of one step 3'
+p5657
+F0.007097005844116211
+tp5658
+a(S'Check sat of seq-formula 3'
+p5659
+F0.3190591335296631
+tp5660
+a(S'Encode seq-form of one step 4'
+p5661
+F0.24908995628356934
+tp5662
+a(S'Encode seq-prefix of one step 4'
+p5663
+F0.00734710693359375
+tp5664
+a(S'Check sat of seq-formula 4'
+p5665
+F0.28125810623168945
+tp5666
+a(S'Exiting search'
+p5667
+F0.031445980072021484
+tp5668
+a(S'Finishing'
+p5669
+F-2.4080276489257812e-05
+tp5670
+asS'exclusion_cnt'
+p5671
+I0
+sS'valid'
+p5672
+I1
+sS'mode'
+p5673
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p5674
+sS'horizon'
+p5675
+I5
+sS'time'
+p5676
+F3.4035120010375977
+sS'found'
+p5677
+I01
+sS'f_count'
+p5678
+I165
+sa(dp5679
+S'domain'
+p5680
+S'fo_counters_rnd'
+p5681
+sS'exclusion_cnt'
+p5682
+I288
+sS'time_log'
+p5683
+(lp5684
+(S'Formula encoding at horizon: 1'
+p5685
+F0.4045999050140381
+tp5686
+a(S'Sat-check at horizon: 1'
+p5687
+F0.0009930133819580078
+tp5688
+a(S'Formula encoding at horizon: 2'
+p5689
+F0.10352087020874023
+tp5690
+a(S'Sat-check at horizon: 2'
+p5691
+F0.007723093032836914
+tp5692
+a(S'Formula encoding at horizon: 3'
+p5693
+F0.10301709175109863
+tp5694
+a(S'Sat-check at horizon: 3'
+p5695
+F0.01483917236328125
+tp5696
+a(S'Formula encoding at horizon: 4'
+p5697
+F0.10266995429992676
+tp5698
+a(S'Sat-check at horizon: 4'
+p5699
+F0.03605794906616211
+tp5700
+a(S'Formula encoding at horizon: 5'
+p5701
+F0.10332298278808594
+tp5702
+a(S'Sat-check at horizon: 5'
+p5703
+F0.08050918579101562
+tp5704
+a(S'Formula encoding at horizon: 6'
+p5705
+F0.10493302345275879
+tp5706
+a(S'Sat-check at horizon: 6'
+p5707
+F0.628654956817627
+tp5708
+a(S'Exiting search'
+p5709
+F0.025020122528076172
+tp5710
+a(S'Finishing'
+p5711
+F-0.00023508071899414062
+tp5712
+asS'instance'
+p5713
+S'instance_8_1.pddl'
+p5714
+sS'valid'
+p5715
+I1
+sS'mode'
+p5716
+S'parallel incremental'
+p5717
+sS'horizon'
+p5718
+I6
+sS'time'
+p5719
+F1.7161149978637695
+sS'found'
+p5720
+I01
+sa(dp5721
+S'domain'
+p5722
+S'fo_counters_rnd'
+p5723
+sS'instance'
+p5724
+S'instance_8_1.pddl'
+p5725
+sS'time_log'
+p5726
+(lp5727
+(S'Formula encoding at horizon: 1'
+p5728
+F0.3854808807373047
+tp5729
+a(S'Sat-check at horizon: 1'
+p5730
+F0.038040876388549805
+tp5731
+a(S'Formula encoding at horizon: 2'
+p5732
+F0.18120503425598145
+tp5733
+a(S'Sat-check at horizon: 2'
+p5734
+F0.04650306701660156
+tp5735
+a(S'Formula encoding at horizon: 3'
+p5736
+F0.2663860321044922
+tp5737
+a(S'Sat-check at horizon: 3'
+p5738
+F0.0657339096069336
+tp5739
+a(S'Formula encoding at horizon: 4'
+p5740
+F0.35356783866882324
+tp5741
+a(S'Sat-check at horizon: 4'
+p5742
+F0.09598398208618164
+tp5743
+a(S'Formula encoding at horizon: 5'
+p5744
+F0.42910313606262207
+tp5745
+a(S'Sat-check at horizon: 5'
+p5746
+F0.1653280258178711
+tp5747
+a(S'Formula encoding at horizon: 6'
+p5748
+F0.5127730369567871
+tp5749
+a(S'Sat-check at horizon: 6'
+p5750
+F0.33116602897644043
+tp5751
+a(S'Finishing'
+p5752
+F-0.027383089065551758
+tp5753
+asS'exclusion_cnt'
+p5754
+I288
+sS'valid'
+p5755
+I1
+sS'mode'
+p5756
+S'parallel not incremental'
+p5757
+sS'horizon'
+p5758
+I6
+sS'time'
+p5759
+F2.898674964904785
+sS'found'
+p5760
+I01
+sa(dp5761
+S'domain'
+p5762
+S'fo_counters_rnd'
+p5763
+sS'time_log'
+p5764
+NsS'instance'
+p5765
+S'instance_8_2.pddl'
+p5766
+sS'valid'
+p5767
+I-1
+sS'mode'
+p5768
+S'springroll'
+p5769
+sS'horizon'
+p5770
+I0
+sS'time'
+p5771
+F1.1709809303283691
+sS'found'
+p5772
+I01
+sa(dp5773
+S'domain'
+p5774
+S'fo_counters_rnd'
+p5775
+sS'instance'
+p5776
+S'instance_8_2.pddl'
+p5777
+sS'semantics_f_count'
+p5778
+I5
+sS'time_log'
+p5779
+(lp5780
+(S'Initializing encoder.'
+p5781
+F0.10361409187316895
+tp5782
+a(S'Initial formula encoding at horizon: 1'
+p5783
+F0.12196803092956543
+tp5784
+a(S'Initial formula encoding at horizon: 2'
+p5785
+F0.1305530071258545
+tp5786
+a(S'Initial formula encoding at horizon: 3'
+p5787
+F0.09041213989257812
+tp5788
+a(S'Initial formula encoding at horizon: 4'
+p5789
+F0.09659409523010254
+tp5790
+a(S'Initial formula encoding at horizon: 5'
+p5791
+F0.15206193923950195
+tp5792
+a(S'Extract model at horizon 5'
+p5793
+F0.3629429340362549
+tp5794
+a(S'Encode seq-form of one step 0'
+p5795
+F0.20417094230651855
+tp5796
+a(S'Encode seq-prefix of one step 0'
+p5797
+F0.007180213928222656
+tp5798
+a(S'Check sat of seq-formula 0'
+p5799
+F0.01684403419494629
+tp5800
+a(S'Encode seq-form of one step 1'
+p5801
+F0.4290781021118164
+tp5802
+a(S'Encode seq-prefix of one step 1'
+p5803
+F0.0072329044342041016
+tp5804
+a(S'Check sat of seq-formula 1'
+p5805
+F0.6980509757995605
+tp5806
+a(S'Encode seq-form of one step 2'
+p5807
+F0.19914984703063965
+tp5808
+a(S'Encode seq-prefix of one step 2'
+p5809
+F0.007228851318359375
+tp5810
+a(S'Check sat of seq-formula 2'
+p5811
+F0.14516592025756836
+tp5812
+a(S'Encode seq-form of one step 3'
+p5813
+F0.217972993850708
+tp5814
+a(S'Encode seq-prefix of one step 3'
+p5815
+F0.00716400146484375
+tp5816
+a(S'Check sat of seq-formula 3'
+p5817
+F0.9683980941772461
+tp5818
+a(S'Encode seq-form of one step 4'
+p5819
+F0.1398169994354248
+tp5820
+a(S'Encode seq-prefix of one step 4'
+p5821
+F0.0071620941162109375
+tp5822
+a(S'Check sat of seq-formula 4'
+p5823
+F0.32990598678588867
+tp5824
+a(S'Exiting search'
+p5825
+F0.02132105827331543
+tp5826
+a(S'Finishing'
+p5827
+F-1.1920928955078125e-05
+tp5828
+asS'exclusion_cnt'
+p5829
+I0
+sS'valid'
+p5830
+I1
+sS'mode'
+p5831
+S'Timesteps-All__UnsatCore-True__Seq-check-General'
+p5832
+sS'horizon'
+p5833
+I5
+sS'time'
+p5834
+F4.4640350341796875
+sS'found'
+p5835
+I01
+sS'f_count'
+p5836
+I165
+sa(dp5837
+S'domain'
+p5838
+S'fo_counters_rnd'
+p5839
+sS'exclusion_cnt'
+p5840
+I336
+sS'time_log'
+p5841
+(lp5842
+(S'Formula encoding at horizon: 1'
+p5843
+F0.45268797874450684
+tp5844
+a(S'Sat-check at horizon: 1'
+p5845
+F0.001035928726196289
+tp5846
+a(S'Formula encoding at horizon: 2'
+p5847
+F0.10360598564147949
+tp5848
+a(S'Sat-check at horizon: 2'
+p5849
+F0.005572080612182617
+tp5850
+a(S'Formula encoding at horizon: 3'
+p5851
+F0.10331487655639648
+tp5852
+a(S'Sat-check at horizon: 3'
+p5853
+F0.013208150863647461
+tp5854
+a(S'Formula encoding at horizon: 4'
+p5855
+F0.10303616523742676
+tp5856
+a(S'Sat-check at horizon: 4'
+p5857
+F0.04454183578491211
+tp5858
+a(S'Formula encoding at horizon: 5'
+p5859
+F0.10355782508850098
+tp5860
+a(S'Sat-check at horizon: 5'
+p5861
+F0.08507394790649414
+tp5862
+a(S'Formula encoding at horizon: 6'
+p5863
+F0.10331892967224121
+tp5864
+a(S'Sat-check at horizon: 6'
+p5865
+F0.4774289131164551
+tp5866
+a(S'Formula encoding at horizon: 7'
+p5867
+F0.10446500778198242
+tp5868
+a(S'Sat-check at horizon: 7'
+p5869
+F0.46599388122558594
+tp5870
+a(S'Exiting search'
+p5871
+F0.029433012008666992
+tp5872
+a(S'Finishing'
+p5873
+F-0.00023698806762695312
+tp5874
+asS'instance'
+p5875
+S'instance_8_2.pddl'
+p5876
+sS'valid'
+p5877
+I1
+sS'mode'
+p5878
+S'parallel incremental'
+p5879
+sS'horizon'
+p5880
+I7
+sS'time'
+p5881
+F2.196531057357788
+sS'found'
+p5882
+I01
+sa(dp5883
+S'domain'
+p5884
+S'fo_counters_rnd'
+p5885
+sS'instance'
+p5886
+S'instance_8_2.pddl'
+p5887
+sS'time_log'
+p5888
+(lp5889
+(S'Formula encoding at horizon: 1'
+p5890
+F0.42354798316955566
+tp5891
+a(S'Sat-check at horizon: 1'
+p5892
+F0.037969112396240234
+tp5893
+a(S'Formula encoding at horizon: 2'
+p5894
+F0.18154001235961914
+tp5895
+a(S'Sat-check at horizon: 2'
+p5896
+F0.04633593559265137
+tp5897
+a(S'Formula encoding at horizon: 3'
+p5898
+F0.2636561393737793
+tp5899
+a(S'Sat-check at horizon: 3'
+p5900
+F0.06759405136108398
+tp5901
+a(S'Formula encoding at horizon: 4'
+p5902
+F0.3467841148376465
+tp5903
+a(S'Sat-check at horizon: 4'
+p5904
+F0.0906670093536377
+tp5905
+a(S'Formula encoding at horizon: 5'
+p5906
+F0.4308619499206543
+tp5907
+a(S'Sat-check at horizon: 5'
+p5908
+F0.14443683624267578
+tp5909
+a(S'Formula encoding at horizon: 6'
+p5910
+F0.5138318538665771
+tp5911
+a(S'Sat-check at horizon: 6'
+p5912
+F0.3938891887664795
+tp5913
+a(S'Formula encoding at horizon: 7'
+p5914
+F0.595102071762085
+tp5915
+a(S'Sat-check at horizon: 7'
+p5916
+F0.5513370037078857
+tp5917
+a(S'Finishing'
+p5918
+F-0.031579017639160156
+tp5919
+asS'exclusion_cnt'
+p5920
+I336
+sS'valid'
+p5921
+I1
+sS'mode'
+p5922
+S'parallel not incremental'
+p5923
+sS'horizon'
+p5924
+I7
+sS'time'
+p5925
+F4.119157075881958
+sS'found'
+p5926
+I01
+sa.
