@@ -15,10 +15,10 @@ import utils
 from planner import encoder, agile_encoder, modifier, search
 
 # Timeout per instance in seconds
-timeout = 10
+timeout = 1800
 
 # Set upper bound
-ub = 1800
+ub = 100
 
 def main():
     run_comparison()
