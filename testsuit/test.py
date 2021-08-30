@@ -15,10 +15,10 @@ import utils
 from planner import encoder, agile_encoder, modifier, search
 
 # Timeout per instance in seconds
-timeout = 1800
+timeout = 10
 
 # Set upper bound
-ub = 100
+ub = 1800
 
 def main():
     run_comparison()
@@ -32,17 +32,17 @@ def run_comparison():
     problems1 = [('zeno-travel-linear', r'pddl_examples/linear/zeno-travel-linear/domain.pddl',
      r'pddl_examples/linear/zeno-travel-linear/instances',0,0),#2nd run
      ('farmland_ln', r'pddl_examples/linear/farmland_ln/domain.pddl',
-     r'pddl_examples/linear/farmland_ln/instances',0,20),#4th run
+     r'pddl_examples/linear/farmland_ln/instances',0,0),#4th run
      ('fo_counters', r'pddl_examples/linear/fo_counters/domain.pddl',
      r'pddl_examples/linear/fo_counters/instances',0,0),#1st run
      ('fo_counters_seq', r'pddl_examples/linear/fo_counters_seq/domain.pddl',
      r'pddl_examples/linear/fo_counters_seq/instances',0,0),
      ('fo_counters_inv', r'pddl_examples/linear/fo_counters_inv/domain.pddl',
-     r'pddl_examples/linear/fo_counters_inv/instances',0,20),# 4th run
+     r'pddl_examples/linear/fo_counters_inv/instances',0,0),# 4th run
      ('fo_counters_rnd', r'pddl_examples/linear/fo_counters_rnd/domain.pddl',
      r'pddl_examples/linear/fo_counters_rnd/instances',0,0),#1st run
      ('sailing_ln', r'pddl_examples/linear/sailing_ln/domain.pddl',
-     r'pddl_examples/linear/sailing_ln/instances',0,0), # run Does not seem to be solvable in reasonable time at horizon 24
+     r'pddl_examples/linear/sailing_ln/instances',0,0), # Does not seem to be solvable in reasonable time at horizon 24
      ('tpp', r'pddl_examples/linear/tpp/domain.pddl',
      r'pddl_examples/linear/tpp/instances',0,0),#2nd run
      ('depots_numeric', r'pddl_examples/simple/depots_numeric/domain.pddl',
@@ -50,7 +50,24 @@ def run_comparison():
      ('gardening', r'pddl_examples/simple/gardening/domain.pddl',
      r'pddl_examples/simple/gardening/instances',0,0),#3rd run
      ('rover-numeric', r'pddl_examples/simple/rover-numeric/domain.pddl',
-     r'pddl_examples/simple/rover-numeric/instances',0,20)]#4th run
+     r'pddl_examples/simple/rover-numeric/instances',0,0),#4th run
+     ('farmland', r'pddl_examples/simple/farmland/domain.pddl',
+     r'pddl_examples/simple/farmland/instances',0,20),#5th run
+     ('fn-counters', r'pddl_examples/simple/fn-counters/domain.pddl',
+     r'pddl_examples/simple/fn-counters/instances',0,20),#5th run
+     ('fn-counters-inv', r'pddl_examples/simple/fn-counters-inv/domain.pddl',
+     r'pddl_examples/simple/fn-counters-inv/instances',0,20),#5th run
+     ('fn-counters-rnd', r'pddl_examples/simple/fn-counters-rnd/domain.pddl',
+     r'pddl_examples/simple/fn-counters-rnd/instances',0,20),#5th run
+     ('sailing', r'pddl_examples/simple/sailing/domain.pddl',
+     r'pddl_examples/simple/sailing/small_instances',0,0),# run
+     ('satellite', r'pddl_examples/simple/satellite/domain.pddl',
+     r'pddl_examples/simple/satellite/instances',0,20),#5th run
+     ('settlers', r'pddl_examples/simple/settlers/domain.pddl',
+     r'pddl_examples/simple/settlers/instances',0,0),# run
+     ('zeno-travel-small', r'pddl_examples/simple/zeno-travel-small/domain.pddl',
+     r'pddl_examples/simple/zeno-travel-small/instances',0,20)#5th run
+     ]
 
     problems = problems1
 
