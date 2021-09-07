@@ -250,6 +250,10 @@ class SearchSMT(Search):
             # Check for satisfiability
             res = self.solver.check()
 
+            # Analysis
+            if not log is None:
+                log.register('Initial Sat-check at horizon: '+ str(self.horizon))
+            
             # Check sequentializability and refine search
             # until the current horizion can be precluded
             while res == sat and not self.found:
