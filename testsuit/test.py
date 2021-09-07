@@ -136,6 +136,8 @@ def run_comparison():
                     )
                 )'''
                 #timeout_wrapper(p, name, domain_name, filename, result, myReport)
+            elif filename.endswith('.pddl') and counter < lowerbound:
+                counter+= 1
 
     # Not explicit export call needed for simple logs.
     #myReport.export()
